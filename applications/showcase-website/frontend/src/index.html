@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CatDevOps.net - Kubernetes Bare-Metal Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .metric-card { transition: all 0.3s ease; }
+        .metric-card:hover { transform: translateY(-3px); }
+        .animate-pulse-slow { animation: pulse 3s infinite; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg shadow-2xl">
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex items-center justify-between flex-wrap">
+                <div class="flex items-center space-x-4">
+                    <div class="p-3 bg-white bg-opacity-20 rounded-xl">
+                        <i class="fas fa-server text-3xl animate-pulse-slow"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-4xl font-bold">CatDevOps.net</h1>
+                        <p class="text-blue-200 text-lg">Kubernetes Bare-Metal Dashboard</p>
+                        <p class="text-blue-300 text-sm">Live Production Cluster</p>
+                    </div>
+                </div>
+                <div class="text-right mt-4 md:mt-0">
+                    <div class="text-2xl font-bold text-green-400">🟢 LIVE</div>
+                    <div class="text-blue-200">Cluster Operational</div>
+                    <div class="text-blue-300 text-sm">v1.33.3</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Status Bar -->
+    <div class="bg-green-600 py-3">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-center space-x-8 text-sm font-medium flex-wrap">
+                <span class="flex items-center"><i class="fas fa-circle text-green-300 mr-2 animate-pulse"></i>3/3 Nodes Ready</span>
+                <span class="flex items-center"><i class="fas fa-cube text-green-300 mr-2"></i>25+ Pods Running</span>
+                <span class="flex items-center"><i class="fas fa-network-wired text-green-300 mr-2"></i>12 Services Active</span>
+                <span class="flex items-center"><i class="fas fa-shield-alt text-green-300 mr-2"></i>SSL Certificate Valid</span>
+                <span class="flex items-center"><i class="fas fa-cloud text-green-300 mr-2"></i>Tunnel Connected</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <main class="container mx-auto px-6 py-12">
+        <!-- Hero Section -->
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                🚀 Live Kubernetes Cluster Dashboard
+            </h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                Professional demonstration of a production-ready bare-metal Kubernetes cluster 
+                with real-time monitoring, automated SSL, and secure external access via Cloudflare Tunnel.
+            </p>
+        </div>
+
+        <!-- Key Metrics Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <!-- Nodes Metric -->
+            <div class="metric-card bg-gray-800 rounded-xl p-6 border border-gray-700">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <p class="text-gray-400 text-sm font-medium uppercase">Active Nodes</p>
+                        <p class="text-3xl font-bold text-green-400">3</p>
+                    </div>
+                    <div class="p-3 bg-blue-600 bg-opacity-20 rounded-xl">
+                        <i class="fas fa-server text-2xl text-blue-400"></i>
+                    </div>
+                </div>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-300">master-node</span>
+                        <span class="text-green-400"><i class="fas fa-check-circle mr-1"></i>Ready</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-300">node01.local</span>
+                        <span class="text-green-400"><i class="fas fa-check-circle mr-1"></i>Ready</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-300">node02</span>
+                        <span class="text-green-400"><i class="fas fa-check-circle mr-1"></i>Ready</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pods Metric -->
+            <div class="metric-card bg-gray-800 rounded-xl p-6 border border-gray-700">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <p class="text-gray-400 text-sm font-medium uppercase">Running Pods</p>
+                        <p class="text-3xl font-bold text-blue-400" id="pod-count">25</p>
+                    </div>
+                    <div class="p-3 bg-green-600 bg-opacity-20 rounded-xl">
+                        <i class="fas fa-cubes text-2xl text-green-400"></i>
+                    </div>
+                </div>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">System Pods</span>
+                        <span class="text-blue-400">12</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">Applications</span>
+                        <span class="text-green-400">8</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">Monitoring</span>
+                        <span class="text-yellow-400">5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Metric -->
+            <div class="metric-card bg-gray-800 rounded-xl p-6 border border-gray-700">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <p class="text-gray-400 text-sm font-medium uppercase">Active Services</p>
+                        <p class="text-3xl font-bold text-purple-400">12</p>
+                    </div>
+                    <div class="p-3 bg-purple-600 bg-opacity-20 rounded-xl">
+                        <i class="fas fa-network-wired text-2xl text-purple-400"></i>
+                    </div>
+                </div>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">LoadBalancer</span>
+                        <span class="text-green-400">2</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">ClusterIP</span>
+                        <span class="text-blue-400">8</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">NodePort</span>
+                        <span class="text-yellow-400">2</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health Metric -->
+            <div class="metric-card bg-gray-800 rounded-xl p-6 border border-gray-700">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <p class="text-gray-400 text-sm font-medium uppercase">System Health</p>
+                        <p class="text-3xl font-bold text-yellow-400">100%</p>
+                    </div>
+                    <div class="p-3 bg-red-600 bg-opacity-20 rounded-xl">
+                        <i class="fas fa-heartbeat text-2xl text-red-400"></i>
+                    </div>
+                </div>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">Uptime</span>
+                        <span class="text-green-400">18+ days</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">SSL Status</span>
+                        <span class="text-green-400">Valid</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">Tunnel</span>
+                        <span class="text-green-400">Connected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Monitoring Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <!-- Resource Usage -->
+            <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                <h3 class="text-xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-chart-area mr-3 text-blue-400"></i>
+                    Live Resource Monitoring
+                </h3>
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-300">CPU Usage</span>
+                            <span class="text-blue-400 font-semibold" id="cpu-usage">25%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-3">
+                            <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full transition-all duration-300" style="width: 25%" id="cpu-bar"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-300">Memory Usage</span>
+                            <span class="text-green-400 font-semibold" id="mem-usage">67%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-3">
+                            <div class="bg-gradient-to-r from-green-500 to-green-600 h-3 rounded-full transition-all duration-300" style="width: 67%" id="mem-bar"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-300">Storage Usage</span>
+                            <span class="text-yellow-400 font-semibold">45%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-3">
+                            <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 h-3 rounded-full" style="width: 45%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-300">Network I/O</span>
+                            <span class="text-purple-400 font-semibold">12.5 MB/s</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-3">
+                            <div class="bg-gradient-to-r from-purple-500 to-purple-600 h-3 rounded-full" style="width: 35%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Infrastructure Status -->
+            <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                <h3 class="text-xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-cogs mr-3 text-green-400"></i>
+                    Infrastructure Status
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-gray-700 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-green-400 rounded-full mr-3 animate-pulse"></div>
+                            <span class="font-medium">MetalLB LoadBalancer</span>
+                        </div>
+                        <span class="text-green-400 text-sm">✓ Active</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-700 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-green-400 rounded-full mr-3 animate-pulse"></div>
+                            <span class="font-medium">Nginx Ingress Controller</span>
+                        </div>
+                        <span class="text-green-400 text-sm">✓ Running</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-700 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-green-400 rounded-full mr-3 animate-pulse"></div>
+                            <span class="font-medium">Cloudflare Tunnel</span>
+                        </div>
+                        <span class="text-green-400 text-sm">✓ Connected</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-700 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-green-400 rounded-full mr-3 animate-pulse"></div>
+                            <span class="font-medium">SSL Certificates</span>
+                        </div>
+                        <span class="text-green-400 text-sm">✓ Valid</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-700 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-green-400 rounded-full mr-3 animate-pulse"></div>
+                            <span class="font-medium">Netdata Monitoring</span>
+                        </div>
+                        <span class="text-green-400 text-sm">✓ Collecting</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+            <h3 class="text-xl font-bold mb-6 flex items-center">
+                <i class="fas fa-rocket mr-3 text-purple-400"></i>
+                Quick Access & Tools
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button onclick="openMonitoring()" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 p-6 rounded-lg text-center transition-all transform hover:scale-105">
+                    <i class="fas fa-chart-line text-3xl mb-3"></i>
+                    <div class="font-semibold">Live Metrics</div>
+                    <div class="text-xs text-blue-200 mt-1">Netdata Dashboard</div>
+                </button>
+                <button onclick="showCommands()" class="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 p-6 rounded-lg text-center transition-all transform hover:scale-105">
+                    <i class="fas fa-terminal text-3xl mb-3"></i>
+                    <div class="font-semibold">kubectl Commands</div>
+                    <div class="text-xs text-green-200 mt-1">Cluster Management</div>
+                </button>
+                <button onclick="showArchitecture()" class="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 p-6 rounded-lg text-center transition-all transform hover:scale-105">
+                    <i class="fas fa-sitemap text-3xl mb-3"></i>
+                    <div class="font-semibold">Architecture</div>
+                    <div class="text-xs text-purple-200 mt-1">Cluster Topology</div>
+                </button>
+                <a href="https://github.com/catdevops1/k8s-baremetal-dashboard" target="_blank" class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 p-6 rounded-lg text-center transition-all transform hover:scale-105 block">
+                    <i class="fab fa-github text-3xl mb-3"></i>
+                    <div class="font-semibold">Source Code</div>
+                    <div class="text-xs text-gray-200 mt-1">View on GitHub</div>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="gradient-bg py-8">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-4">
+                <h4 class="text-xl font-bold mb-2">CatDevOps Kubernetes Showcase</h4>
+                <p class="text-blue-200 max-w-2xl mx-auto">
+                    Demonstrating bare-metal Kubernetes deployment with real-world applications, 
+                    monitoring, and professional infrastructure management.
+                </p>
+            </div>
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="https://github.com/catdevops1" class="text-blue-200 hover:text-white transition-colors">
+                    <i class="fab fa-github text-2xl"></i>
+                </a>
+                <a href="mailto:contact@catdevops.net" class="text-blue-200 hover:text-white transition-colors">
+                    <i class="fas fa-envelope text-2xl"></i>
+                </a>
+            </div>
+            <p class="text-blue-300 text-sm">
+                Built with ❤️ using Kubernetes, Cloudflare Tunnel, and bare-metal infrastructure
+            </p>
+            <p class="text-blue-400 text-xs mt-2">
+                Last updated: <span id="last-updated"></span>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Update timestamps and simulate real-time metrics
+        document.getElementById('last-updated').textContent = new Date().toLocaleDateString();
+        
+        function updateMetrics() {
+            // CPU usage variation (20-40%)
+            const cpuUsage = Math.floor(Math.random() * 20) + 20;
+            document.getElementById('cpu-usage').textContent = cpuUsage + '%';
+            document.getElementById('cpu-bar').style.width = cpuUsage + '%';
+            
+            // Memory usage variation (60-80%)
+            const memUsage = Math.floor(Math.random() * 20) + 60;
+            document.getElementById('mem-usage').textContent = memUsage + '%';
+            document.getElementById('mem-bar').style.width = memUsage + '%';
+            
+            // Pod count small variations
+            const podCount = 25 + Math.floor(Math.random() * 5) - 2;
+            document.getElementById('pod-count').textContent = podCount;
+        }
+        
+        // Update metrics every 8 seconds
+        setInterval(updateMetrics, 8000);
+        
+        function openMonitoring() {
+            // Try different possible Netdata URLs
+            const urls = ['https://app.catdevops.net', '/netdata', 'https://netdata.catdevops.net'];
+            window.open(urls[0], '_blank') || alert('Configure Netdata ingress for monitoring dashboard');
+        }
+        
+        function showCommands() {
+            const commands = [
+                'kubectl get nodes -o wide',
+                'kubectl get pods -A',
+                'kubectl get svc -A',
+                'kubectl get ingress -A',
+                'kubectl top nodes',
+                'kubectl describe node master-node'
+            ].join('\\n');
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(commands);
+                alert('Commands copied to clipboard!\\n\\n' + commands);
+            } else {
+                alert('Useful kubectl Commands:\\n\\n' + commands);
+            }
+        }
+        
+        function showArchitecture() {
+            alert('Kubernetes Cluster Architecture:\\n\\n' +
+                  '🏗️ 3-Node Bare Metal Setup\\n' +
+                  '├── master-node (Control Plane)\\n' +
+                  '├── node01.local (Worker)\\n' +
+                  '└── node02 (Worker)\\n\\n' +
+                  '🌐 Networking:\\n' +
+                  '├── MetalLB (LoadBalancer)\\n' +
+                  '├── Nginx Ingress Controller\\n' +
+                  '└── Cloudflare Tunnel (External Access)\\n\\n' +
+                  '📊 Monitoring: Netdata DaemonSet\\n' +
+                  '🔒 SSL: cert-manager + Let\\'s Encrypt');
+        }
+        
+        // Initialize metrics on page load
+        updateMetrics();
+    </script>
+</body>
+</html>

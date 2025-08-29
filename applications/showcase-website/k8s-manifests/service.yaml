@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: showcase-website
+  labels:
+    app: showcase-website
+spec:
+  selector:
+    app: showcase-website
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
