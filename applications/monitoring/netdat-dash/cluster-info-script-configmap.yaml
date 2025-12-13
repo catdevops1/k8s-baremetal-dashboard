@@ -17,7 +17,7 @@ data:
                 # Get cluster creation time from kube-system namespace
                 result = subprocess.run(
                     ['kubectl', 'get', 'namespace', 'kube-system', '-o', 'jsonpath={.metadata.creationTimestamp}'],
-                    capture_output=True, text=True, timeout=5
+                    capture_output=True, text=True, timeout=30
                 )
                 cluster_created = result.stdout.strip() if result.returncode == 0 else "unknown"
                 
@@ -31,7 +31,7 @@ data:
                 # Get total pod count
                 result = subprocess.run(
                     ['kubectl', 'get', 'pods', '--all-namespaces', '--no-headers'],
-                    capture_output=True, text=True, timeout=5
+                    capture_output=True, text=True, timeout=30
                 )
                 pod_lines = [line for line in result.stdout.strip().split('\n') if line.strip()]
                 pod_count = len(pod_lines) if result.returncode == 0 else 0
@@ -39,7 +39,7 @@ data:
                 # Get running pod count
                 result = subprocess.run(
                     ['kubectl', 'get', 'pods', '--all-namespaces', '--field-selector=status.phase=Running', '--no-headers'],
-                    capture_output=True, text=True, timeout=5
+                    capture_output=True, text=True, timeout=30
                 )
                 running_lines = [line for line in result.stdout.strip().split('\n') if line.strip()]
                 running_pods = len(running_lines) if result.returncode == 0 else 0
