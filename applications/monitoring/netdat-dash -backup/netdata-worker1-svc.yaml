@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: netdata-worker1-svc
+  namespace: netdata
+spec:
+  selector:
+    app: netdata
+    role: child
+  ports:
+  - protocol: TCP
+    port: 19999
+    targetPort: 19999
+  type: ClusterIP

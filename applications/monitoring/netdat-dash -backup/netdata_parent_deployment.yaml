@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netdata-parent-fixed
+  namespace: netdata
+  labels:
+    app: netdata
+    component: parent
+    release: netdata
+    role: parent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netdata
+      component: parent
+      release: netdata
+      role: parent
+  template:
+    metadata:
+      labels:
+        app: netdata
+        component: parent
+        release: netdata
+        role: parent
+    spec:
+      containers:
+      - name: netdata
+        image: netdata/netdata:v1.44.3
+        ports:
+        - containerPort: 19999
+          name: http
+        - containerPort: 8125
+          name: statsd
+          protocol: UDP
+        env:
+        - name: NETDATA_MODE
+          value: "parent"
+        - name: NETDATA_STREAM_ENABLED
+          value: "true"
+        - name: NETDATA_CLAIM_TOKEN
+          value: ""
+        - name: NETDATA_CLAIM_ROOMS
+          value: ""
+        - name: NETDATA_CLAIM_URL
+          value: ""
+        volumeMounts:
+        - name: netdata-config
+          mountPath: /etc/netdata/netdata.conf
+          subPath: netdata.conf
+        - name: netdata-config
+          mountPath: /etc/netdata/stream.conf
+          subPath: stream.conf
+        - name: netdata-lib
+          mountPath: /var/lib/netdata
+        - name: netdata-cache
+          mountPath: /var/cache/netdata
+        - name: proc
+          mountPath: /host/proc
+          readOnly: true
+        - name: sys
+          mountPath: /host/sys
+          readOnly: true
+        - name: run
+          mountPath: /host/run
+          readOnly: true
+        - name: docker-sock
+          mountPath: /var/run/docker.sock
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        securityContext:
+          capabilities:
+            add:
+              - SYS_PTRACE
+            drop:
+              - ALL
+          runAsNonRoot: false
+          runAsUser: 201
+        livenessProbe:
+          httpGet:
+            path: /api/v1/info
+            port: 19999
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/v1/info
+            port: 19999
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          timeoutSeconds: 5
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      volumes:
+      - name: netdata-config
+        configMap:
+          name: netdata-parent-config
+      - name: netdata-lib
+        emptyDir: {}
+      - name: netdata-cache
+        emptyDir: {}
+      - name: proc
+        hostPath:
+          path: /proc
+      - name: sys
+        hostPath:
+          path: /sys
+      - name: run
+        hostPath:
+          path: /run
+      - name: docker-sock
+        hostPath:
+          path: /var/run/docker.sock
+      restartPolicy: Always
