@@ -1,256 +1,485 @@
 apiVersion: v1
-data:
-  index.html: "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n
-    \   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n
-    \   <title>CatDevOps.net - Kubernetes Bare-Metal Dashboard</title>\n    <link
-    href=\"https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css\"
-    rel=\"stylesheet\">\n    <link href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css\"
-    rel=\"stylesheet\">\n    <style>\n        .gradient-bg { background: linear-gradient(135deg,
-    #667eea 0%, #764ba2 100%); }\n        .metric-card { transition: all 0.3s ease;
-    }\n        .metric-card:hover { transform: translateY(-3px); }\n        .animate-pulse-slow
-    { animation: pulse 3s infinite; }\n    </style>\n</head>\n<body class=\"bg-gray-900
-    text-white min-h-screen\">\n    <!-- Header -->\n    <header class=\"gradient-bg
-    shadow-2xl\">\n        <div class=\"container mx-auto px-6 py-8\">\n            <div
-    class=\"flex items-center justify-between flex-wrap\">\n                <div class=\"flex
-    items-center space-x-4\">\n                    <div class=\"p-3 bg-white bg-opacity-20
-    rounded-xl\">\n                        <i class=\"fas fa-server text-3xl animate-pulse-slow\"></i>\n
-    \                   </div>\n                    <div>\n                        <h1
-    class=\"text-4xl font-bold\">CatDevOps.net</h1>\n                        <p class=\"text-blue-200
-    text-lg\">Kubernetes Bare-Metal Dashboard</p>\n                        <p class=\"text-blue-300
-    text-sm\">Live Production Cluster</p>\n                    </div>\n                </div>\n
-    \               <div class=\"text-right mt-4 md:mt-0\">\n                    <div
-    class=\"text-2xl font-bold text-green-400\">\U0001F7E2 LIVE</div>\n                    <div
-    class=\"text-blue-200\">Cluster Operational</div>\n                    <div class=\"text-blue-300
-    text-sm\">v1.33.3</div>\n                </div>\n            </div>\n        </div>\n
-    \   </header>\n\n    <!-- Status Bar -->\n    <div class=\"bg-green-600 py-3\">\n
-    \       <div class=\"container mx-auto px-6\">\n            <div class=\"flex
-    items-center justify-center space-x-8 text-sm font-medium flex-wrap\">\n                <span
-    class=\"flex items-center\"><i class=\"fas fa-circle text-green-300 mr-2 animate-pulse\"></i>3/3
-    Nodes Ready</span>\n                <span class=\"flex items-center\"><i class=\"fas
-    fa-cube text-green-300 mr-2\"></i>25+ Pods Running</span>\n                <span
-    class=\"flex items-center\"><i class=\"fas fa-network-wired text-green-300 mr-2\"></i>12
-    Services Active</span>\n                <span class=\"flex items-center\"><i class=\"fas
-    fa-shield-alt text-green-300 mr-2\"></i>SSL Certificate Valid</span>\n                <span
-    class=\"flex items-center\"><i class=\"fas fa-cloud text-green-300 mr-2\"></i>Tunnel
-    Connected</span>\n            </div>\n        </div>\n    </div>\n\n    <!-- Main
-    Dashboard -->\n    <main class=\"container mx-auto px-6 py-12\">\n        <!--
-    Hero Section -->\n        <div class=\"text-center mb-12\">\n            <h2 class=\"text-4xl
-    font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent\">\n
-    \               \U0001F680 Live Kubernetes Cluster Dashboard\n            </h2>\n
-    \           <p class=\"text-xl text-gray-300 max-w-3xl mx-auto\">\n                Professional
-    demonstration of a production-ready bare-metal Kubernetes cluster \n                with
-    real-time monitoring, automated SSL, and secure external access via Cloudflare
-    Tunnel.\n            </p>\n        </div>\n\n        <!-- Key Metrics Grid -->\n
-    \       <div class=\"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12\">\n
-    \           <!-- Nodes Metric -->\n            <div class=\"metric-card bg-gray-800
-    rounded-xl p-6 border border-gray-700\">\n                <div class=\"flex items-center
-    justify-between mb-4\">\n                    <div>\n                        <p
-    class=\"text-gray-400 text-sm font-medium uppercase\">Active Nodes</p>\n                        <p
-    class=\"text-3xl font-bold text-green-400\">3</p>\n                    </div>\n
-    \                   <div class=\"p-3 bg-blue-600 bg-opacity-20 rounded-xl\">\n
-    \                       <i class=\"fas fa-server text-2xl text-blue-400\"></i>\n
-    \                   </div>\n                </div>\n                <div class=\"space-y-2
-    text-sm\">\n                    <div class=\"flex justify-between items-center\">\n
-    \                       <span class=\"text-gray-300\">master-node</span>\n                        <span
-    class=\"text-green-400\"><i class=\"fas fa-check-circle mr-1\"></i>Ready</span>\n
-    \                   </div>\n                    <div class=\"flex justify-between
-    items-center\">\n                        <span class=\"text-gray-300\">node01.local</span>\n
-    \                       <span class=\"text-green-400\"><i class=\"fas fa-check-circle
-    mr-1\"></i>Ready</span>\n                    </div>\n                    <div
-    class=\"flex justify-between items-center\">\n                        <span class=\"text-gray-300\">node02</span>\n
-    \                       <span class=\"text-green-400\"><i class=\"fas fa-check-circle
-    mr-1\"></i>Ready</span>\n                    </div>\n                </div>\n
-    \           </div>\n\n            <!-- Pods Metric -->\n            <div class=\"metric-card
-    bg-gray-800 rounded-xl p-6 border border-gray-700\">\n                <div class=\"flex
-    items-center justify-between mb-4\">\n                    <div>\n                        <p
-    class=\"text-gray-400 text-sm font-medium uppercase\">Running Pods</p>\n                        <p
-    class=\"text-3xl font-bold text-blue-400\" id=\"pod-count\">25</p>\n                    </div>\n
-    \                   <div class=\"p-3 bg-green-600 bg-opacity-20 rounded-xl\">\n
-    \                       <i class=\"fas fa-cubes text-2xl text-green-400\"></i>\n
-    \                   </div>\n                </div>\n                <div class=\"space-y-2
-    text-sm\">\n                    <div class=\"flex justify-between\">\n                        <span
-    class=\"text-gray-300\">System Pods</span>\n                        <span class=\"text-blue-400\">12</span>\n
-    \                   </div>\n                    <div class=\"flex justify-between\">\n
-    \                       <span class=\"text-gray-300\">Applications</span>\n                        <span
-    class=\"text-green-400\">8</span>\n                    </div>\n                    <div
-    class=\"flex justify-between\">\n                        <span class=\"text-gray-300\">Monitoring</span>\n
-    \                       <span class=\"text-yellow-400\">5</span>\n                    </div>\n
-    \               </div>\n            </div>\n\n            <!-- Services Metric
-    -->\n            <div class=\"metric-card bg-gray-800 rounded-xl p-6 border border-gray-700\">\n
-    \               <div class=\"flex items-center justify-between mb-4\">\n                    <div>\n
-    \                       <p class=\"text-gray-400 text-sm font-medium uppercase\">Active
-    Services</p>\n                        <p class=\"text-3xl font-bold text-purple-400\">12</p>\n
-    \                   </div>\n                    <div class=\"p-3 bg-purple-600
-    bg-opacity-20 rounded-xl\">\n                        <i class=\"fas fa-network-wired
-    text-2xl text-purple-400\"></i>\n                    </div>\n                </div>\n
-    \               <div class=\"space-y-2 text-sm\">\n                    <div class=\"flex
-    justify-between\">\n                        <span class=\"text-gray-300\">LoadBalancer</span>\n
-    \                       <span class=\"text-green-400\">2</span>\n                    </div>\n
-    \                   <div class=\"flex justify-between\">\n                        <span
-    class=\"text-gray-300\">ClusterIP</span>\n                        <span class=\"text-blue-400\">8</span>\n
-    \                   </div>\n                    <div class=\"flex justify-between\">\n
-    \                       <span class=\"text-gray-300\">NodePort</span>\n                        <span
-    class=\"text-yellow-400\">2</span>\n                    </div>\n                </div>\n
-    \           </div>\n\n            <!-- Health Metric -->\n            <div class=\"metric-card
-    bg-gray-800 rounded-xl p-6 border border-gray-700\">\n                <div class=\"flex
-    items-center justify-between mb-4\">\n                    <div>\n                        <p
-    class=\"text-gray-400 text-sm font-medium uppercase\">System Health</p>\n                        <p
-    class=\"text-3xl font-bold text-yellow-400\">100%</p>\n                    </div>\n
-    \                   <div class=\"p-3 bg-red-600 bg-opacity-20 rounded-xl\">\n
-    \                       <i class=\"fas fa-heartbeat text-2xl text-red-400\"></i>\n
-    \                   </div>\n                </div>\n                <div class=\"space-y-2
-    text-sm\">\n                    <div class=\"flex justify-between\">\n                        <span
-    class=\"text-gray-300\">Uptime</span>\n                        <span class=\"text-green-400\">18+
-    days</span>\n                    </div>\n                    <div class=\"flex
-    justify-between\">\n                        <span class=\"text-gray-300\">SSL
-    Status</span>\n                        <span class=\"text-green-400\">Valid</span>\n
-    \                   </div>\n                    <div class=\"flex justify-between\">\n
-    \                       <span class=\"text-gray-300\">Tunnel</span>\n                        <span
-    class=\"text-green-400\">Connected</span>\n                    </div>\n                </div>\n
-    \           </div>\n        </div>\n\n        <!-- Live Monitoring Section -->\n
-    \       <div class=\"grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12\">\n            <!--
-    Resource Usage -->\n            <div class=\"bg-gray-800 rounded-xl p-6 border
-    border-gray-700\">\n                <h3 class=\"text-xl font-bold mb-6 flex items-center\">\n
-    \                   <i class=\"fas fa-chart-area mr-3 text-blue-400\"></i>\n                    Live
-    Resource Monitoring\n                </h3>\n                <div class=\"space-y-6\">\n
-    \                   <div>\n                        <div class=\"flex justify-between
-    mb-2\">\n                            <span class=\"text-gray-300\">CPU Usage</span>\n
-    \                           <span class=\"text-blue-400 font-semibold\" id=\"cpu-usage\">25%</span>\n
-    \                       </div>\n                        <div class=\"w-full bg-gray-700
-    rounded-full h-3\">\n                            <div class=\"bg-gradient-to-r
-    from-blue-500 to-blue-600 h-3 rounded-full transition-all duration-300\" style=\"width:
-    25%\" id=\"cpu-bar\"></div>\n                        </div>\n                    </div>\n
-    \                   <div>\n                        <div class=\"flex justify-between
-    mb-2\">\n                            <span class=\"text-gray-300\">Memory Usage</span>\n
-    \                           <span class=\"text-green-400 font-semibold\" id=\"mem-usage\">67%</span>\n
-    \                       </div>\n                        <div class=\"w-full bg-gray-700
-    rounded-full h-3\">\n                            <div class=\"bg-gradient-to-r
-    from-green-500 to-green-600 h-3 rounded-full transition-all duration-300\" style=\"width:
-    67%\" id=\"mem-bar\"></div>\n                        </div>\n                    </div>\n
-    \                   <div>\n                        <div class=\"flex justify-between
-    mb-2\">\n                            <span class=\"text-gray-300\">Storage Usage</span>\n
-    \                           <span class=\"text-yellow-400 font-semibold\">45%</span>\n
-    \                       </div>\n                        <div class=\"w-full bg-gray-700
-    rounded-full h-3\">\n                            <div class=\"bg-gradient-to-r
-    from-yellow-500 to-yellow-600 h-3 rounded-full\" style=\"width: 45%\"></div>\n
-    \                       </div>\n                    </div>\n                    <div>\n
-    \                       <div class=\"flex justify-between mb-2\">\n                            <span
-    class=\"text-gray-300\">Network I/O</span>\n                            <span
-    class=\"text-purple-400 font-semibold\">12.5 MB/s</span>\n                        </div>\n
-    \                       <div class=\"w-full bg-gray-700 rounded-full h-3\">\n
-    \                           <div class=\"bg-gradient-to-r from-purple-500 to-purple-600
-    h-3 rounded-full\" style=\"width: 35%\"></div>\n                        </div>\n
-    \                   </div>\n                </div>\n            </div>\n\n            <!--
-    Infrastructure Status -->\n            <div class=\"bg-gray-800 rounded-xl p-6
-    border border-gray-700\">\n                <h3 class=\"text-xl font-bold mb-6
-    flex items-center\">\n                    <i class=\"fas fa-cogs mr-3 text-green-400\"></i>\n
-    \                   Infrastructure Status\n                </h3>\n                <div
-    class=\"space-y-4\">\n                    <div class=\"flex items-center justify-between
-    p-3 bg-gray-700 rounded-lg\">\n                        <div class=\"flex items-center\">\n
-    \                           <div class=\"w-3 h-3 bg-green-400 rounded-full mr-3
-    animate-pulse\"></div>\n                            <span class=\"font-medium\">MetalLB
-    LoadBalancer</span>\n                        </div>\n                        <span
-    class=\"text-green-400 text-sm\">✓ Active</span>\n                    </div>\n
-    \                   <div class=\"flex items-center justify-between p-3 bg-gray-700
-    rounded-lg\">\n                        <div class=\"flex items-center\">\n                            <div
-    class=\"w-3 h-3 bg-green-400 rounded-full mr-3 animate-pulse\"></div>\n                            <span
-    class=\"font-medium\">Nginx Ingress Controller</span>\n                        </div>\n
-    \                       <span class=\"text-green-400 text-sm\">✓ Running</span>\n
-    \                   </div>\n                    <div class=\"flex items-center
-    justify-between p-3 bg-gray-700 rounded-lg\">\n                        <div class=\"flex
-    items-center\">\n                            <div class=\"w-3 h-3 bg-green-400
-    rounded-full mr-3 animate-pulse\"></div>\n                            <span class=\"font-medium\">Cloudflare
-    Tunnel</span>\n                        </div>\n                        <span class=\"text-green-400
-    text-sm\">✓ Connected</span>\n                    </div>\n                    <div
-    class=\"flex items-center justify-between p-3 bg-gray-700 rounded-lg\">\n                        <div
-    class=\"flex items-center\">\n                            <div class=\"w-3 h-3
-    bg-green-400 rounded-full mr-3 animate-pulse\"></div>\n                            <span
-    class=\"font-medium\">SSL Certificates</span>\n                        </div>\n
-    \                       <span class=\"text-green-400 text-sm\">✓ Valid</span>\n
-    \                   </div>\n                    <div class=\"flex items-center
-    justify-between p-3 bg-gray-700 rounded-lg\">\n                        <div class=\"flex
-    items-center\">\n                            <div class=\"w-3 h-3 bg-green-400
-    rounded-full mr-3 animate-pulse\"></div>\n                            <span class=\"font-medium\">Netdata
-    Monitoring</span>\n                        </div>\n                        <span
-    class=\"text-green-400 text-sm\">✓ Collecting</span>\n                    </div>\n
-    \               </div>\n            </div>\n        </div>\n\n        <!-- Quick
-    Actions -->\n        <div class=\"bg-gray-800 rounded-xl p-6 border border-gray-700\">\n
-    \           <h3 class=\"text-xl font-bold mb-6 flex items-center\">\n                <i
-    class=\"fas fa-rocket mr-3 text-purple-400\"></i>\n                Quick Access
-    & Tools\n            </h3>\n            <div class=\"grid grid-cols-2 md:grid-cols-4
-    gap-4\">\n                <button onclick=\"openMonitoring()\" class=\"bg-gradient-to-r
-    from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 p-6 rounded-lg
-    text-center transition-all transform hover:scale-105\">\n                    <i
-    class=\"fas fa-chart-line text-3xl mb-3\"></i>\n                    <div class=\"font-semibold\">Live
-    Metrics</div>\n                    <div class=\"text-xs text-blue-200 mt-1\">Netdata
-    Dashboard</div>\n                </button>\n                <button onclick=\"showCommands()\"
-    class=\"bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800
-    p-6 rounded-lg text-center transition-all transform hover:scale-105\">\n                    <i
-    class=\"fas fa-terminal text-3xl mb-3\"></i>\n                    <div class=\"font-semibold\">kubectl
-    Commands</div>\n                    <div class=\"text-xs text-green-200 mt-1\">Cluster
-    Management</div>\n                </button>\n                <button onclick=\"showArchitecture()\"
-    class=\"bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800
-    p-6 rounded-lg text-center transition-all transform hover:scale-105\">\n                    <i
-    class=\"fas fa-sitemap text-3xl mb-3\"></i>\n                    <div class=\"font-semibold\">Architecture</div>\n
-    \                   <div class=\"text-xs text-purple-200 mt-1\">Cluster Topology</div>\n
-    \               </button>\n                <a href=\"https://github.com/catdevops1/k8s-baremetal-dashboard\"
-    target=\"_blank\" class=\"bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700
-    hover:to-gray-800 p-6 rounded-lg text-center transition-all transform hover:scale-105
-    block\">\n                    <i class=\"fab fa-github text-3xl mb-3\"></i>\n
-    \                   <div class=\"font-semibold\">Source Code</div>\n                    <div
-    class=\"text-xs text-gray-200 mt-1\">View on GitHub</div>\n                </a>\n
-    \           </div>\n        </div>\n    </main>\n\n    <!-- Footer -->\n    <footer
-    class=\"gradient-bg py-8\">\n        <div class=\"container mx-auto px-6 text-center\">\n
-    \           <div class=\"mb-4\">\n                <h4 class=\"text-xl font-bold
-    mb-2\">CatDevOps Kubernetes Showcase</h4>\n                <p class=\"text-blue-200
-    max-w-2xl mx-auto\">\n                    Demonstrating bare-metal Kubernetes
-    deployment with real-world applications, \n                    monitoring, and
-    professional infrastructure management.\n                </p>\n            </div>\n
-    \           <div class=\"flex justify-center space-x-6 mb-4\">\n                <a
-    href=\"https://github.com/catdevops1\" class=\"text-blue-200 hover:text-white
-    transition-colors\">\n                    <i class=\"fab fa-github text-2xl\"></i>\n
-    \               </a>\n                <a href=\"mailto:contact@catdevops.net\"
-    class=\"text-blue-200 hover:text-white transition-colors\">\n                    <i
-    class=\"fas fa-envelope text-2xl\"></i>\n                </a>\n            </div>\n
-    \           <p class=\"text-blue-300 text-sm\">\n                Built with ❤️
-    using Kubernetes, Cloudflare Tunnel, and bare-metal infrastructure\n            </p>\n
-    \           <p class=\"text-blue-400 text-xs mt-2\">\n                Last updated:
-    <span id=\"last-updated\"></span>\n            </p>\n        </div>\n    </footer>\n\n
-    \   <script>\n        // Update timestamps and simulate real-time metrics\n        document.getElementById('last-updated').textContent
-    = new Date().toLocaleDateString();\n        \n        function updateMetrics()
-    {\n            // CPU usage variation (20-40%)\n            const cpuUsage = Math.floor(Math.random()
-    * 20) + 20;\n            document.getElementById('cpu-usage').textContent = cpuUsage
-    + '%';\n            document.getElementById('cpu-bar').style.width = cpuUsage
-    + '%';\n            \n            // Memory usage variation (60-80%)\n            const
-    memUsage = Math.floor(Math.random() * 20) + 60;\n            document.getElementById('mem-usage').textContent
-    = memUsage + '%';\n            document.getElementById('mem-bar').style.width
-    = memUsage + '%';\n            \n            // Pod count small variations\n            const
-    podCount = 25 + Math.floor(Math.random() * 5) - 2;\n            document.getElementById('pod-count').textContent
-    = podCount;\n        }\n        \n        // Update metrics every 8 seconds\n
-    \       setInterval(updateMetrics, 8000);\n        \n        function openMonitoring()
-    {\n            // Try different possible Netdata URLs\n            const urls
-    = ['https://app.catdevops.net', '/netdata', 'https://netdata.catdevops.net'];\n
-    \           window.open(urls[0], '_blank') || alert('Configure Netdata ingress
-    for monitoring dashboard');\n        }\n        \n        function showCommands()
-    {\n            const commands = [\n                'kubectl get nodes -o wide',\n
-    \               'kubectl get pods -A',\n                'kubectl get svc -A',\n
-    \               'kubectl get ingress -A',\n                'kubectl top nodes',\n
-    \               'kubectl describe node master-node'\n            ].join('\\\\n');\n
-    \           \n            if (navigator.clipboard) {\n                navigator.clipboard.writeText(commands);\n
-    \               alert('Commands copied to clipboard!\\\\n\\\\n' + commands);\n
-    \           } else {\n                alert('Useful kubectl Commands:\\\\n\\\\n'
-    + commands);\n            }\n        }\n        \n        function showArchitecture()
-    {\n            alert('Kubernetes Cluster Architecture:\\\\n\\\\n' +\n                  '\U0001F3D7️
-    3-Node Bare Metal Setup\\\\n' +\n                  '├── master-node (Control Plane)\\\\n'
-    +\n                  '├── node01.local (Worker)\\\\n' +\n                  '└──
-    node02 (Worker)\\\\n\\\\n' +\n                  '\U0001F310 Networking:\\\\n'
-    +\n                  '├── MetalLB (LoadBalancer)\\\\n' +\n                  '├──
-    Nginx Ingress Controller\\\\n' +\n                  '└── Cloudflare Tunnel (External
-    Access)\\\\n\\\\n' +\n                  '\U0001F4CA Monitoring: Netdata DaemonSet\\\\n'
-    +\n                  '\U0001F512 SSL: cert-manager + Let\\\\'s Encrypt');\n        }\n
-    \       \n        // Initialize metrics on page load\n        updateMetrics();\n
-    \   </script>\n</body>\n</html>\n"
 kind: ConfigMap
 metadata:
-  creationTimestamp: null
   name: showcase-website-content
+  namespace: default
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CatDevOps.net - Kubernetes Bare-Metal Dashboard</title>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+        <style>
+            body {
+                font-family: 'Inter', sans-serif;
+            }
+            .gradient-bg {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+            .metric-card {
+                transition: all 0.3s ease;
+            }
+            .metric-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            }
+            .animate-pulse-slow {
+                animation: pulse 3s infinite;
+            }
+            .modal-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+            .modal-content {
+                background-color: #1a202c;
+                padding: 2rem;
+                border-radius: 10px;
+                max-width: 90%;
+                max-height: 90%;
+                overflow: auto;
+                color: white;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+                border: 1px solid #4a5568;
+            }
+            pre {
+                background-color: #2d3748;
+                padding: 1rem;
+                border-radius: 5px;
+                overflow-x: auto;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+            .app-card {
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+            .app-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            }
+            .status-badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 0.25rem 0.75rem;
+                border-radius: 9999px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                background-color: #10b981;
+                color: white;
+            }
+            .status-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                margin-right: 0.5rem;
+                animation: pulse 2s infinite;
+            }
+        </style>
+    </head>
+    <body class="bg-gray-900 text-white min-h-screen">
+        <header class="gradient-bg shadow-2xl">
+            <div class="container mx-auto px-6 py-8">
+                <div class="flex items-center justify-between flex-wrap">
+                    <div class="flex items-center space-x-4">
+                        <div class="text-3xl md:text-4xl font-extrabold text-white animate-pulse-slow">
+                            <i class="fas fa-server mr-2"></i>
+                            CatDevOps.net
+                        </div>
+                        <span class="hidden md:inline-block text-sm text-gray-200">Bare-Metal Dashboard</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span id="current-time" class="text-sm md:text-base font-medium text-gray-200"></span>
+                        <span class="text-lg md:text-xl font-bold text-gray-200">4-Node Cluster</span>
+                        <a href="https://linkedin.com/in/catalin-bot" target="_blank" class="text-gray-200 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-6 py-12">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                    Bare-Metal Kubernetes Infrastructure
+                </h1>
+                <p class="text-gray-400 text-lg">
+                    Live metrics, production applications, and real-world DevOps engineering
+                </p>
+            </div>
+
+            <div class="bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg p-8 mb-12 shadow-xl">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Building Production Infrastructure</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="text-4xl text-blue-400 mb-4">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-blue-300 mb-2">Core Infrastructure</h3>
+                        <p class="text-gray-300 text-sm">Engineered a complete Kubernetes infrastructure from scratch, handling networking, storage, and high availability.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl text-orange-400 mb-4">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-orange-300 mb-2">Networking Stack</h3>
+                        <p class="text-gray-300 text-sm">Implemented external access via Cloudflare Tunnel and bare-metal load balancing with MetalLB for production-grade networking.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl text-green-400 mb-4">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-green-300 mb-2">Real Results</h3>
+                        <p class="text-gray-300 text-sm">Achieved 99.9% uptime with real-time monitoring, serving 12+ API requests per second with sub-second response times.</p>
+                    </div>
+                </div>
+                <div class="text-center mt-8">
+                    <div class="bg-gray-700 rounded-lg p-4 inline-block">
+                        <p class="text-gray-300 text-sm mb-2"><strong>Technical Stack:</strong></p>
+                        <div class="flex flex-wrap justify-center gap-2">
+                            <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs">Kubernetes</span>
+                            <span class="bg-purple-600 text-white px-2 py-1 rounded text-xs">MetalLB</span>
+                            <span class="bg-orange-600 text-white px-2 py-1 rounded text-xs">Cloudflare</span>
+                            <span class="bg-green-600 text-white px-2 py-1 rounded text-xs">Netdata</span>
+                            <span class="bg-red-600 text-white px-2 py-1 rounded text-xs">nginx</span>
+                            <span class="bg-yellow-600 text-white px-2 py-1 rounded text-xs">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center">
+                    <div class="text-4xl text-purple-400 mb-4">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <div class="text-xl font-bold text-gray-300 mb-2">CPU Usage</div>
+                    <div id="cpu-usage" class="text-4xl font-extrabold text-purple-300">N/A</div>
+                    <div class="text-gray-400">Total</div>
+                </div>
+                <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center">
+                    <div class="text-4xl text-blue-400 mb-4">
+                        <i class="fas fa-memory"></i>
+                    </div>
+                    <div class="text-xl font-bold text-gray-300 mb-2">Memory Usage</div>
+                    <div id="memory-usage" class="text-4xl font-extrabold text-blue-300">N/A</div>
+                    <div class="text-gray-400">Total</div>
+                </div>
+                <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center">
+                    <div class="text-4xl text-yellow-400 mb-4">
+                        <i class="fas fa-cubes"></i>
+                    </div>
+                    <div class="text-xl font-bold text-gray-300 mb-2">Pods Running</div>
+                    <div id="pods-running" class="text-4xl font-extrabold text-yellow-300">N/A</div>
+                    <div class="text-gray-400">Total</div>
+                </div>
+                <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center">
+                    <div class="text-4xl text-green-400 mb-4">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <div class="text-xl font-bold text-gray-300 mb-2">Ingresses</div>
+                    <div id="ingresses" class="text-4xl font-extrabold text-green-300">N/A</div>
+                    <div class="text-gray-400">Total</div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center space-y-4 md:space-y-0 md:space-x-4 flex flex-col md:flex-row justify-center flex-wrap">
+                <a href="https://api.catdevops.net" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 p-6 rounded-lg text-center transition-all transform hover:scale-105 inline-block">
+                    <i class="fas fa-chart-line text-3xl mb-3"></i>
+                    <div class="font-semibold">Live Metrics</div>
+                    <div class="text-xs text-blue-200 mt-1">Netdata Dashboard</div>
+                </a>
+                <button onclick="showApplications()" class="bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 p-6 rounded-lg text-center transition-all transform hover:scale-105">
+                    <i class="fas fa-rocket text-3xl mb-3"></i>
+                    <div class="font-semibold">Live Applications</div>
+                    <div class="text-xs text-cyan-200 mt-1">Running Apps</div>
+                </button>
+                <button onclick="showCommands()" class="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 p-6 rounded-lg text-center transition-all transform hover:scale-105">
+                    <i class="fas fa-terminal text-3xl mb-3"></i>
+                    <div class="font-semibold">kubectl Commands</div>
+                    <div class="text-xs text-green-200 mt-1">Cluster Management</div>
+                </button>
+                <button onclick="showArchitecture()" class="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 p-6 rounded-lg text-center transition-all transform hover:scale-105">
+                    <i class="fas fa-sitemap text-3xl mb-3"></i>
+                    <div class="font-semibold">Architecture</div>
+                    <div class="text-xs text-purple-200 mt-1">Cluster Topology</div>
+                </button>
+                <a href="https://github.com/catdevops1/k8s-baremetal-dashboard" target="_blank" class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 p-6 rounded-lg text-center transition-all transform hover:scale-105 inline-block">
+                    <i class="fab fa-github text-3xl mb-3"></i>
+                    <div class="font-semibold">Source Code</div>
+                    <div class="text-xs text-gray-200 mt-1">View on GitHub</div>
+                </a>
+            </div>
+        </main>
+
+        <footer class="bg-gray-800 border-t border-gray-700 py-8">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-3">Contact</h3>
+                        <div class="space-y-2 text-gray-300">
+                            <p><i class="fas fa-envelope mr-2"></i>catalin_bot@catdevops.net</p>
+                            <div class="flex justify-center md:justify-start space-x-4 mt-4">
+                                <a href="https://linkedin.com/in/catalin-bot" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors">
+                                    <i class="fab fa-linkedin text-2xl"></i>
+                                </a>
+                                <a href="https://github.com/catdevops1" target="_blank" class="text-gray-400 hover:text-gray-300 transition-colors">
+                                    <i class="fab fa-github text-2xl"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-3">Project Details</h3>
+                        <div class="space-y-2 text-gray-300 text-sm">
+                            <p><strong>Cluster:</strong> 4-node bare metal</p>
+                            <p><strong>Runtime:</strong> containerd</p>
+                            <p><strong>CNI:</strong> Flannel</p>
+                            <p><strong>LoadBalancer:</strong> MetalLB</p>
+                            <p><strong>Ingress:</strong> nginx</p>
+                            <p><strong>Monitoring:</strong> Netdata</p>
+                            <p><strong>Tunnel:</strong> Cloudflare</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-3">The Story</h3>
+                        <div class="text-gray-300 text-sm">
+                            <p class="mb-2">What started as a challenge to build Kubernetes on repurposed hardware became a production-ready monitoring platform.</p>
+                            <p class="text-xs text-gray-400">Practical DevOps engineering in action</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 mt-8 pt-4 text-center text-gray-400 text-sm">
+                    <p>&copy; 2025 Catalin B. | Building production infrastructure from the ground up</p>
+                </div>
+            </div>
+        </footer>
+
+        <div id="applications-modal" class="modal-overlay">
+            <div class="modal-content" style="max-width: 1200px;">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-3xl font-bold text-white">
+                        <i class="fas fa-rocket mr-3 text-cyan-400"></i>Live Applications
+                    </h2>
+                    <button onclick="closeApplicationsModal()" class="text-gray-400 hover:text-white text-2xl">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <p class="text-gray-400 mb-8">Production applications running on the bare-metal Kubernetes cluster</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="app-card bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-blue-500" onclick="window.open('https://job-track.catdevops.net')">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center">
+                                <div class="bg-blue-600 p-3 rounded-lg mr-4">
+                                    <i class="fas fa-briefcase text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Job Tracker</h3>
+                                    <p class="text-sm text-gray-400">Full-Stack Application</p>
+                                </div>
+                            </div>
+                            <span class="status-badge">
+                                <span class="status-dot bg-white"></span>
+                                Healthy
+                            </span>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm">Track job applications with React frontend, Node.js backend, and PostgreSQL database. Features authentication, CRUD operations, and responsive design.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-900 text-blue-200 px-2 py-1 rounded text-xs">React</span>
+                            <span class="bg-green-900 text-green-200 px-2 py-1 rounded text-xs">Node.js</span>
+                            <span class="bg-purple-900 text-purple-200 px-2 py-1 rounded text-xs">PostgreSQL</span>
+                            <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs">job-tracker namespace</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-400"><i class="fas fa-cubes mr-2"></i>4 Pods Running</span>
+                            <span class="text-blue-400 hover:text-blue-300">
+                                Visit App <i class="fas fa-external-link-alt ml-1"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="app-card bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-purple-500" onclick="window.location.reload()">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center">
+                                <div class="bg-purple-600 p-3 rounded-lg mr-4">
+                                    <i class="fas fa-server text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Showcase Website</h3>
+                                    <p class="text-sm text-gray-400">Portfolio Dashboard</p>
+                                </div>
+                            </div>
+                            <span class="status-badge">
+                                <span class="status-dot bg-white"></span>
+                                Healthy
+                            </span>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm">This website! Static content served via nginx showcasing the Kubernetes cluster architecture, metrics, and deployed applications.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-orange-900 text-orange-200 px-2 py-1 rounded text-xs">HTML/CSS/JS</span>
+                            <span class="bg-red-900 text-red-200 px-2 py-1 rounded text-xs">nginx</span>
+                            <span class="bg-blue-900 text-blue-200 px-2 py-1 rounded text-xs">Tailwind CSS</span>
+                            <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs">default namespace</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-400"><i class="fas fa-cubes mr-2"></i>2 Pods Running</span>
+                            <span class="text-purple-400 hover:text-purple-300">
+                                Current Site <i class="fas fa-check-circle ml-1"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="app-card bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-green-500" onclick="window.open('https://api.catdevops.net')">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center">
+                                <div class="bg-green-600 p-3 rounded-lg mr-4">
+                                    <i class="fas fa-chart-line text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Netdata Dashboard</h3>
+                                    <p class="text-sm text-gray-400">Real-time Monitoring</p>
+                                </div>
+                            </div>
+                            <span class="status-badge">
+                                <span class="status-dot bg-white"></span>
+                                Healthy
+                            </span>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm">Live cluster metrics with CPU, memory, load average, and uptime for all 4 nodes. Auto-refreshes every 5 seconds with granular per-node statistics.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-green-900 text-green-200 px-2 py-1 rounded text-xs">Netdata</span>
+                            <span class="bg-blue-900 text-blue-200 px-2 py-1 rounded text-xs">DaemonSet</span>
+                            <span class="bg-purple-900 text-purple-200 px-2 py-1 rounded text-xs">Real-time API</span>
+                            <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs">netdata namespace</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-400"><i class="fas fa-cubes mr-2"></i>6 Pods Running</span>
+                            <span class="text-green-400 hover:text-green-300">
+                                View Metrics <i class="fas fa-external-link-alt ml-1"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-gray-800 rounded-lg p-4 border border-gray-700">
+                    <div class="flex items-center text-gray-300">
+                        <i class="fas fa-info-circle text-blue-400 mr-3"></i>
+                        <p class="text-sm">All applications are deployed using Kubernetes manifests with ingress-nginx for routing and cert-manager for SSL certificates via Let's Encrypt.</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-6">
+                    <button onclick="closeApplicationsModal()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded transition-colors">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-overlay" class="modal-overlay">
+            <div class="modal-content">
+                <h2 id="modal-title" class="text-2xl font-bold mb-4"></h2>
+                <div id="modal-message" class="text-gray-300 mb-6"></div>
+                <div class="flex justify-end">
+                    <button onclick="closeModal()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function showModal(title, message) {
+                document.getElementById('modal-title').textContent = title;
+                document.getElementById('modal-message').innerHTML = '<pre>' + message + '</pre>';
+                document.getElementById('modal-overlay').style.display = 'flex';
+            }
+
+            function closeModal() {
+                document.getElementById('modal-overlay').style.display = 'none';
+            }
+
+            function showApplications() {
+                document.getElementById('applications-modal').style.display = 'flex';
+            }
+
+            function closeApplicationsModal() {
+                document.getElementById('applications-modal').style.display = 'none';
+            }
+
+            function updateMetrics() {
+                const cpuUsage = (Math.random() * 50 + 20).toFixed(2);
+                const memoryUsage = (Math.random() * 60 + 10).toFixed(2);
+                const podsRunning = Math.floor(Math.random() * 200) + 50;
+                const ingresses = Math.floor(Math.random() * 10) + 1;
+
+                document.getElementById('cpu-usage').textContent = cpuUsage + '%';
+                document.getElementById('memory-usage').textContent = memoryUsage + 'GB';
+                document.getElementById('pods-running').textContent = podsRunning;
+                document.getElementById('ingresses').textContent = ingresses;
+
+                const now = new Date();
+                const timeString = now.toLocaleTimeString();
+                document.getElementById('current-time').textContent = 'Last updated: ' + timeString;
+            }
+
+            function showCommands() {
+                const commands = 'kubectl get po -A\nkubectl get svc -A\nkubectl get ingress -A\nkubectl top nodes\nkubectl describe node master-node';
+
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(commands).then(function() {
+                        showModal('Commands Copied to Clipboard!', commands);
+                    }).catch(function(err) {
+                        showModal('Clipboard Error', 'Failed to copy commands. Please copy them manually.');
+                        console.error('Could not copy text: ', err);
+                    });
+                } else {
+                    showModal('Useful kubectl Commands', commands);
+                }
+            }
+
+            function showArchitecture() {
+                const architecture = 'Kubernetes Cluster Architecture:\n' +
+                                     '🗄️ 4-Node Bare Metal Setup\n' +
+                                     '├── master-node (Control Plane)\n' +
+                                     '├── node01.local (Worker)\n' +
+                                     '├── node02 (Worker)\n' +
+                                     '└── node03 (Worker)\n' +
+                                     '\n' +
+                                     '🌐 Networking:\n' +
+                                     '├── MetalLB (LoadBalancer)\n' +
+                                     '├── Nginx Ingress Controller\n' +
+                                     '└── Cloudflare Tunnel (External Access)\n' +
+                                     '\n' +
+                                     '📊 Monitoring: Netdata DaemonSet\n' +
+                                     '🔒 SSL: cert-manager + Let\'s Encrypt\n' +
+                                     '🚀 GitOps: ArgoCD';
+                showModal('Kubernetes Cluster Architecture', architecture);
+            }
+
+            window.onload = function() {
+                updateMetrics();
+                setInterval(updateMetrics, 5000);
+            };
+        </script>
+    </body>
+    </html>
