@@ -8,12 +8,33 @@ data:
     #!/usr/bin/env python3
     import subprocess
     import json
+    import threading
+    import time
     from http.server import HTTPServer, BaseHTTPRequestHandler
     from datetime import datetime
     
-    class ClusterInfoHandler(BaseHTTPRequestHandler):
-        def do_GET(self):
+    # Global cache for cluster info
+    cluster_cache = {
+        "cluster": {
+            "created": "unknown",
+            "ageDays": 0,
+            "pods": {
+                "total": 0,
+                "running": 0
+            }
+        },
+        "last_updated": None,
+        "error": None
+    }
+    
+    cache_lock = threading.Lock()
+    
+    def update_cluster_info():
+        """Background thread to update cluster info periodically"""
+        while True:
             try:
+                print(f"[{datetime.now()}] Updating cluster info...")
+                
                 # Get cluster creation time from kube-system namespace
                 result = subprocess.run(
                     ['kubectl', 'get', 'namespace', 'kube-system', '-o', 'jsonpath={.metadata.creationTimestamp}'],
@@ -22,11 +43,14 @@ data:
                 cluster_created = result.stdout.strip() if result.returncode == 0 else "unknown"
                 
                 # Calculate cluster age in days
+                age_days = 0
                 if cluster_created != "unknown":
-                    created_dt = datetime.fromisoformat(cluster_created.replace('Z', '+00:00'))
-                    age_days = (datetime.now(created_dt.tzinfo) - created_dt).days
-                else:
-                    age_days = 0
+                    try:
+                        created_dt = datetime.fromisoformat(cluster_created.replace('Z', '+00:00'))
+                        age_days = (datetime.now(created_dt.tzinfo) - created_dt).days
+                    except Exception as e:
+                        print(f"Error calculating age: {e}")
+                        age_days = 0
                 
                 # Get total pod count
                 result = subprocess.run(
@@ -44,8 +68,9 @@ data:
                 running_lines = [line for line in result.stdout.strip().split('\n') if line.strip()]
                 running_pods = len(running_lines) if result.returncode == 0 else 0
                 
-                response_data = {
-                    "cluster": {
+                # Update cache
+                with cache_lock:
+                    cluster_cache["cluster"] = {
                         "created": cluster_created,
                         "ageDays": age_days,
                         "pods": {
@@ -53,7 +78,28 @@ data:
                             "running": running_pods
                         }
                     }
-                }
+                    cluster_cache["last_updated"] = datetime.now().isoformat()
+                    cluster_cache["error"] = None
+                
+                print(f"[{datetime.now()}] Cache updated: {age_days} days, {running_pods}/{pod_count} pods")
+                
+            except Exception as e:
+                print(f"[{datetime.now()}] Error updating cache: {e}")
+                with cache_lock:
+                    cluster_cache["error"] = str(e)
+            
+            # Wait 60 seconds before next update
+            time.sleep(60)
+    
+    class ClusterInfoHandler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            try:
+                # Return cached data immediately
+                with cache_lock:
+                    response_data = {
+                        "cluster": cluster_cache["cluster"],
+                        "cached_at": cluster_cache["last_updated"]
+                    }
                 
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')
@@ -69,9 +115,20 @@ data:
                 self.wfile.write(json.dumps(error_response).encode())
         
         def log_message(self, format, *args):
-            pass  # Suppress logs
+            # Log requests with timestamp
+            print(f"[{datetime.now()}] {format % args}")
     
     if __name__ == '__main__':
+        # Start background thread to update cache
+        update_thread = threading.Thread(target=update_cluster_info, daemon=True)
+        update_thread.start()
+        
+        # Give it 2 seconds to do initial update
+        print("Waiting 2 seconds for initial cache update...")
+        time.sleep(2)
+        
+        # Start HTTP server
         server = HTTPServer(('127.0.0.1', 8081), ClusterInfoHandler)
-        print("Cluster info server running on port 8081...")
+        print(f"[{datetime.now()}] Cluster info server running on port 8081...")
+        print(f"[{datetime.now()}] Cache will update every 60 seconds")
         server.serve_forever()
