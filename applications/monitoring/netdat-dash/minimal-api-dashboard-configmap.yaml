@@ -99,7 +99,7 @@ data:
                 <div class="text-center mb-6">
                     <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Cluster Overview</h2>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
                     <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center">
                         <div class="text-4xl text-green-400 mb-4">
                             <i class="fas fa-server"></i>
@@ -131,6 +131,22 @@ data:
                         <div class="text-xl font-bold text-gray-300 mb-2">Avg Load</div>
                         <div id="cluster-load" class="text-4xl font-extrabold text-orange-300">--</div>
                         <div class="text-gray-400">1min</div>
+                    </div>
+                    <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center">
+                        <div class="text-4xl text-yellow-400 mb-4">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="text-xl font-bold text-gray-300 mb-2">Cluster Age</div>
+                        <div id="cluster-age" class="text-4xl font-extrabold text-yellow-300">--</div>
+                        <div class="text-gray-400">Days</div>
+                    </div>
+                    <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center">
+                        <div class="text-4xl text-green-400 mb-4">
+                            <i class="fas fa-cubes"></i>
+                        </div>
+                        <div class="text-xl font-bold text-gray-300 mb-2">Pods Running</div>
+                        <div id="pods-running" class="text-4xl font-extrabold text-green-300">--</div>
+                        <div class="text-gray-400"><span id="pods-total">--</span> Total</div>
                     </div>
                 </div>
             </div>
@@ -239,7 +255,7 @@ data:
                         <div id="worker2-memory-value" class="text-3xl font-extrabold text-blue-300 mb-2">--</div>
                         <div id="worker2-memory-detail" class="text-sm text-gray-400">Loading...</div>
                     </div>
-                    <div class="metric-card bg-gray-8 rounded-lg p-6 shadow-xl">
+                    <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl">
                         <div class="flex items-center mb-4">
                             <i class="fas fa-tachometer-alt text-2xl text-orange-400 mr-3"></i>
                             <div class="text-lg font-bold text-gray-300">Load Avg</div>
@@ -257,7 +273,7 @@ data:
                     </div>
                 </div>
             </div>
-            <!-- Worker Node 3 (NEW) -->
+            <!-- Worker Node 3 -->
             <div class="bg-gradient-to-r from-yellow-800 to-yellow-900 rounded-lg p-8 mb-8 shadow-xl">
                 <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 text-center">
                     <span class="status-indicator" id="worker3-status"></span>
@@ -344,20 +360,67 @@ data:
                 worker2: { cpu: 0, memory: 0, load: 0, online: false },
                 worker3: { cpu: 0, memory: 0, load: 0, online: false }
             };
+            
             function debugLog(message) {
                 console.log(message);
                 document.getElementById('debug-info').textContent = `Debug: ${message}`;
             }
+            
             function updateCurrentTime() {
                 const now = new Date();
                 const timeString = now.toLocaleTimeString();
                 document.getElementById('current-time').textContent = timeString;
             }
+            
+            async function fetchClusterInfo() {
+                try {
+                    debugLog('Fetching cluster info...');
+                    
+                    const response = await fetch(`${API_BASE_URL}/cluster/info`, {
+                        method: 'GET',
+                        cache: 'no-store',
+                        headers: {
+                            'Cache-Control': 'no-cache, no-store, must-revalidate',
+                            'Pragma': 'no-cache',
+                            'Expires': '0'
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // Update cluster age
+                    if (data.cluster && data.cluster.ageDays !== undefined) {
+                        document.getElementById('cluster-age').textContent = data.cluster.ageDays;
+                    }
+                    
+                    // Update pod counts
+                    if (data.cluster && data.cluster.pods) {
+                        const running = data.cluster.pods.running || 0;
+                        const total = data.cluster.pods.total || 0;
+                        
+                        document.getElementById('pods-running').textContent = running;
+                        document.getElementById('pods-total').textContent = total;
+                    }
+                    
+                    debugLog('Cluster info updated successfully');
+                } catch (err) {
+                    console.error('Error fetching cluster info:', err);
+                    debugLog(`Cluster info error: ${err.message}`);
+                    
+                    document.getElementById('cluster-age').textContent = 'N/A';
+                    document.getElementById('pods-running').textContent = 'N/A';
+                    document.getElementById('pods-total').textContent = 'N/A';
+                }
+            }
+            
             async function fetchNodeMetrics(node, nodeKey) {
                 try {
                     debugLog(`Fetching ${node} metrics...`);
                     
-                    // Use headers for cache-busting instead of URL parameters
                     const requestId = Math.random().toString(36).substring(7);
                     const headers = {
                         'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -367,7 +430,6 @@ data:
                         'X-Timestamp': Date.now().toString()
                     };
                     
-                    // Fetch metrics for specific node without query parameters  
                     const [cpuRes, memRes, loadRes, uptimeRes] = await Promise.all([
                         fetch(`${API_BASE_URL}/node/${nodeKey}/cpu`, {
                             method: 'GET',
@@ -390,31 +452,31 @@ data:
                             headers: headers
                         })
                     ]);
-                    // Check if responses are OK and log status
+                    
                     debugLog(`${node} responses: CPU=${cpuRes.status}, MEM=${memRes.status}, LOAD=${loadRes.status}, UP=${uptimeRes.status}`);
                     
                     if (!cpuRes.ok || !memRes.ok || !loadRes.ok || !uptimeRes.ok) {
                         throw new Error(`HTTP Error: CPU=${cpuRes.status}, MEM=${memRes.status}, LOAD=${loadRes.status}, UP=${uptimeRes.status}`);
                     }
-                    // Get response text first to debug what we're receiving
+                    
                     const cpuText = await cpuRes.text();
                     const memText = await memRes.text();
                     const loadText = await loadRes.text();
                     const uptimeText = await uptimeRes.text();
-                    // Check if response looks like JSON
+                    
                     if (!cpuText.startsWith('{') && !cpuText.startsWith('[')) {
                         debugLog(`${node} Error: Expected JSON but got: ${cpuText.substring(0, 100)}`);
                         throw new Error(`Invalid JSON response: ${cpuText.substring(0, 100)}`);
                     }
-                    // Parse JSON
+                    
                     const cpuData = JSON.parse(cpuText);
                     const memData = JSON.parse(memText);
                     const loadData = JSON.parse(loadText);
                     const uptimeData = JSON.parse(uptimeText);
-                    // Update status indicator
+                    
                     document.getElementById(`${node}-status`).className = 'status-indicator status-online';
                     nodeMetrics[node].online = true;
-                    // CPU metrics
+                    
                     if (cpuData.data && cpuData.data[0]) {
                         const row = cpuData.data[0];
                         const user = row[6] || 0;
@@ -428,23 +490,22 @@ data:
                         document.getElementById(`${node}-cpu-detail`).textContent =
                             `User: ${user.toFixed(1)}%, Sys: ${system.toFixed(1)}%, IO: ${iowait.toFixed(1)}%`;
                     }
-                    // Memory metrics
-                    // Memory metrics - FIXED field assignments
+                    
                     if (memData.data && memData.data[0]) {
-                    const free = memData.data[0][1] || 0;    // [1] is FREE memory
-                    const used = memData.data[0][2] || 0;    // [2] is USED memory  
-                    const cached = memData.data[0][3] || 0;  // [3] is CACHED memory
-                    const buffers = memData.data[0][4] || 0; // [4] is BUFFERS
-    
-                    const total = used + free + cached + buffers;
-                    const usagePercent = ((used / total) * 100);
+                        const free = memData.data[0][1] || 0;
+                        const used = memData.data[0][2] || 0;
+                        const cached = memData.data[0][3] || 0;
+                        const buffers = memData.data[0][4] || 0;
+                        
+                        const total = used + free + cached + buffers;
+                        const usagePercent = ((used / total) * 100);
                         
                         nodeMetrics[node].memory = usagePercent;
                         document.getElementById(`${node}-memory-value`).textContent = `${usagePercent.toFixed(1)}%`;
                         document.getElementById(`${node}-memory-detail`).textContent = 
                             `${(used/1024).toFixed(1)} GB / ${(total/1024).toFixed(1)} GB`;
                     }
-                    // Load metrics
+                    
                     if (loadData.data && loadData.data[0]) {
                         const load1 = loadData.data[0][1] || 0;
                         const load5 = loadData.data[0][2] || 0;
@@ -455,7 +516,7 @@ data:
                         document.getElementById(`${node}-load-detail`).textContent = 
                             `${load1.toFixed(2)}, ${load5.toFixed(2)}, ${load15.toFixed(2)}`;
                     }
-                    // Uptime metrics
+                    
                     if (uptimeData.data && uptimeData.data[0]) {
                         const seconds = uptimeData.data[0][1] || 0;
                         const days = Math.floor(seconds / 86400);
@@ -466,6 +527,7 @@ data:
                         document.getElementById(`${node}-uptime-detail`).textContent = 
                             `${days} days, ${hours} hours, ${minutes} minutes`;
                     }
+                    
                     debugLog(`${node} metrics updated successfully`);
                 } catch (err) {
                     console.error(`Error fetching ${node} metrics:`, err);
@@ -474,12 +536,12 @@ data:
                     document.getElementById(`${node}-status`).className = 'status-indicator status-offline';
                     nodeMetrics[node].online = false;
                     
-                    // Show error state
                     document.getElementById(`${node}-cpu-value`).innerHTML = '<span class="text-red-400">Error</span>';
                     document.getElementById(`${node}-memory-value`).innerHTML = '<span class="text-red-400">Error</span>';
                     document.getElementById(`${node}-load-value`).innerHTML = '<span class="text-red-400">Error</span>';
                 }
             }
+            
             function updateClusterOverview() {
                 const onlineNodes = Object.values(nodeMetrics).filter(n => n.online);
                 const nodeCount = onlineNodes.length;
@@ -497,25 +559,25 @@ data:
                 document.getElementById('total-nodes').textContent = `${nodeCount}/4`;
                 document.getElementById('total-nodes-header').textContent = nodeCount;
             }
+            
             async function fetchAllMetrics() {
                 const now = new Date();
                 document.getElementById('last-update').textContent = now.toLocaleTimeString();
                 
-                // Fetch metrics for all nodes (UPDATED FOR 4 NODES)
                 await Promise.all([
                     fetchNodeMetrics('master', 'master'),
                     fetchNodeMetrics('worker1', 'worker1'), 
                     fetchNodeMetrics('worker2', 'worker2'),
-                    fetchNodeMetrics('worker3', 'worker3')
+                    fetchNodeMetrics('worker3', 'worker3'),
+                    fetchClusterInfo()
                 ]);
                 
                 updateClusterOverview();
             }
-            // Initialize
+            
             updateCurrentTime();
             setInterval(updateCurrentTime, 1000);
             
-            // Initial fetch and setup interval
             fetchAllMetrics();
             setInterval(fetchAllMetrics, REFRESH_INTERVAL);
         </script>

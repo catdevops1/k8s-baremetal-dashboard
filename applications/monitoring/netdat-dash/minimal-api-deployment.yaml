@@ -13,6 +13,7 @@ spec:
       labels:
         app: netdata-minimal-api
     spec:
+      serviceAccountName: metrics-api-sa
       hostNetwork: true  # ADD THIS LINE
       containers:
       - name: nginx
@@ -26,6 +27,19 @@ spec:
         - name: dashboard-html
           mountPath: /usr/share/nginx/html/metrics.html
           subPath: metrics.html
+      - name: cluster-info                    # <-- ADD THIS WHOLE CONTAINER
+        image: bitnami/kubectl:latest
+        command: ["python3", "/scripts/server.py"]
+        volumeMounts:
+        - name: script
+          mountPath: /scripts
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "10m"
+          limits:
+            memory: "128Mi"
+            cpu: "50m"      
       volumes:
       - name: nginx-config
         configMap:
@@ -33,3 +47,7 @@ spec:
       - name: dashboard-html
         configMap:
           name: minimal-api-dashboard
+      - name: script                          # <-- ADD THIS VOLUME
+        configMap:
+          name: cluster-info-script
+          defaultMode: 0755      
