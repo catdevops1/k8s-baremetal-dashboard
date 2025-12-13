@@ -1,0 +1,506 @@
+# Netdata Monitoring System - Clean Manifest
+# Extracted from running cluster and cleaned for redeployment
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: netdata
+
+---
+# Main Netdata Parent Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: netdata
+    component: parent
+    release: netdata
+    role: parent
+  name: netdata-parent-fixed
+  namespace: netdata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netdata
+      component: parent
+      release: netdata
+      role: parent
+  template:
+    metadata:
+      labels:
+        app: netdata
+        component: parent
+        release: netdata
+        role: parent
+    spec:
+      containers:
+      - env:
+        - name: NETDATA_MODE
+          value: parent
+        - name: NETDATA_STREAM_ENABLED
+          value: "true"
+        - name: NETDATA_CLAIM_TOKEN
+          value: ""
+        - name: NETDATA_CLAIM_ROOMS
+          value: ""
+        - name: NETDATA_CLAIM_URL
+          value: ""
+        image: netdata/netdata:v1.44.3
+        livenessProbe:
+          httpGet:
+            path: /api/v1/info
+            port: 19999
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+        name: netdata
+        ports:
+        - containerPort: 19999
+          name: http
+        - containerPort: 8125
+          name: statsd
+          protocol: UDP
+        readinessProbe:
+          httpGet:
+            path: /api/v1/info
+            port: 19999
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+        securityContext:
+          capabilities:
+            add:
+            - SYS_PTRACE
+            drop:
+            - ALL
+          runAsNonRoot: false
+          runAsUser: 201
+        volumeMounts:
+        - mountPath: /etc/netdata/netdata.conf
+          name: netdata-config
+          subPath: netdata.conf
+        - mountPath: /etc/netdata/stream.conf
+          name: netdata-config
+          subPath: stream.conf
+        - mountPath: /var/lib/netdata
+          name: netdata-lib
+        - mountPath: /var/cache/netdata
+          name: netdata-cache
+        - mountPath: /host/proc
+          name: proc
+          readOnly: true
+        - mountPath: /host/sys
+          name: sys
+          readOnly: true
+        - mountPath: /host/run
+          name: run
+          readOnly: true
+        - mountPath: /var/run/docker.sock
+          name: docker-sock
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      restartPolicy: Always
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+        operator: Exists
+      volumes:
+      - configMap:
+          name: netdata-parent-config
+        name: netdata-config
+      - emptyDir: {}
+        name: netdata-lib
+      - emptyDir: {}
+        name: netdata-cache
+      - hostPath:
+          path: /proc
+        name: proc
+      - hostPath:
+          path: /sys
+        name: sys
+      - hostPath:
+          path: /run
+        name: run
+      - hostPath:
+          path: /var/run/docker.sock
+        name: docker-sock
+
+
+---
+# Netdata Minimal API (NGINX Dashboard)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netdata-minimal-api
+  namespace: netdata
+  labels:
+    app: netdata-minimal-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netdata-minimal-api
+  template:
+    metadata:
+      labels:
+        app: netdata-minimal-api
+    spec:
+      containers:
+      - image: nginx:alpine
+        name: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d/default.conf
+          name: nginx-config
+          subPath: default.conf
+        - mountPath: /usr/share/nginx/html/metrics.html
+          name: dashboard-html
+          subPath: metrics.html
+      volumes:
+      - configMap:
+          name: minimal-api-nginx-config
+        name: nginx-config
+      - configMap:
+          name: minimal-api-dashboard
+        name: dashboard-html
+
+
+---
+# Netdata Minimal API Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: netdata-minimal-api
+  namespace: netdata
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: netdata-minimal-api
+  type: ClusterIP
+
+---
+# Netdata Parent Service (Main)
+apiVersion: v1
+kind: Service
+metadata:
+  name: netdata-parent
+  namespace: netdata
+  labels:
+    app: netdata
+    component: parent
+spec:
+  ports:
+  - name: http
+    port: 19999
+    targetPort: 19999
+  - name: statsd
+    port: 8125
+    protocol: UDP
+    targetPort: 8125
+  selector:
+    app: netdata
+    component: parent
+  type: ClusterIP
+
+---
+# Netdata Parent Service (Alternative)
+apiVersion: v1
+kind: Service
+metadata:
+  name: netdata-parent-service
+  namespace: netdata
+spec:
+  ports:
+  - port: 19999
+    protocol: TCP
+    targetPort: 19999
+  selector:
+    app: netdata
+    component: parent
+  type: ClusterIP
+
+
+---
+# Netdata API Ingress (Production)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: netdata-api
+  namespace: netdata
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: api.catdevops.net
+    http:
+      paths:
+      - backend:
+          service:
+            name: netdata-minimal-api
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - api.catdevops.net
+    secretName: api-catdevops-net-tls
+
+---
+# Netdata Direct Access (Internal)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: netdata
+  namespace: netdata
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: netdata.k8s.local
+    http:
+      paths:
+      - backend:
+          service:
+            name: netdata-parent
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+
+
+---
+# Netdata Parent Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: netdata-parent-config
+  namespace: netdata
+data:
+  netdata.conf: |
+    [global]
+        # Parent mode - receives metrics from children
+        mode = parent
+        memory mode = map
+        history = 7200
+        debug log level = info
+        
+    [web]
+        bind to = 0.0.0.0:19999
+        allow connections from = *
+        allow management from = *
+        
+    [registry]
+        # Enable registry for parent-child communication
+        enabled = yes
+        
+    [streaming]
+        # Accept connections from children
+        enabled = yes
+        # Allow all child nodes to stream
+        allow from = *
+        # Optional: set API key (or leave empty for no auth)
+        api key = d4f1e9b8-9a2c-4c22-8c6e-12c76c70e3e5
+        
+    [plugins]
+        # Parent doesn't need to collect local metrics, just aggregate
+        apps = no
+        proc = no
+        diskspace = no
+        cgroups = no
+        
+    # Enable cloud features if you want Netdata Cloud integration
+    [cloud]
+        enabled = yes
+  stream.conf: |
+    # Configuration for receiving child streams
+    [d4f1e9b8-9a2c-4c22-8c6e-12c76c70e3e5]
+        # Enable this API key for streaming
+        enabled = yes
+        # Accept connections from any IP (adjust for security)
+        allow from = *
+        # Default history in hours
+        default history = 3600
+        # Default memory mode
+        default memory mode = map
+
+---
+# NGINX Configuration for API Dashboard
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minimal-api-nginx-config
+  namespace: netdata
+data:
+  default.conf: |
+    server {
+        listen 80;
+
+        # CORS headers
+        add_header "Access-Control-Allow-Origin" "*" always;
+        add_header "Access-Control-Allow-Methods" "GET, OPTIONS" always;
+        add_header "Access-Control-Allow-Headers" "Content-Type" always;
+
+        if ($request_method = "OPTIONS") {
+            return 204;
+        }
+
+        # Serve dashboard at root
+        location = / {
+            root /usr/share/nginx/html;
+            index metrics.html;
+            try_files /metrics.html =404;
+        }
+
+        # Master node: 192.168.4.100
+        location /node/master/cpu {
+            proxy_pass http://192.168.4.100:19999/api/v1/data?chart=system.cpu&after=-300&format=json;
+            proxy_set_header Host $host;
+            proxy_connect_timeout 5s;
+            proxy_read_timeout 10s;
+        }
+
+        location /node/master/memory {
+            proxy_pass http://192.168.4.100:19999/api/v1/data?chart=system.ram&after=-300&format=json;
+            proxy_set_header Host $host;
+            proxy_connect_timeout 5s;
+            proxy_read_timeout 10s;
+        }
+
+        location /node/master/load {
+            proxy_pass http://192.168.4.100:19999/api/v1/data?chart=system.load&after=-300&format=json;
+            proxy_set_header Host $host;
+            proxy_connect_timeout 5s;
+            proxy_read_timeout 10s;
+        }
+
+        location /node/master/uptime {
+            proxy_pass http://192.168.4.100:19999/api/v1/data?chart=system.uptime&after=-60&format=json;
+            proxy_set_header Host $host;
+            proxy_connect_timeout 5s;
+            proxy_read_timeout 10s;
+        }
+
+        # Worker1 node: 192.168.4.101
+        location /node/worker1/cpu {
+            proxy_pass http://192.168.4.101:19999/api/v1/data?chart=system.cpu&after=-300&format=json;
+            proxy_set_header Host $host;
+            proxy_connect_timeout 5s;
+            proxy_read_timeout 10s;
+        }
+
+        location /node/worker1/memory {
+            proxy_pass http://192.168.4.101:19999/api/v1/data?chart=system.ram&after=-300&format=json;
+            proxy_set_header Host $host;
+            proxy_connect_timeout 5s;
+            proxy_read_timeout 10s;
+        }
+
+        location /node/worker1/load {
+            proxy_pass http://192.168.4.101:19999/api/v1/data?chart=system.load&after=-300&format=json;
+            proxy_set_header Host $host;
+            proxy_connect_timeout 5s;
+            proxy_read_timeout 10s;
+        }
+
+        location /node/worker1/uptime {
+            proxy_pass http://192.168.4.101:19999/api/v1/data?chart=system.uptime&after=-60&format=json;
+            proxy_set_header Host $host;
+            proxy_connect_timeout 5s;
+            proxy_read_timeout 10s;
+        }
+
+        # Worker2 node: 192.168.4.102
+        location /node/worker2/cpu {
+            proxy_pass http://192.168.4.102:19999/api/v1/data?chart=system.cpu&after=-300&format=json;
+            proxy_set_header Host $host;
+            proxy_connect_timeout 5s;
+            proxy_read_timeout 10s;
+        }
+
+        location /node/worker2/memory {
+            proxy_pass http://192.168.4.102:19999/api/v1/data?chart=system.ram&after=-300&format=json;
+            proxy_set_header Host $host;
+            proxy_connect_timeout 5s;
+            proxy_read_timeout 10s;
+        }
+
+        location /node/worker2/load {
+            proxy_pass http://192.168.4.102:19999/api/v1/data?chart=system.load&after=-300&format=json;
+            proxy_set_header Host $host;
+            proxy_connect_timeout 5s;
+            proxy_read_timeout 10s;
+        }
+
+        location /node/worker2/uptime {
+            proxy_pass http://192.168.4.102:19999/api/v1/data?chart=system.uptime&after=-60&format=json;
+            proxy_set_header Host $host;
+            proxy_connect_timeout 5s;
+            proxy_read_timeout 10s;
+        }
+
+        # API endpoints
+        location /api/status {
+            return 200 '{"status":"healthy","nodes":{"master":"192.168.4.100","worker1":"192.168.4.101","worker2":"192.168.4.102"}}\n';
+            add_header Content-Type application/json;
+        }
+
+        location /health {
+            return 200 '{"status":"healthy"}\n';
+            add_header Content-Type application/json;
+        }
+
+        location /nodes {
+            proxy_pass http://netdata.netdata.svc.cluster.local:19999/api/v1/info;
+            proxy_set_header Host $host;
+            proxy_connect_timeout 5s;
+            proxy_read_timeout 10s;
+        }
+    }
+
+
+---
+# Dashboard HTML Content (placeholder - copy full content from original)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minimal-api-dashboard
+  namespace: netdata
+data:
+  metrics.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CatDevOps.net - Live Cluster Metrics</title>
+        <!-- NOTE: Full HTML content extracted from cluster -->
+        <!-- TODO: Copy complete HTML from original configmaps.yaml -->
+    </head>
+    <body>
+        <h1>Placeholder - Replace with full HTML from configmaps.yaml</h1>
+        <!-- The complete HTML is in configmaps.yaml under minimal-api-dashboard -->
+    </body>
+    </html>
+

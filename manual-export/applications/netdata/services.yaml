@@ -1,0 +1,322 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"netdata","namespace":"netdata"},"spec":{"ports":[{"name":"http","port":19999,"targetPort":19999}],"selector":{"app":"netdata","component":"parent"},"type":"ClusterIP"}}
+      meta.helm.sh/release-name: netdata
+      meta.helm.sh/release-namespace: netdata
+    creationTimestamp: "2025-08-27T16:11:22Z"
+    labels:
+      app: netdata
+      app.kubernetes.io/managed-by: Helm
+      chart: netdata-3.7.145
+      heritage: Helm
+      release: netdata
+      role: parent
+    name: netdata
+    namespace: netdata
+    resourceVersion: "1477592"
+    uid: 16a6f619-20cb-444a-80e6-014583b9c0f4
+  spec:
+    clusterIP: 10.104.227.185
+    clusterIPs:
+    - 10.104.227.185
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 19999
+      protocol: TCP
+      targetPort: 19999
+    selector:
+      app: netdata
+      component: parent
+      release: netdata
+      role: parent
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"netdata-child-service","namespace":"netdata"},"spec":{"ports":[{"port":19999,"protocol":"TCP","targetPort":19999}],"selector":{"app":"netdata","role":"child"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-09-01T16:19:02Z"
+    name: netdata-child-service
+    namespace: netdata
+    resourceVersion: "1586701"
+    uid: 6e55d6c9-31e4-4b93-b36f-c0a651d7e262
+  spec:
+    clusterIP: 10.108.158.28
+    clusterIPs:
+    - 10.108.158.28
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 19999
+      protocol: TCP
+      targetPort: 19999
+    selector:
+      app: netdata
+      role: child
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"netdata-child-svc","namespace":"netdata"},"spec":{"ports":[{"port":19999,"protocol":"TCP","targetPort":19999}],"selector":{"app":"netdata","role":"child"}}}
+    creationTimestamp: "2025-09-01T14:31:23Z"
+    name: netdata-child-svc
+    namespace: netdata
+    resourceVersion: "1587500"
+    uid: 75c28e21-1713-4f39-b173-d3a6e34d6098
+  spec:
+    clusterIP: 10.104.25.86
+    clusterIPs:
+    - 10.104.25.86
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 19999
+      protocol: TCP
+      targetPort: 19999
+    selector:
+      app: netdata
+      role: child
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"netdata-children","namespace":"netdata"},"spec":{"clusterIP":"None","ports":[{"port":19999,"targetPort":19999}],"selector":{"app":"netdata"}}}
+    creationTimestamp: "2025-09-01T14:12:11Z"
+    name: netdata-children
+    namespace: netdata
+    resourceVersion: "1567438"
+    uid: fadd5960-3cfc-486e-b3a0-d1048e837a89
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 19999
+      protocol: TCP
+      targetPort: 19999
+    selector:
+      app: netdata
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-09-01T14:43:37Z"
+    labels:
+      app: netdata-master-svc
+    name: netdata-master-svc
+    namespace: netdata
+    resourceVersion: "1571115"
+    uid: 3e83dd89-bb14-48a4-80fa-febcd7f05b25
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    selector:
+      app: netdata-master-svc
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"netdata-minimal-api","namespace":"netdata"},"spec":{"ports":[{"name":"http","port":8080,"protocol":"TCP","targetPort":80}],"selector":{"app":"netdata-minimal-api"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-08-31T04:45:19Z"
+    name: netdata-minimal-api
+    namespace: netdata
+    resourceVersion: "1598315"
+    uid: 77f7546d-6f95-4ab9-bc9c-1d6fefc2a083
+  spec:
+    clusterIP: 10.105.191.175
+    clusterIPs:
+    - 10.105.191.175
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: netdata-minimal-api
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"netdata","component":"parent"},"name":"netdata-parent","namespace":"netdata"},"spec":{"ports":[{"name":"http","port":19999,"targetPort":19999},{"name":"statsd","port":8125,"protocol":"UDP","targetPort":8125}],"selector":{"app":"netdata","component":"parent"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-09-01T00:34:31Z"
+    labels:
+      app: netdata
+      component: parent
+    name: netdata-parent
+    namespace: netdata
+    resourceVersion: "1477588"
+    uid: 21d299b2-ee7a-4791-9835-75c73c00704f
+  spec:
+    clusterIP: 10.111.207.208
+    clusterIPs:
+    - 10.111.207.208
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 19999
+      protocol: TCP
+      targetPort: 19999
+    - name: statsd
+      port: 8125
+      protocol: UDP
+      targetPort: 8125
+    selector:
+      app: netdata
+      component: parent
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"netdata-parent-service","namespace":"netdata"},"spec":{"ports":[{"port":19999,"protocol":"TCP","targetPort":19999}],"selector":{"app":"netdata","component":"parent"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-09-01T16:13:33Z"
+    name: netdata-parent-service
+    namespace: netdata
+    resourceVersion: "1581523"
+    uid: d78ac0bf-6027-4468-9950-1b93a5e52096
+  spec:
+    clusterIP: 10.98.143.161
+    clusterIPs:
+    - 10.98.143.161
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 19999
+      protocol: TCP
+      targetPort: 19999
+    selector:
+      app: netdata
+      component: parent
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"netdata-worker1-svc","namespace":"netdata"},"spec":{"ports":[{"port":19999,"protocol":"TCP","targetPort":19999}],"selector":{"app":"netdata","role":"child"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-09-01T14:43:37Z"
+    labels:
+      app: netdata-worker1-svc
+    name: netdata-worker1-svc
+    namespace: netdata
+    resourceVersion: "1638094"
+    uid: 54a77690-3cf3-4e70-9f83-e0aa064fb58d
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 19999
+      protocol: TCP
+      targetPort: 19999
+    selector:
+      app: netdata
+      role: child
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"netdata-worker2-svc","namespace":"netdata"},"spec":{"ports":[{"port":19999,"protocol":"TCP","targetPort":19999}],"selector":{"app":"netdata","role":"child"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-09-01T14:43:37Z"
+    labels:
+      app: netdata-worker2-svc
+    name: netdata-worker2-svc
+    namespace: netdata
+    resourceVersion: "1637897"
+    uid: 828e3858-31be-4794-be00-90894178d418
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 19999
+      protocol: TCP
+      targetPort: 19999
+    selector:
+      app: netdata
+      role: child
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+kind: List
+metadata:
+  resourceVersion: ""

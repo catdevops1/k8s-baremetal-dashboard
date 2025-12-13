@@ -1,0 +1,11 @@
+# Netdata Monitoring System - Complete Manifest
+# Generated from running cluster
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: netdata
+---
+# Main Netdata Parent Deployment
+---
+# Netdata API Dashboard

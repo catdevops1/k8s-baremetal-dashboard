@@ -1,0 +1,964 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  data:
+    ca.crt: |
+      -----BEGIN CERTIFICATE-----
+      MIIDBTCCAe2gAwIBAgIISKdUwFbT8A8wDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE
+      AxMKa3ViZXJuZXRlczAeFw0yNTA4MDkxNTUzMzdaFw0zNTA4MDcxNTU4MzdaMBUx
+      EzARBgNVBAMTCmt1YmVybmV0ZXMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
+      AoIBAQDud0+145REgNw4g2KenRRkcYmkF6RgPuQIa/4BEPQ9cIR9Oi2ucNyLPmYN
+      OefDCIRvFQRyLtqUp9+8Za+sq3KvtWgmbnRmxDTenpj2X8sndd97tdHnznEtwryw
+      vcyALhXR7JAN15gpO1nc+ErSKOEniAs89+3CTCJPk94zQY57/fMrCY4G7Ekuw2/3
+      B0vyf6MuF6IhHU4uiUsDbZgdrEqkxewws87wQx4Ge7q3bVrIN9GvOs2+I2pNPTKF
+      b7XxEFbJQnOgakvMDFWYDFyt0Yz/wyDCnUiqYHU3lNqHIib9nyBcmmcaKe0XNGzQ
+      BMPmCVaojCTH6oNTdiCIg3aap4p1AgMBAAGjWTBXMA4GA1UdDwEB/wQEAwICpDAP
+      BgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBRckbCrB/s68ZD41zDy+WvInG4SjjAV
+      BgNVHREEDjAMggprdWJlcm5ldGVzMA0GCSqGSIb3DQEBCwUAA4IBAQBIaM8jOeSg
+      inH60+uYn/2cHAlEKmsBJFp79qKaaWAB1ejISLgwfvQdNK8p7qsIUz4zdA1doU5O
+      aKa3ixPcyR8rUJZsQACSe5pdlVsQtTblMLwcfou6eOvK+Xk2gVX4tLSeKYJlI3eY
+      k/niX9XWiMUnbyBvuXc0kdxhsB/HFaCFeR4FnYCk2fsuhOcZxhKMw7lTWbpKPjas
+      AqnvU6DYthyf9RyXmod59dmAPOT4/cO/E6R3xIVHL3GOXT83QzpnWlvYb+9/ZqOT
+      ZQ6rgykX8yhTMytorzZ790ljqxj1cMN2VKrZDd0OfYFkeI6dx9+U9QPjTdCEiNlx
+      2+dfJ/NyVw1q
+      -----END CERTIFICATE-----
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubernetes.io/description: Contains a CA bundle that can be used to verify the
+        kube-apiserver when using internal endpoints such as the internal service
+        IP or kubernetes.default.svc. No other usage is guaranteed across distributions
+        of Kubernetes clusters.
+    creationTimestamp: "2025-08-27T14:50:55Z"
+    name: kube-root-ca.crt
+    namespace: netdata
+    resourceVersion: "792101"
+    uid: aa3688a7-5c7a-4a87-9533-9c176c9e6dd8
+- apiVersion: v1
+  data:
+    metrics.html: "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n
+      \   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n
+      \   <title>CatDevOps.net - Live Cluster Metrics</title>\n    <link href=\"https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css\"
+      rel=\"stylesheet\">\n    <link href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css\"
+      rel=\"stylesheet\">\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n
+      \   <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n
+      \   <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap\"
+      rel=\"stylesheet\">\n    <style>\n        body {\n            font-family: 'Inter',
+      sans-serif;\n        }\n        .gradient-bg {\n            background: linear-gradient(135deg,
+      #667eea 0%, #764ba2 100%);\n        }\n        .metric-card {\n            transition:
+      all 0.3s ease;\n        }\n        .metric-card:hover {\n            transform:
+      translateY(-3px);\n            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);\n
+      \       }\n        .animate-pulse-slow {\n            animation: pulse 3s infinite;\n
+      \       }\n        .status-indicator {\n            display: inline-block;\n
+      \           width: 12px;\n            height: 12px;\n            border-radius:
+      50%;\n            margin-right: 8px;\n        }\n        .status-online {\n
+      \           background: #10b981;\n            box-shadow: 0 0 8px rgba(16, 185,
+      129, 0.5);\n        }\n        .status-offline {\n            background: #ef4444;\n
+      \           box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);\n        }\n        .debug-info
+      {\n            background-color: rgba(0, 0, 0, 0.3);\n            border: 1px
+      solid #4a5568;\n            border-radius: 8px;\n            padding: 12px;\n
+      \           margin-top: 16px;\n            font-family: 'Courier New', monospace;\n
+      \           font-size: 0.75rem;\n            color: #e2e8f0;\n        }\n    </style>\n</head>\n<body
+      class=\"bg-gray-900 text-white min-h-screen\">\n    <!-- Header -->\n    <header
+      class=\"gradient-bg shadow-2xl\">\n        <div class=\"container mx-auto px-6
+      py-8\">\n            <div class=\"flex items-center justify-between flex-wrap\">\n
+      \               <div class=\"flex items-center space-x-4\">\n                    <div
+      class=\"text-3xl md:text-4xl font-extrabold text-white animate-pulse-slow\">\n
+      \                       <i class=\"fas fa-chart-line mr-2\"></i>\n                        CatDevOps.net\n
+      \                   </div>\n                    <span class=\"hidden md:inline-block
+      text-sm text-gray-200\">Live Cluster Metrics</span>\n                </div>\n
+      \               <div class=\"flex items-center space-x-4\">\n                    <span
+      id=\"current-time\" class=\"text-sm md:text-base font-medium text-gray-200\"></span>\n
+      \                   <span class=\"text-lg md:text-xl font-bold text-gray-200\">\n
+      \                       <span id=\"total-nodes-header\">0</span>/3 Nodes Online\n
+      \                   </span>\n                    <a href=\"https://catdevops.net\"
+      class=\"text-gray-200 hover:text-white transition-colors\">\n                        <i
+      class=\"fas fa-home text-xl\"></i>\n                    </a>\n                </div>\n
+      \           </div>\n        </div>\n    </header>\n\n    <!-- Main Content -->\n
+      \   <main class=\"container mx-auto px-6 py-12\">\n        <div class=\"text-center
+      mb-12\">\n            <h1 class=\"text-4xl md:text-5xl font-bold mb-4\">\n                Real-Time
+      Cluster Metrics\n            </h1>\n            <p class=\"text-gray-400 text-lg\">\n
+      \               Live monitoring of bare-metal Kubernetes cluster performance\n
+      \           </p>\n        </div>\n\n        <!-- Cluster Overview -->\n        <div
+      class=\"bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg p-8 mb-12 shadow-xl\">\n
+      \           <div class=\"text-center mb-6\">\n                <h2 class=\"text-2xl
+      md:text-3xl font-bold text-white mb-4\">Cluster Overview</h2>\n            </div>\n
+      \           <div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\">\n                <div
+      class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center
+      text-center\">\n                    <div class=\"text-4xl text-green-400 mb-4\">\n
+      \                       <i class=\"fas fa-server\"></i>\n                    </div>\n
+      \                   <div class=\"text-xl font-bold text-gray-300 mb-2\">Nodes
+      Online</div>\n                    <div id=\"total-nodes\" class=\"text-4xl font-extrabold
+      text-green-300\">0/3</div>\n                    <div class=\"text-gray-400\">Active</div>\n
+      \               </div>\n                <div class=\"metric-card bg-gray-800
+      rounded-lg p-6 shadow-xl flex flex-col items-center text-center\">\n                    <div
+      class=\"text-4xl text-purple-400 mb-4\">\n                        <i class=\"fas
+      fa-microchip\"></i>\n                    </div>\n                    <div class=\"text-xl
+      font-bold text-gray-300 mb-2\">Avg CPU</div>\n                    <div id=\"cluster-cpu\"
+      class=\"text-4xl font-extrabold text-purple-300\">--%</div>\n                    <div
+      class=\"text-gray-400\">Usage</div>\n                </div>\n                <div
+      class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center
+      text-center\">\n                    <div class=\"text-4xl text-blue-400 mb-4\">\n
+      \                       <i class=\"fas fa-memory\"></i>\n                    </div>\n
+      \                   <div class=\"text-xl font-bold text-gray-300 mb-2\">Avg
+      Memory</div>\n                    <div id=\"cluster-memory\" class=\"text-4xl
+      font-extrabold text-blue-300\">--%</div>\n                    <div class=\"text-gray-400\">Usage</div>\n
+      \               </div>\n                <div class=\"metric-card bg-gray-800
+      rounded-lg p-6 shadow-xl flex flex-col items-center text-center\">\n                    <div
+      class=\"text-4xl text-orange-400 mb-4\">\n                        <i class=\"fas
+      fa-tachometer-alt\"></i>\n                    </div>\n                    <div
+      class=\"text-xl font-bold text-gray-300 mb-2\">Avg Load</div>\n                    <div
+      id=\"cluster-load\" class=\"text-4xl font-extrabold text-orange-300\">--</div>\n
+      \                   <div class=\"text-gray-400\">1min</div>\n                </div>\n
+      \           </div>\n        </div>\n\n        <!-- Master Node -->\n        <div
+      class=\"bg-gradient-to-r from-purple-800 to-purple-900 rounded-lg p-8 mb-8 shadow-xl\">\n
+      \           <h2 class=\"text-2xl md:text-3xl font-bold text-white mb-6 text-center\">\n
+      \               <span class=\"status-indicator\" id=\"master-status\"></span>\n
+      \               Master Node (Control Plane)\n            </h2>\n            <div
+      class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6\">\n                <div
+      class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl\">\n                    <div
+      class=\"flex items-center mb-4\">\n                        <i class=\"fas fa-microchip
+      text-2xl text-green-400 mr-3\"></i>\n                        <div class=\"text-lg
+      font-bold text-gray-300\">CPU Usage</div>\n                    </div>\n                    <div
+      id=\"master-cpu-value\" class=\"text-3xl font-extrabold text-green-300 mb-2\">--</div>\n
+      \                   <div id=\"master-cpu-detail\" class=\"text-sm text-gray-400\">Loading...</div>\n
+      \               </div>\n                <div class=\"metric-card bg-gray-800
+      rounded-lg p-6 shadow-xl\">\n                    <div class=\"flex items-center
+      mb-4\">\n                        <i class=\"fas fa-memory text-2xl text-blue-400
+      mr-3\"></i>\n                        <div class=\"text-lg font-bold text-gray-300\">Memory</div>\n
+      \                   </div>\n                    <div id=\"master-memory-value\"
+      class=\"text-3xl font-extrabold text-blue-300 mb-2\">--</div>\n                    <div
+      id=\"master-memory-detail\" class=\"text-sm text-gray-400\">Loading...</div>\n
+      \               </div>\n                <div class=\"metric-card bg-gray-800
+      rounded-lg p-6 shadow-xl\">\n                    <div class=\"flex items-center
+      mb-4\">\n                        <i class=\"fas fa-tachometer-alt text-2xl text-orange-400
+      mr-3\"></i>\n                        <div class=\"text-lg font-bold text-gray-300\">Load
+      Avg</div>\n                    </div>\n                    <div id=\"master-load-value\"
+      class=\"text-3xl font-extrabold text-orange-300 mb-2\">--</div>\n                    <div
+      id=\"master-load-detail\" class=\"text-sm text-gray-400\">1m, 5m, 15m</div>\n
+      \               </div>\n                <div class=\"metric-card bg-gray-800
+      rounded-lg p-6 shadow-xl\">\n                    <div class=\"flex items-center
+      mb-4\">\n                        <i class=\"fas fa-clock text-2xl text-purple-400
+      mr-3\"></i>\n                        <div class=\"text-lg font-bold text-gray-300\">Uptime</div>\n
+      \                   </div>\n                    <div id=\"master-uptime-value\"
+      class=\"text-3xl font-extrabold text-purple-300 mb-2\">--</div>\n                    <div
+      id=\"master-uptime-detail\" class=\"text-sm text-gray-400\">Loading...</div>\n
+      \               </div>\n            </div>\n        </div>\n\n        <!-- Worker
+      Node 1 -->\n        <div class=\"bg-gradient-to-r from-blue-800 to-blue-900
+      rounded-lg p-8 mb-8 shadow-xl\">\n            <h2 class=\"text-2xl md:text-3xl
+      font-bold text-white mb-6 text-center\">\n                <span class=\"status-indicator\"
+      id=\"worker1-status\"></span>\n                Worker Node 1 (node01.local)\n
+      \           </h2>\n            <div class=\"grid grid-cols-1 md:grid-cols-2
+      lg:grid-cols-4 gap-6\">\n                <div class=\"metric-card bg-gray-800
+      rounded-lg p-6 shadow-xl\">\n                    <div class=\"flex items-center
+      mb-4\">\n                        <i class=\"fas fa-microchip text-2xl text-green-400
+      mr-3\"></i>\n                        <div class=\"text-lg font-bold text-gray-300\">CPU
+      Usage</div>\n                    </div>\n                    <div id=\"worker1-cpu-value\"
+      class=\"text-3xl font-extrabold text-green-300 mb-2\">--</div>\n                    <div
+      id=\"worker1-cpu-detail\" class=\"text-sm text-gray-400\">Loading...</div>\n
+      \               </div>\n                <div class=\"metric-card bg-gray-800
+      rounded-lg p-6 shadow-xl\">\n                    <div class=\"flex items-center
+      mb-4\">\n                        <i class=\"fas fa-memory text-2xl text-blue-400
+      mr-3\"></i>\n                        <div class=\"text-lg font-bold text-gray-300\">Memory</div>\n
+      \                   </div>\n                    <div id=\"worker1-memory-value\"
+      class=\"text-3xl font-extrabold text-blue-300 mb-2\">--</div>\n                    <div
+      id=\"worker1-memory-detail\" class=\"text-sm text-gray-400\">Loading...</div>\n
+      \               </div>\n                <div class=\"metric-card bg-gray-800
+      rounded-lg p-6 shadow-xl\">\n                    <div class=\"flex items-center
+      mb-4\">\n                        <i class=\"fas fa-tachometer-alt text-2xl text-orange-400
+      mr-3\"></i>\n                        <div class=\"text-lg font-bold text-gray-300\">Load
+      Avg</div>\n                    </div>\n                    <div id=\"worker1-load-value\"
+      class=\"text-3xl font-extrabold text-orange-300 mb-2\">--</div>\n                    <div
+      id=\"worker1-load-detail\" class=\"text-sm text-gray-400\">1m, 5m, 15m</div>\n
+      \               </div>\n                <div class=\"metric-card bg-gray-800
+      rounded-lg p-6 shadow-xl\">\n                    <div class=\"flex items-center
+      mb-4\">\n                        <i class=\"fas fa-clock text-2xl text-purple-400
+      mr-3\"></i>\n                        <div class=\"text-lg font-bold text-gray-300\">Uptime</div>\n
+      \                   </div>\n                    <div id=\"worker1-uptime-value\"
+      class=\"text-3xl font-extrabold text-purple-300 mb-2\">--</div>\n                    <div
+      id=\"worker1-uptime-detail\" class=\"text-sm text-gray-400\">Loading...</div>\n
+      \               </div>\n            </div>\n        </div>\n\n        <!-- Worker
+      Node 2 -->\n        <div class=\"bg-gradient-to-r from-green-800 to-green-900
+      rounded-lg p-8 mb-8 shadow-xl\">\n            <h2 class=\"text-2xl md:text-3xl
+      font-bold text-white mb-6 text-center\">\n                <span class=\"status-indicator\"
+      id=\"worker2-status\"></span>\n                Worker Node 2 (node02)\n            </h2>\n
+      \           <div class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6\">\n
+      \               <div class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl\">\n
+      \                   <div class=\"flex items-center mb-4\">\n                        <i
+      class=\"fas fa-microchip text-2xl text-green-400 mr-3\"></i>\n                        <div
+      class=\"text-lg font-bold text-gray-300\">CPU Usage</div>\n                    </div>\n
+      \                   <div id=\"worker2-cpu-value\" class=\"text-3xl font-extrabold
+      text-green-300 mb-2\">--</div>\n                    <div id=\"worker2-cpu-detail\"
+      class=\"text-sm text-gray-400\">Loading...</div>\n                </div>\n                <div
+      class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl\">\n                    <div
+      class=\"flex items-center mb-4\">\n                        <i class=\"fas fa-memory
+      text-2xl text-blue-400 mr-3\"></i>\n                        <div class=\"text-lg
+      font-bold text-gray-300\">Memory</div>\n                    </div>\n                    <div
+      id=\"worker2-memory-value\" class=\"text-3xl font-extrabold text-blue-300 mb-2\">--</div>\n
+      \                   <div id=\"worker2-memory-detail\" class=\"text-sm text-gray-400\">Loading...</div>\n
+      \               </div>\n                <div class=\"metric-card bg-gray-8 rounded-lg
+      p-6 shadow-xl\">\n                    <div class=\"flex items-center mb-4\">\n
+      \                       <i class=\"fas fa-tachometer-alt text-2xl text-orange-400
+      mr-3\"></i>\n                        <div class=\"text-lg font-bold text-gray-300\">Load
+      Avg</div>\n                    </div>\n                    <div id=\"worker2-load-value\"
+      class=\"text-3xl font-extrabold text-orange-300 mb-2\">--</div>\n                    <div
+      id=\"worker2-load-detail\" class=\"text-sm text-gray-400\">1m, 5m, 15m</div>\n
+      \               </div>\n                <div class=\"metric-card bg-gray-800
+      rounded-lg p-6 shadow-xl\">\n                    <div class=\"flex items-center
+      mb-4\">\n                        <i class=\"fas fa-clock text-2xl text-purple-400
+      mr-3\"></i>\n                        <div class=\"text-lg font-bold text-gray-300\">Uptime</div>\n
+      \                   </div>\n                    <div id=\"worker2-uptime-value\"
+      class=\"text-3xl font-extrabold text-purple-300 mb-2\">--</div>\n                    <div
+      id=\"worker2-uptime-detail\" class=\"text-sm text-gray-400\">Loading...</div>\n
+      \               </div>\n            </div>\n        </div>\n\n        <!-- Status
+      Section -->\n        <div class=\"text-center space-y-4\">\n            <div
+      class=\"bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg p-6 shadow-xl\">\n
+      \               <div class=\"text-lg font-semibold text-white mb-2\">\n                    <i
+      class=\"fas fa-sync-alt mr-2\"></i>\n                    Auto-refreshing every
+      5 seconds\n                </div>\n                <div class=\"text-gray-400\">\n
+      \                   Last update: <span id=\"last-update\" class=\"text-blue-300
+      font-mono\">Never</span>\n                </div>\n            </div>\n            <div
+      class=\"debug-info\" id=\"debug-info\">Debug: Ready</div>\n        </div>\n
+      \   </main>\n\n    <!-- Footer -->\n    <footer class=\"bg-gray-800 border-t
+      border-gray-700 py-8 mt-12\">\n        <div class=\"container mx-auto px-6\">\n
+      \           <div class=\"text-center\">\n                <div class=\"flex justify-center
+      space-x-8 mb-4\">\n                    <a href=\"https://catdevops.net\" class=\"text-blue-400
+      hover:text-blue-300 transition-colors\">\n                        <i class=\"fas
+      fa-home mr-2\"></i>Home\n                    </a>\n                    <a href=\"https://github.com/catdevops1/k8s-baremetal-dashboard\"
+      target=\"_blank\" class=\"text-gray-400 hover:text-gray-300 transition-colors\">\n
+      \                       <i class=\"fab fa-github mr-2\"></i>GitHub\n                    </a>\n
+      \                   <a href=\"https://linkedin.com/in/catalin-bot\" target=\"_blank\"
+      class=\"text-blue-400 hover:text-blue-300 transition-colors\">\n                        <i
+      class=\"fab fa-linkedin mr-2\"></i>LinkedIn\n                    </a>\n                </div>\n
+      \               <p class=\"text-gray-400 text-sm\">\n                    &copy;
+      2025 Catalin Bot | Real-time Kubernetes monitoring on bare-metal infrastructure\n
+      \               </p>\n            </div>\n        </div>\n    </footer>\n\n
+      \   <script>\n        const API_BASE_URL = window.location.origin;\n        const
+      REFRESH_INTERVAL = 5000;\n        \n        // Store node data for cluster averages\n
+      \       let nodeMetrics = {\n            master: { cpu: 0, memory: 0, load:
+      0, online: false },\n            worker1: { cpu: 0, memory: 0, load: 0, online:
+      false },\n            worker2: { cpu: 0, memory: 0, load: 0, online: false }\n
+      \       };\n\n        function debugLog(message) {\n            console.log(message);\n
+      \           document.getElementById('debug-info').textContent = `Debug: ${message}`;\n
+      \       }\n\n        function updateCurrentTime() {\n            const now =
+      new Date();\n            const timeString = now.toLocaleTimeString();\n            document.getElementById('current-time').textContent
+      = timeString;\n        }\n\n        async function fetchNodeMetrics(node, nodeKey)
+      {\n            try {\n                debugLog(`Fetching ${node} metrics...`);\n
+      \               \n                // Use headers for cache-busting instead of
+      URL parameters\n                const requestId = Math.random().toString(36).substring(7);\n
+      \               const headers = {\n                    'Cache-Control': 'no-cache,
+      no-store, must-revalidate',\n                    'Pragma': 'no-cache',\n                    'Expires':
+      '0',\n                    'X-Request-ID': requestId,\n                    'X-Timestamp':
+      Date.now().toString()\n                };\n                \n                //
+      Fetch metrics for specific node without query parameters  \n                const
+      [cpuRes, memRes, loadRes, uptimeRes] = await Promise.all([\n                    fetch(`${API_BASE_URL}/node/${nodeKey}/cpu`,
+      {\n                        method: 'GET',\n                        cache: 'no-store',\n
+      \                       headers: headers\n                    }),\n                    fetch(`${API_BASE_URL}/node/${nodeKey}/memory`,
+      {\n                        method: 'GET', \n                        cache: 'no-store',\n
+      \                       headers: headers\n                    }),\n                    fetch(`${API_BASE_URL}/node/${nodeKey}/load`,
+      {\n                        method: 'GET',\n                        cache: 'no-store',
+      \n                        headers: headers\n                    }),\n                    fetch(`${API_BASE_URL}/node/${nodeKey}/uptime`,
+      {\n                        method: 'GET',\n                        cache: 'no-store',\n
+      \                       headers: headers\n                    })\n                ]);\n\n
+      \               // Check if responses are OK and log status\n                debugLog(`${node}
+      responses: CPU=${cpuRes.status}, MEM=${memRes.status}, LOAD=${loadRes.status},
+      UP=${uptimeRes.status}`);\n                \n                if (!cpuRes.ok
+      || !memRes.ok || !loadRes.ok || !uptimeRes.ok) {\n                    throw
+      new Error(`HTTP Error: CPU=${cpuRes.status}, MEM=${memRes.status}, LOAD=${loadRes.status},
+      UP=${uptimeRes.status}`);\n                }\n\n                // Get response
+      text first to debug what we're receiving\n                const cpuText = await
+      cpuRes.text();\n                const memText = await memRes.text();\n                const
+      loadText = await loadRes.text();\n                const uptimeText = await uptimeRes.text();\n\n
+      \               // Check if response looks like JSON\n                if (!cpuText.startsWith('{')
+      && !cpuText.startsWith('[')) {\n                    debugLog(`${node} Error:
+      Expected JSON but got: ${cpuText.substring(0, 100)}`);\n                    throw
+      new Error(`Invalid JSON response: ${cpuText.substring(0, 100)}`);\n                }\n\n
+      \               // Parse JSON\n                const cpuData = JSON.parse(cpuText);\n
+      \               const memData = JSON.parse(memText);\n                const
+      loadData = JSON.parse(loadText);\n                const uptimeData = JSON.parse(uptimeText);\n\n
+      \               // Update status indicator\n                document.getElementById(`${node}-status`).className
+      = 'status-indicator status-online';\n                nodeMetrics[node].online
+      = true;\n\n                // CPU metrics\n                if (cpuData.data
+      && cpuData.data[0]) {\n                    const row = cpuData.data[0];\n                    const
+      user = row[6] || 0;\n                    const system = row[7] || 0;\n                    const
+      nice = row[8] || 0;\n                    const iowait = row[9] || 0;\n                    const
+      totalUsage = user + system + nice + iowait;\n                    \n                    nodeMetrics[node].cpu
+      = totalUsage;\n                    document.getElementById(`${node}-cpu-value`).textContent
+      = `${totalUsage.toFixed(1)}%`;\n                    document.getElementById(`${node}-cpu-detail`).textContent
+      =\n                        `User: ${user.toFixed(1)}%, Sys: ${system.toFixed(1)}%,
+      IO: ${iowait.toFixed(1)}%`;\n                }\n\n                // Memory
+      metrics\n                if (memData.data && memData.data[0]) {\n                    const
+      used = memData.data[0][1] || 0;\n                    const free = memData.data[0][2]
+      || 0;\n                    const total = used + free;\n                    const
+      usagePercent = ((used / total) * 100);\n                    \n                    nodeMetrics[node].memory
+      = usagePercent;\n                    document.getElementById(`${node}-memory-value`).textContent
+      = `${usagePercent.toFixed(1)}%`;\n                    document.getElementById(`${node}-memory-detail`).textContent
+      = \n                        `${(used/1024).toFixed(1)} GB / ${(total/1024).toFixed(1)}
+      GB`;\n                }\n\n                // Load metrics\n                if
+      (loadData.data && loadData.data[0]) {\n                    const load1 = loadData.data[0][1]
+      || 0;\n                    const load5 = loadData.data[0][2] || 0;\n                    const
+      load15 = loadData.data[0][3] || 0;\n                    \n                    nodeMetrics[node].load
+      = load1;\n                    document.getElementById(`${node}-load-value`).textContent
+      = load1.toFixed(2);\n                    document.getElementById(`${node}-load-detail`).textContent
+      = \n                        `${load1.toFixed(2)}, ${load5.toFixed(2)}, ${load15.toFixed(2)}`;\n
+      \               }\n\n                // Uptime metrics\n                if (uptimeData.data
+      && uptimeData.data[0]) {\n                    const seconds = uptimeData.data[0][1]
+      || 0;\n                    const days = Math.floor(seconds / 86400);\n                    const
+      hours = Math.floor((seconds % 86400) / 3600);\n                    const minutes
+      = Math.floor((seconds % 3600) / 60);\n                    \n                    document.getElementById(`${node}-uptime-value`).textContent
+      = `${days}d ${hours}h`;\n                    document.getElementById(`${node}-uptime-detail`).textContent
+      = \n                        `${days} days, ${hours} hours, ${minutes} minutes`;\n
+      \               }\n\n                debugLog(`${node} metrics updated successfully`);\n\n
+      \           } catch (err) {\n                console.error(`Error fetching ${node}
+      metrics:`, err);\n                debugLog(`${node} Error: ${err.message}`);\n
+      \               \n                document.getElementById(`${node}-status`).className
+      = 'status-indicator status-offline';\n                nodeMetrics[node].online
+      = false;\n                \n                // Show error state\n                document.getElementById(`${node}-cpu-value`).innerHTML
+      = '<span class=\"text-red-400\">Error</span>';\n                document.getElementById(`${node}-memory-value`).innerHTML
+      = '<span class=\"text-red-400\">Error</span>';\n                document.getElementById(`${node}-load-value`).innerHTML
+      = '<span class=\"text-red-400\">Error</span>';\n            }\n        }\n\n
+      \       function updateClusterOverview() {\n            const onlineNodes =
+      Object.values(nodeMetrics).filter(n => n.online);\n            const nodeCount
+      = onlineNodes.length;\n            \n            if (nodeCount > 0) {\n                const
+      avgCpu = onlineNodes.reduce((sum, n) => sum + n.cpu, 0) / nodeCount;\n                const
+      avgMemory = onlineNodes.reduce((sum, n) => sum + n.memory, 0) / nodeCount;\n
+      \               const avgLoad = onlineNodes.reduce((sum, n) => sum + n.load,
+      0) / nodeCount;\n                \n                document.getElementById('cluster-cpu').textContent
+      = `${avgCpu.toFixed(1)}%`;\n                document.getElementById('cluster-memory').textContent
+      = `${avgMemory.toFixed(1)}%`;\n                document.getElementById('cluster-load').textContent
+      = avgLoad.toFixed(2);\n            }\n            \n            document.getElementById('total-nodes').textContent
+      = `${nodeCount}/3`;\n            document.getElementById('total-nodes-header').textContent
+      = nodeCount;\n        }\n\n        async function fetchAllMetrics() {\n            const
+      now = new Date();\n            document.getElementById('last-update').textContent
+      = now.toLocaleTimeString();\n            \n            // Fetch metrics for
+      all nodes\n            await Promise.all([\n                fetchNodeMetrics('master',
+      'master'),\n                fetchNodeMetrics('worker1', 'worker1'), \n                fetchNodeMetrics('worker2',
+      'worker2')\n            ]);\n            \n            updateClusterOverview();\n
+      \       }\n\n        // Initialize\n        updateCurrentTime();\n        setInterval(updateCurrentTime,
+      1000);\n        \n        // Initial fetch and setup interval\n        fetchAllMetrics();\n
+      \       setInterval(fetchAllMetrics, REFRESH_INTERVAL);\n    </script>\n</body>\n</html>\n"
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"metrics.html":"\u003c!DOCTYPE html\u003e\n\u003chtml lang=\"en\"\u003e\n\u003chead\u003e\n    \u003cmeta charset=\"UTF-8\"\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\u003e\n    \u003ctitle\u003eCatDevOps.net - Live Cluster Metrics\u003c/title\u003e\n    \u003clink href=\"https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css\" rel=\"stylesheet\"\u003e\n    \u003clink href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css\" rel=\"stylesheet\"\u003e\n    \u003clink rel=\"preconnect\" href=\"https://fonts.googleapis.com\"\u003e\n    \u003clink rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin\u003e\n    \u003clink href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700\u0026display=swap\" rel=\"stylesheet\"\u003e\n    \u003cstyle\u003e\n        body {\n            font-family: 'Inter', sans-serif;\n        }\n        .gradient-bg {\n            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n        }\n        .metric-card {\n            transition: all 0.3s ease;\n        }\n        .metric-card:hover {\n            transform: translateY(-3px);\n            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);\n        }\n        .animate-pulse-slow {\n            animation: pulse 3s infinite;\n        }\n        .status-indicator {\n            display: inline-block;\n            width: 12px;\n            height: 12px;\n            border-radius: 50%;\n            margin-right: 8px;\n        }\n        .status-online {\n            background: #10b981;\n            box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);\n        }\n        .status-offline {\n            background: #ef4444;\n            box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);\n        }\n        .debug-info {\n            background-color: rgba(0, 0, 0, 0.3);\n            border: 1px solid #4a5568;\n            border-radius: 8px;\n            padding: 12px;\n            margin-top: 16px;\n            font-family: 'Courier New', monospace;\n            font-size: 0.75rem;\n            color: #e2e8f0;\n        }\n    \u003c/style\u003e\n\u003c/head\u003e\n\u003cbody class=\"bg-gray-900 text-white min-h-screen\"\u003e\n    \u003c!-- Header --\u003e\n    \u003cheader class=\"gradient-bg shadow-2xl\"\u003e\n        \u003cdiv class=\"container mx-auto px-6 py-8\"\u003e\n            \u003cdiv class=\"flex items-center justify-between flex-wrap\"\u003e\n                \u003cdiv class=\"flex items-center space-x-4\"\u003e\n                    \u003cdiv class=\"text-3xl md:text-4xl font-extrabold text-white animate-pulse-slow\"\u003e\n                        \u003ci class=\"fas fa-chart-line mr-2\"\u003e\u003c/i\u003e\n                        CatDevOps.net\n                    \u003c/div\u003e\n                    \u003cspan class=\"hidden md:inline-block text-sm text-gray-200\"\u003eLive Cluster Metrics\u003c/span\u003e\n                \u003c/div\u003e\n                \u003cdiv class=\"flex items-center space-x-4\"\u003e\n                    \u003cspan id=\"current-time\" class=\"text-sm md:text-base font-medium text-gray-200\"\u003e\u003c/span\u003e\n                    \u003cspan class=\"text-lg md:text-xl font-bold text-gray-200\"\u003e\n                        \u003cspan id=\"total-nodes-header\"\u003e0\u003c/span\u003e/3 Nodes Online\n                    \u003c/span\u003e\n                    \u003ca href=\"https://catdevops.net\" class=\"text-gray-200 hover:text-white transition-colors\"\u003e\n                        \u003ci class=\"fas fa-home text-xl\"\u003e\u003c/i\u003e\n                    \u003c/a\u003e\n                \u003c/div\u003e\n            \u003c/div\u003e\n        \u003c/div\u003e\n    \u003c/header\u003e\n\n    \u003c!-- Main Content --\u003e\n    \u003cmain class=\"container mx-auto px-6 py-12\"\u003e\n        \u003cdiv class=\"text-center mb-12\"\u003e\n            \u003ch1 class=\"text-4xl md:text-5xl font-bold mb-4\"\u003e\n                Real-Time Cluster Metrics\n            \u003c/h1\u003e\n            \u003cp class=\"text-gray-400 text-lg\"\u003e\n                Live monitoring of bare-metal Kubernetes cluster performance\n            \u003c/p\u003e\n        \u003c/div\u003e\n\n        \u003c!-- Cluster Overview --\u003e\n        \u003cdiv class=\"bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg p-8 mb-12 shadow-xl\"\u003e\n            \u003cdiv class=\"text-center mb-6\"\u003e\n                \u003ch2 class=\"text-2xl md:text-3xl font-bold text-white mb-4\"\u003eCluster Overview\u003c/h2\u003e\n            \u003c/div\u003e\n            \u003cdiv class=\"grid grid-cols-1 md:grid-cols-4 gap-6\"\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center\"\u003e\n                    \u003cdiv class=\"text-4xl text-green-400 mb-4\"\u003e\n                        \u003ci class=\"fas fa-server\"\u003e\u003c/i\u003e\n                    \u003c/div\u003e\n                    \u003cdiv class=\"text-xl font-bold text-gray-300 mb-2\"\u003eNodes Online\u003c/div\u003e\n                    \u003cdiv id=\"total-nodes\" class=\"text-4xl font-extrabold text-green-300\"\u003e0/3\u003c/div\u003e\n                    \u003cdiv class=\"text-gray-400\"\u003eActive\u003c/div\u003e\n                \u003c/div\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center\"\u003e\n                    \u003cdiv class=\"text-4xl text-purple-400 mb-4\"\u003e\n                        \u003ci class=\"fas fa-microchip\"\u003e\u003c/i\u003e\n                    \u003c/div\u003e\n                    \u003cdiv class=\"text-xl font-bold text-gray-300 mb-2\"\u003eAvg CPU\u003c/div\u003e\n                    \u003cdiv id=\"cluster-cpu\" class=\"text-4xl font-extrabold text-purple-300\"\u003e--%\u003c/div\u003e\n                    \u003cdiv class=\"text-gray-400\"\u003eUsage\u003c/div\u003e\n                \u003c/div\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center\"\u003e\n                    \u003cdiv class=\"text-4xl text-blue-400 mb-4\"\u003e\n                        \u003ci class=\"fas fa-memory\"\u003e\u003c/i\u003e\n                    \u003c/div\u003e\n                    \u003cdiv class=\"text-xl font-bold text-gray-300 mb-2\"\u003eAvg Memory\u003c/div\u003e\n                    \u003cdiv id=\"cluster-memory\" class=\"text-4xl font-extrabold text-blue-300\"\u003e--%\u003c/div\u003e\n                    \u003cdiv class=\"text-gray-400\"\u003eUsage\u003c/div\u003e\n                \u003c/div\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center\"\u003e\n                    \u003cdiv class=\"text-4xl text-orange-400 mb-4\"\u003e\n                        \u003ci class=\"fas fa-tachometer-alt\"\u003e\u003c/i\u003e\n                    \u003c/div\u003e\n                    \u003cdiv class=\"text-xl font-bold text-gray-300 mb-2\"\u003eAvg Load\u003c/div\u003e\n                    \u003cdiv id=\"cluster-load\" class=\"text-4xl font-extrabold text-orange-300\"\u003e--\u003c/div\u003e\n                    \u003cdiv class=\"text-gray-400\"\u003e1min\u003c/div\u003e\n                \u003c/div\u003e\n            \u003c/div\u003e\n        \u003c/div\u003e\n\n        \u003c!-- Master Node --\u003e\n        \u003cdiv class=\"bg-gradient-to-r from-purple-800 to-purple-900 rounded-lg p-8 mb-8 shadow-xl\"\u003e\n            \u003ch2 class=\"text-2xl md:text-3xl font-bold text-white mb-6 text-center\"\u003e\n                \u003cspan class=\"status-indicator\" id=\"master-status\"\u003e\u003c/span\u003e\n                Master Node (Control Plane)\n            \u003c/h2\u003e\n            \u003cdiv class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6\"\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl\"\u003e\n                    \u003cdiv class=\"flex items-center mb-4\"\u003e\n                        \u003ci class=\"fas fa-microchip text-2xl text-green-400 mr-3\"\u003e\u003c/i\u003e\n                        \u003cdiv class=\"text-lg font-bold text-gray-300\"\u003eCPU Usage\u003c/div\u003e\n                    \u003c/div\u003e\n                    \u003cdiv id=\"master-cpu-value\" class=\"text-3xl font-extrabold text-green-300 mb-2\"\u003e--\u003c/div\u003e\n                    \u003cdiv id=\"master-cpu-detail\" class=\"text-sm text-gray-400\"\u003eLoading...\u003c/div\u003e\n                \u003c/div\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl\"\u003e\n                    \u003cdiv class=\"flex items-center mb-4\"\u003e\n                        \u003ci class=\"fas fa-memory text-2xl text-blue-400 mr-3\"\u003e\u003c/i\u003e\n                        \u003cdiv class=\"text-lg font-bold text-gray-300\"\u003eMemory\u003c/div\u003e\n                    \u003c/div\u003e\n                    \u003cdiv id=\"master-memory-value\" class=\"text-3xl font-extrabold text-blue-300 mb-2\"\u003e--\u003c/div\u003e\n                    \u003cdiv id=\"master-memory-detail\" class=\"text-sm text-gray-400\"\u003eLoading...\u003c/div\u003e\n                \u003c/div\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl\"\u003e\n                    \u003cdiv class=\"flex items-center mb-4\"\u003e\n                        \u003ci class=\"fas fa-tachometer-alt text-2xl text-orange-400 mr-3\"\u003e\u003c/i\u003e\n                        \u003cdiv class=\"text-lg font-bold text-gray-300\"\u003eLoad Avg\u003c/div\u003e\n                    \u003c/div\u003e\n                    \u003cdiv id=\"master-load-value\" class=\"text-3xl font-extrabold text-orange-300 mb-2\"\u003e--\u003c/div\u003e\n                    \u003cdiv id=\"master-load-detail\" class=\"text-sm text-gray-400\"\u003e1m, 5m, 15m\u003c/div\u003e\n                \u003c/div\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl\"\u003e\n                    \u003cdiv class=\"flex items-center mb-4\"\u003e\n                        \u003ci class=\"fas fa-clock text-2xl text-purple-400 mr-3\"\u003e\u003c/i\u003e\n                        \u003cdiv class=\"text-lg font-bold text-gray-300\"\u003eUptime\u003c/div\u003e\n                    \u003c/div\u003e\n                    \u003cdiv id=\"master-uptime-value\" class=\"text-3xl font-extrabold text-purple-300 mb-2\"\u003e--\u003c/div\u003e\n                    \u003cdiv id=\"master-uptime-detail\" class=\"text-sm text-gray-400\"\u003eLoading...\u003c/div\u003e\n                \u003c/div\u003e\n            \u003c/div\u003e\n        \u003c/div\u003e\n\n        \u003c!-- Worker Node 1 --\u003e\n        \u003cdiv class=\"bg-gradient-to-r from-blue-800 to-blue-900 rounded-lg p-8 mb-8 shadow-xl\"\u003e\n            \u003ch2 class=\"text-2xl md:text-3xl font-bold text-white mb-6 text-center\"\u003e\n                \u003cspan class=\"status-indicator\" id=\"worker1-status\"\u003e\u003c/span\u003e\n                Worker Node 1 (node01.local)\n            \u003c/h2\u003e\n            \u003cdiv class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6\"\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl\"\u003e\n                    \u003cdiv class=\"flex items-center mb-4\"\u003e\n                        \u003ci class=\"fas fa-microchip text-2xl text-green-400 mr-3\"\u003e\u003c/i\u003e\n                        \u003cdiv class=\"text-lg font-bold text-gray-300\"\u003eCPU Usage\u003c/div\u003e\n                    \u003c/div\u003e\n                    \u003cdiv id=\"worker1-cpu-value\" class=\"text-3xl font-extrabold text-green-300 mb-2\"\u003e--\u003c/div\u003e\n                    \u003cdiv id=\"worker1-cpu-detail\" class=\"text-sm text-gray-400\"\u003eLoading...\u003c/div\u003e\n                \u003c/div\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl\"\u003e\n                    \u003cdiv class=\"flex items-center mb-4\"\u003e\n                        \u003ci class=\"fas fa-memory text-2xl text-blue-400 mr-3\"\u003e\u003c/i\u003e\n                        \u003cdiv class=\"text-lg font-bold text-gray-300\"\u003eMemory\u003c/div\u003e\n                    \u003c/div\u003e\n                    \u003cdiv id=\"worker1-memory-value\" class=\"text-3xl font-extrabold text-blue-300 mb-2\"\u003e--\u003c/div\u003e\n                    \u003cdiv id=\"worker1-memory-detail\" class=\"text-sm text-gray-400\"\u003eLoading...\u003c/div\u003e\n                \u003c/div\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl\"\u003e\n                    \u003cdiv class=\"flex items-center mb-4\"\u003e\n                        \u003ci class=\"fas fa-tachometer-alt text-2xl text-orange-400 mr-3\"\u003e\u003c/i\u003e\n                        \u003cdiv class=\"text-lg font-bold text-gray-300\"\u003eLoad Avg\u003c/div\u003e\n                    \u003c/div\u003e\n                    \u003cdiv id=\"worker1-load-value\" class=\"text-3xl font-extrabold text-orange-300 mb-2\"\u003e--\u003c/div\u003e\n                    \u003cdiv id=\"worker1-load-detail\" class=\"text-sm text-gray-400\"\u003e1m, 5m, 15m\u003c/div\u003e\n                \u003c/div\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl\"\u003e\n                    \u003cdiv class=\"flex items-center mb-4\"\u003e\n                        \u003ci class=\"fas fa-clock text-2xl text-purple-400 mr-3\"\u003e\u003c/i\u003e\n                        \u003cdiv class=\"text-lg font-bold text-gray-300\"\u003eUptime\u003c/div\u003e\n                    \u003c/div\u003e\n                    \u003cdiv id=\"worker1-uptime-value\" class=\"text-3xl font-extrabold text-purple-300 mb-2\"\u003e--\u003c/div\u003e\n                    \u003cdiv id=\"worker1-uptime-detail\" class=\"text-sm text-gray-400\"\u003eLoading...\u003c/div\u003e\n                \u003c/div\u003e\n            \u003c/div\u003e\n        \u003c/div\u003e\n\n        \u003c!-- Worker Node 2 --\u003e\n        \u003cdiv class=\"bg-gradient-to-r from-green-800 to-green-900 rounded-lg p-8 mb-8 shadow-xl\"\u003e\n            \u003ch2 class=\"text-2xl md:text-3xl font-bold text-white mb-6 text-center\"\u003e\n                \u003cspan class=\"status-indicator\" id=\"worker2-status\"\u003e\u003c/span\u003e\n                Worker Node 2 (node02)\n            \u003c/h2\u003e\n            \u003cdiv class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6\"\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl\"\u003e\n                    \u003cdiv class=\"flex items-center mb-4\"\u003e\n                        \u003ci class=\"fas fa-microchip text-2xl text-green-400 mr-3\"\u003e\u003c/i\u003e\n                        \u003cdiv class=\"text-lg font-bold text-gray-300\"\u003eCPU Usage\u003c/div\u003e\n                    \u003c/div\u003e\n                    \u003cdiv id=\"worker2-cpu-value\" class=\"text-3xl font-extrabold text-green-300 mb-2\"\u003e--\u003c/div\u003e\n                    \u003cdiv id=\"worker2-cpu-detail\" class=\"text-sm text-gray-400\"\u003eLoading...\u003c/div\u003e\n                \u003c/div\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl\"\u003e\n                    \u003cdiv class=\"flex items-center mb-4\"\u003e\n                        \u003ci class=\"fas fa-memory text-2xl text-blue-400 mr-3\"\u003e\u003c/i\u003e\n                        \u003cdiv class=\"text-lg font-bold text-gray-300\"\u003eMemory\u003c/div\u003e\n                    \u003c/div\u003e\n                    \u003cdiv id=\"worker2-memory-value\" class=\"text-3xl font-extrabold text-blue-300 mb-2\"\u003e--\u003c/div\u003e\n                    \u003cdiv id=\"worker2-memory-detail\" class=\"text-sm text-gray-400\"\u003eLoading...\u003c/div\u003e\n                \u003c/div\u003e\n                \u003cdiv class=\"metric-card bg-gray-8 rounded-lg p-6 shadow-xl\"\u003e\n                    \u003cdiv class=\"flex items-center mb-4\"\u003e\n                        \u003ci class=\"fas fa-tachometer-alt text-2xl text-orange-400 mr-3\"\u003e\u003c/i\u003e\n                        \u003cdiv class=\"text-lg font-bold text-gray-300\"\u003eLoad Avg\u003c/div\u003e\n                    \u003c/div\u003e\n                    \u003cdiv id=\"worker2-load-value\" class=\"text-3xl font-extrabold text-orange-300 mb-2\"\u003e--\u003c/div\u003e\n                    \u003cdiv id=\"worker2-load-detail\" class=\"text-sm text-gray-400\"\u003e1m, 5m, 15m\u003c/div\u003e\n                \u003c/div\u003e\n                \u003cdiv class=\"metric-card bg-gray-800 rounded-lg p-6 shadow-xl\"\u003e\n                    \u003cdiv class=\"flex items-center mb-4\"\u003e\n                        \u003ci class=\"fas fa-clock text-2xl text-purple-400 mr-3\"\u003e\u003c/i\u003e\n                        \u003cdiv class=\"text-lg font-bold text-gray-300\"\u003eUptime\u003c/div\u003e\n                    \u003c/div\u003e\n                    \u003cdiv id=\"worker2-uptime-value\" class=\"text-3xl font-extrabold text-purple-300 mb-2\"\u003e--\u003c/div\u003e\n                    \u003cdiv id=\"worker2-uptime-detail\" class=\"text-sm text-gray-400\"\u003eLoading...\u003c/div\u003e\n                \u003c/div\u003e\n            \u003c/div\u003e\n        \u003c/div\u003e\n\n        \u003c!-- Status Section --\u003e\n        \u003cdiv class=\"text-center space-y-4\"\u003e\n            \u003cdiv class=\"bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg p-6 shadow-xl\"\u003e\n                \u003cdiv class=\"text-lg font-semibold text-white mb-2\"\u003e\n                    \u003ci class=\"fas fa-sync-alt mr-2\"\u003e\u003c/i\u003e\n                    Auto-refreshing every 5 seconds\n                \u003c/div\u003e\n                \u003cdiv class=\"text-gray-400\"\u003e\n                    Last update: \u003cspan id=\"last-update\" class=\"text-blue-300 font-mono\"\u003eNever\u003c/span\u003e\n                \u003c/div\u003e\n            \u003c/div\u003e\n            \u003cdiv class=\"debug-info\" id=\"debug-info\"\u003eDebug: Ready\u003c/div\u003e\n        \u003c/div\u003e\n    \u003c/main\u003e\n\n    \u003c!-- Footer --\u003e\n    \u003cfooter class=\"bg-gray-800 border-t border-gray-700 py-8 mt-12\"\u003e\n        \u003cdiv class=\"container mx-auto px-6\"\u003e\n            \u003cdiv class=\"text-center\"\u003e\n                \u003cdiv class=\"flex justify-center space-x-8 mb-4\"\u003e\n                    \u003ca href=\"https://catdevops.net\" class=\"text-blue-400 hover:text-blue-300 transition-colors\"\u003e\n                        \u003ci class=\"fas fa-home mr-2\"\u003e\u003c/i\u003eHome\n                    \u003c/a\u003e\n                    \u003ca href=\"https://github.com/catdevops1/k8s-baremetal-dashboard\" target=\"_blank\" class=\"text-gray-400 hover:text-gray-300 transition-colors\"\u003e\n                        \u003ci class=\"fab fa-github mr-2\"\u003e\u003c/i\u003eGitHub\n                    \u003c/a\u003e\n                    \u003ca href=\"https://linkedin.com/in/catalin-bot\" target=\"_blank\" class=\"text-blue-400 hover:text-blue-300 transition-colors\"\u003e\n                        \u003ci class=\"fab fa-linkedin mr-2\"\u003e\u003c/i\u003eLinkedIn\n                    \u003c/a\u003e\n                \u003c/div\u003e\n                \u003cp class=\"text-gray-400 text-sm\"\u003e\n                    \u0026copy; 2025 Catalin Bot | Real-time Kubernetes monitoring on bare-metal infrastructure\n                \u003c/p\u003e\n            \u003c/div\u003e\n        \u003c/div\u003e\n    \u003c/footer\u003e\n\n    \u003cscript\u003e\n        const API_BASE_URL = window.location.origin;\n        const REFRESH_INTERVAL = 5000;\n        \n        // Store node data for cluster averages\n        let nodeMetrics = {\n            master: { cpu: 0, memory: 0, load: 0, online: false },\n            worker1: { cpu: 0, memory: 0, load: 0, online: false },\n            worker2: { cpu: 0, memory: 0, load: 0, online: false }\n        };\n\n        function debugLog(message) {\n            console.log(message);\n            document.getElementById('debug-info').textContent = `Debug: ${message}`;\n        }\n\n        function updateCurrentTime() {\n            const now = new Date();\n            const timeString = now.toLocaleTimeString();\n            document.getElementById('current-time').textContent = timeString;\n        }\n\n        async function fetchNodeMetrics(node, nodeKey) {\n            try {\n                debugLog(`Fetching ${node} metrics...`);\n                \n                // Use headers for cache-busting instead of URL parameters\n                const requestId = Math.random().toString(36).substring(7);\n                const headers = {\n                    'Cache-Control': 'no-cache, no-store, must-revalidate',\n                    'Pragma': 'no-cache',\n                    'Expires': '0',\n                    'X-Request-ID': requestId,\n                    'X-Timestamp': Date.now().toString()\n                };\n                \n                // Fetch metrics for specific node without query parameters  \n                const [cpuRes, memRes, loadRes, uptimeRes] = await Promise.all([\n                    fetch(`${API_BASE_URL}/node/${nodeKey}/cpu`, {\n                        method: 'GET',\n                        cache: 'no-store',\n                        headers: headers\n                    }),\n                    fetch(`${API_BASE_URL}/node/${nodeKey}/memory`, {\n                        method: 'GET', \n                        cache: 'no-store',\n                        headers: headers\n                    }),\n                    fetch(`${API_BASE_URL}/node/${nodeKey}/load`, {\n                        method: 'GET',\n                        cache: 'no-store', \n                        headers: headers\n                    }),\n                    fetch(`${API_BASE_URL}/node/${nodeKey}/uptime`, {\n                        method: 'GET',\n                        cache: 'no-store',\n                        headers: headers\n                    })\n                ]);\n\n                // Check if responses are OK and log status\n                debugLog(`${node} responses: CPU=${cpuRes.status}, MEM=${memRes.status}, LOAD=${loadRes.status}, UP=${uptimeRes.status}`);\n                \n                if (!cpuRes.ok || !memRes.ok || !loadRes.ok || !uptimeRes.ok) {\n                    throw new Error(`HTTP Error: CPU=${cpuRes.status}, MEM=${memRes.status}, LOAD=${loadRes.status}, UP=${uptimeRes.status}`);\n                }\n\n                // Get response text first to debug what we're receiving\n                const cpuText = await cpuRes.text();\n                const memText = await memRes.text();\n                const loadText = await loadRes.text();\n                const uptimeText = await uptimeRes.text();\n\n                // Check if response looks like JSON\n                if (!cpuText.startsWith('{') \u0026\u0026 !cpuText.startsWith('[')) {\n                    debugLog(`${node} Error: Expected JSON but got: ${cpuText.substring(0, 100)}`);\n                    throw new Error(`Invalid JSON response: ${cpuText.substring(0, 100)}`);\n                }\n\n                // Parse JSON\n                const cpuData = JSON.parse(cpuText);\n                const memData = JSON.parse(memText);\n                const loadData = JSON.parse(loadText);\n                const uptimeData = JSON.parse(uptimeText);\n\n                // Update status indicator\n                document.getElementById(`${node}-status`).className = 'status-indicator status-online';\n                nodeMetrics[node].online = true;\n\n                // CPU metrics\n                if (cpuData.data \u0026\u0026 cpuData.data[0]) {\n                    const row = cpuData.data[0];\n                    const user = row[6] || 0;\n                    const system = row[7] || 0;\n                    const nice = row[8] || 0;\n                    const iowait = row[9] || 0;\n                    const totalUsage = user + system + nice + iowait;\n                    \n                    nodeMetrics[node].cpu = totalUsage;\n                    document.getElementById(`${node}-cpu-value`).textContent = `${totalUsage.toFixed(1)}%`;\n                    document.getElementById(`${node}-cpu-detail`).textContent =\n                        `User: ${user.toFixed(1)}%, Sys: ${system.toFixed(1)}%, IO: ${iowait.toFixed(1)}%`;\n                }\n\n                // Memory metrics\n                if (memData.data \u0026\u0026 memData.data[0]) {\n                    const used = memData.data[0][1] || 0;\n                    const free = memData.data[0][2] || 0;\n                    const total = used + free;\n                    const usagePercent = ((used / total) * 100);\n                    \n                    nodeMetrics[node].memory = usagePercent;\n                    document.getElementById(`${node}-memory-value`).textContent = `${usagePercent.toFixed(1)}%`;\n                    document.getElementById(`${node}-memory-detail`).textContent = \n                        `${(used/1024).toFixed(1)} GB / ${(total/1024).toFixed(1)} GB`;\n                }\n\n                // Load metrics\n                if (loadData.data \u0026\u0026 loadData.data[0]) {\n                    const load1 = loadData.data[0][1] || 0;\n                    const load5 = loadData.data[0][2] || 0;\n                    const load15 = loadData.data[0][3] || 0;\n                    \n                    nodeMetrics[node].load = load1;\n                    document.getElementById(`${node}-load-value`).textContent = load1.toFixed(2);\n                    document.getElementById(`${node}-load-detail`).textContent = \n                        `${load1.toFixed(2)}, ${load5.toFixed(2)}, ${load15.toFixed(2)}`;\n                }\n\n                // Uptime metrics\n                if (uptimeData.data \u0026\u0026 uptimeData.data[0]) {\n                    const seconds = uptimeData.data[0][1] || 0;\n                    const days = Math.floor(seconds / 86400);\n                    const hours = Math.floor((seconds % 86400) / 3600);\n                    const minutes = Math.floor((seconds % 3600) / 60);\n                    \n                    document.getElementById(`${node}-uptime-value`).textContent = `${days}d ${hours}h`;\n                    document.getElementById(`${node}-uptime-detail`).textContent = \n                        `${days} days, ${hours} hours, ${minutes} minutes`;\n                }\n\n                debugLog(`${node} metrics updated successfully`);\n\n            } catch (err) {\n                console.error(`Error fetching ${node} metrics:`, err);\n                debugLog(`${node} Error: ${err.message}`);\n                \n                document.getElementById(`${node}-status`).className = 'status-indicator status-offline';\n                nodeMetrics[node].online = false;\n                \n                // Show error state\n                document.getElementById(`${node}-cpu-value`).innerHTML = '\u003cspan class=\"text-red-400\"\u003eError\u003c/span\u003e';\n                document.getElementById(`${node}-memory-value`).innerHTML = '\u003cspan class=\"text-red-400\"\u003eError\u003c/span\u003e';\n                document.getElementById(`${node}-load-value`).innerHTML = '\u003cspan class=\"text-red-400\"\u003eError\u003c/span\u003e';\n            }\n        }\n\n        function updateClusterOverview() {\n            const onlineNodes = Object.values(nodeMetrics).filter(n =\u003e n.online);\n            const nodeCount = onlineNodes.length;\n            \n            if (nodeCount \u003e 0) {\n                const avgCpu = onlineNodes.reduce((sum, n) =\u003e sum + n.cpu, 0) / nodeCount;\n                const avgMemory = onlineNodes.reduce((sum, n) =\u003e sum + n.memory, 0) / nodeCount;\n                const avgLoad = onlineNodes.reduce((sum, n) =\u003e sum + n.load, 0) / nodeCount;\n                \n                document.getElementById('cluster-cpu').textContent = `${avgCpu.toFixed(1)}%`;\n                document.getElementById('cluster-memory').textContent = `${avgMemory.toFixed(1)}%`;\n                document.getElementById('cluster-load').textContent = avgLoad.toFixed(2);\n            }\n            \n            document.getElementById('total-nodes').textContent = `${nodeCount}/3`;\n            document.getElementById('total-nodes-header').textContent = nodeCount;\n        }\n\n        async function fetchAllMetrics() {\n            const now = new Date();\n            document.getElementById('last-update').textContent = now.toLocaleTimeString();\n            \n            // Fetch metrics for all nodes\n            await Promise.all([\n                fetchNodeMetrics('master', 'master'),\n                fetchNodeMetrics('worker1', 'worker1'), \n                fetchNodeMetrics('worker2', 'worker2')\n            ]);\n            \n            updateClusterOverview();\n        }\n\n        // Initialize\n        updateCurrentTime();\n        setInterval(updateCurrentTime, 1000);\n        \n        // Initial fetch and setup interval\n        fetchAllMetrics();\n        setInterval(fetchAllMetrics, REFRESH_INTERVAL);\n    \u003c/script\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"minimal-api-dashboard","namespace":"netdata"}}
+    creationTimestamp: "2025-09-01T16:36:06Z"
+    name: minimal-api-dashboard
+    namespace: netdata
+    resourceVersion: "3044597"
+    uid: 2bf2dc37-e204-4002-b297-2a6c89d81386
+- apiVersion: v1
+  data:
+    default.conf: |
+      server {
+          listen 80;
+
+          # CORS headers
+          add_header "Access-Control-Allow-Origin" "*" always;
+          add_header "Access-Control-Allow-Methods" "GET, OPTIONS" always;
+          add_header "Access-Control-Allow-Headers" "Content-Type" always;
+
+          if ($request_method = "OPTIONS") {
+              return 204;
+          }
+
+          # Serve dashboard at root
+          location = / {
+              root /usr/share/nginx/html;
+              index metrics.html;
+              try_files /metrics.html =404;
+          }
+
+          # Master node: 192.168.4.100
+          location /node/master/cpu {
+              proxy_pass http://192.168.4.100:19999/api/v1/data?chart=system.cpu&after=-300&format=json;
+              proxy_set_header Host $host;
+              proxy_connect_timeout 5s;
+              proxy_read_timeout 10s;
+          }
+
+          location /node/master/memory {
+              proxy_pass http://192.168.4.100:19999/api/v1/data?chart=system.ram&after=-300&format=json;
+              proxy_set_header Host $host;
+              proxy_connect_timeout 5s;
+              proxy_read_timeout 10s;
+          }
+
+          location /node/master/load {
+              proxy_pass http://192.168.4.100:19999/api/v1/data?chart=system.load&after=-300&format=json;
+              proxy_set_header Host $host;
+              proxy_connect_timeout 5s;
+              proxy_read_timeout 10s;
+          }
+
+          location /node/master/uptime {
+              proxy_pass http://192.168.4.100:19999/api/v1/data?chart=system.uptime&after=-60&format=json;
+              proxy_set_header Host $host;
+              proxy_connect_timeout 5s;
+              proxy_read_timeout 10s;
+          }
+
+          # Worker1 node: 192.168.4.101
+          location /node/worker1/cpu {
+              proxy_pass http://192.168.4.101:19999/api/v1/data?chart=system.cpu&after=-300&format=json;
+              proxy_set_header Host $host;
+              proxy_connect_timeout 5s;
+              proxy_read_timeout 10s;
+          }
+
+          location /node/worker1/memory {
+              proxy_pass http://192.168.4.101:19999/api/v1/data?chart=system.ram&after=-300&format=json;
+              proxy_set_header Host $host;
+              proxy_connect_timeout 5s;
+              proxy_read_timeout 10s;
+          }
+
+          location /node/worker1/load {
+              proxy_pass http://192.168.4.101:19999/api/v1/data?chart=system.load&after=-300&format=json;
+              proxy_set_header Host $host;
+              proxy_connect_timeout 5s;
+              proxy_read_timeout 10s;
+          }
+
+          location /node/worker1/uptime {
+              proxy_pass http://192.168.4.101:19999/api/v1/data?chart=system.uptime&after=-60&format=json;
+              proxy_set_header Host $host;
+              proxy_connect_timeout 5s;
+              proxy_read_timeout 10s;
+          }
+
+          # Worker2 node: 192.168.4.102
+          location /node/worker2/cpu {
+              proxy_pass http://192.168.4.102:19999/api/v1/data?chart=system.cpu&after=-300&format=json;
+              proxy_set_header Host $host;
+              proxy_connect_timeout 5s;
+              proxy_read_timeout 10s;
+          }
+
+          location /node/worker2/memory {
+              proxy_pass http://192.168.4.102:19999/api/v1/data?chart=system.ram&after=-300&format=json;
+              proxy_set_header Host $host;
+              proxy_connect_timeout 5s;
+              proxy_read_timeout 10s;
+          }
+
+          location /node/worker2/load {
+              proxy_pass http://192.168.4.102:19999/api/v1/data?chart=system.load&after=-300&format=json;
+              proxy_set_header Host $host;
+              proxy_connect_timeout 5s;
+              proxy_read_timeout 10s;
+          }
+
+          location /node/worker2/uptime {
+              proxy_pass http://192.168.4.102:19999/api/v1/data?chart=system.uptime&after=-60&format=json;
+              proxy_set_header Host $host;
+              proxy_connect_timeout 5s;
+              proxy_read_timeout 10s;
+          }
+
+          # API endpoints
+          location /api/status {
+              return 200 '{"status":"healthy","nodes":{"master":"192.168.4.100","worker1":"192.168.4.101","worker2":"192.168.4.102"}}\n';
+              add_header Content-Type application/json;
+          }
+
+          location /health {
+              return 200 '{"status":"healthy"}\n';
+              add_header Content-Type application/json;
+          }
+
+          location /nodes {
+              proxy_pass http://netdata.netdata.svc.cluster.local:19999/api/v1/info;
+              proxy_set_header Host $host;
+              proxy_connect_timeout 5s;
+              proxy_read_timeout 10s;
+          }
+      }
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"default.conf":"server {\n    listen 80;\n\n    # CORS headers\n    add_header \"Access-Control-Allow-Origin\" \"*\" always;\n    add_header \"Access-Control-Allow-Methods\" \"GET, OPTIONS\" always;\n    add_header \"Access-Control-Allow-Headers\" \"Content-Type\" always;\n\n    if ($request_method = \"OPTIONS\") {\n        return 204;\n    }\n\n    # Serve dashboard at root\n    location = / {\n        root /usr/share/nginx/html;\n        index metrics.html;\n        try_files /metrics.html =404;\n    }\n\n    # Master node: 192.168.4.100\n    location /node/master/cpu {\n        proxy_pass http://192.168.4.100:19999/api/v1/data?chart=system.cpu\u0026after=-300\u0026format=json;\n        proxy_set_header Host $host;\n        proxy_connect_timeout 5s;\n        proxy_read_timeout 10s;\n    }\n\n    location /node/master/memory {\n        proxy_pass http://192.168.4.100:19999/api/v1/data?chart=system.ram\u0026after=-300\u0026format=json;\n        proxy_set_header Host $host;\n        proxy_connect_timeout 5s;\n        proxy_read_timeout 10s;\n    }\n\n    location /node/master/load {\n        proxy_pass http://192.168.4.100:19999/api/v1/data?chart=system.load\u0026after=-300\u0026format=json;\n        proxy_set_header Host $host;\n        proxy_connect_timeout 5s;\n        proxy_read_timeout 10s;\n    }\n\n    location /node/master/uptime {\n        proxy_pass http://192.168.4.100:19999/api/v1/data?chart=system.uptime\u0026after=-60\u0026format=json;\n        proxy_set_header Host $host;\n        proxy_connect_timeout 5s;\n        proxy_read_timeout 10s;\n    }\n\n    # Worker1 node: 192.168.4.101\n    location /node/worker1/cpu {\n        proxy_pass http://192.168.4.101:19999/api/v1/data?chart=system.cpu\u0026after=-300\u0026format=json;\n        proxy_set_header Host $host;\n        proxy_connect_timeout 5s;\n        proxy_read_timeout 10s;\n    }\n\n    location /node/worker1/memory {\n        proxy_pass http://192.168.4.101:19999/api/v1/data?chart=system.ram\u0026after=-300\u0026format=json;\n        proxy_set_header Host $host;\n        proxy_connect_timeout 5s;\n        proxy_read_timeout 10s;\n    }\n\n    location /node/worker1/load {\n        proxy_pass http://192.168.4.101:19999/api/v1/data?chart=system.load\u0026after=-300\u0026format=json;\n        proxy_set_header Host $host;\n        proxy_connect_timeout 5s;\n        proxy_read_timeout 10s;\n    }\n\n    location /node/worker1/uptime {\n        proxy_pass http://192.168.4.101:19999/api/v1/data?chart=system.uptime\u0026after=-60\u0026format=json;\n        proxy_set_header Host $host;\n        proxy_connect_timeout 5s;\n        proxy_read_timeout 10s;\n    }\n\n    # Worker2 node: 192.168.4.102\n    location /node/worker2/cpu {\n        proxy_pass http://192.168.4.102:19999/api/v1/data?chart=system.cpu\u0026after=-300\u0026format=json;\n        proxy_set_header Host $host;\n        proxy_connect_timeout 5s;\n        proxy_read_timeout 10s;\n    }\n\n    location /node/worker2/memory {\n        proxy_pass http://192.168.4.102:19999/api/v1/data?chart=system.ram\u0026after=-300\u0026format=json;\n        proxy_set_header Host $host;\n        proxy_connect_timeout 5s;\n        proxy_read_timeout 10s;\n    }\n\n    location /node/worker2/load {\n        proxy_pass http://192.168.4.102:19999/api/v1/data?chart=system.load\u0026after=-300\u0026format=json;\n        proxy_set_header Host $host;\n        proxy_connect_timeout 5s;\n        proxy_read_timeout 10s;\n    }\n\n    location /node/worker2/uptime {\n        proxy_pass http://192.168.4.102:19999/api/v1/data?chart=system.uptime\u0026after=-60\u0026format=json;\n        proxy_set_header Host $host;\n        proxy_connect_timeout 5s;\n        proxy_read_timeout 10s;\n    }\n\n    # API endpoints\n    location /api/status {\n        return 200 '{\"status\":\"healthy\",\"nodes\":{\"master\":\"192.168.4.100\",\"worker1\":\"192.168.4.101\",\"worker2\":\"192.168.4.102\"}}\\n';\n        add_header Content-Type application/json;\n    }\n\n    location /health {\n        return 200 '{\"status\":\"healthy\"}\\n';\n        add_header Content-Type application/json;\n    }\n\n    location /nodes {\n        proxy_pass http://netdata.netdata.svc.cluster.local:19999/api/v1/info;\n        proxy_set_header Host $host;\n        proxy_connect_timeout 5s;\n        proxy_read_timeout 10s;\n    }\n}\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"minimal-api-nginx-config","namespace":"netdata"}}
+    creationTimestamp: "2025-09-01T14:10:25Z"
+    name: minimal-api-nginx-config
+    namespace: netdata
+    resourceVersion: "3043090"
+    uid: 7b2e1452-69ac-4fb0-8159-4929da17d0eb
+- apiVersion: v1
+  data:
+    config.yml: |
+      disabled: no
+
+      name: 'kubernetes'
+
+      discover:
+        - discoverer: k8s
+          k8s:
+            - tags: unknown
+              role: pod
+              pod:
+                local_mode: yes
+      classify:
+        - name: "Control-Plane"
+          selector: unknown
+          tags: -unknown control_plane
+          match:
+            - tags: kube_scheduler
+              expr: '{{ glob .Image "k8s.gcr.io/kube-scheduler:*" }}'
+            - tags: kube_controller_manager
+              expr: '{{ glob .Image "k8s.gcr.io/kube-controller-manager:*" }}'
+        - name: "Applications"
+          selector: unknown
+          tags: -unknown applications
+          match:
+            - tags: activemq
+              expr: '{{ and (eq .Port "8161") (glob .Image "*/activemq*") }}'
+            - tags: apache
+              expr: '{{ and (eq .Port "80" "8080") (glob .Image "httpd*" "*/httpd*") }}'
+            - tags: bind
+              expr: '{{ and (eq .Port "8653") (glob .Image "*/bind*") }}'
+            - tags: cockroachdb
+              expr: '{{ and (eq .Port "8080") (glob .Image "*/cockroach*") }}'
+            - tags: consul
+              expr: '{{ and (eq .Port "8500") (glob .Image "consul*" "*/consul*") }}'
+            - tags: coredns
+              expr: '{{ and (eq .Port "9153") (glob .Image "*/coredns*") }}'
+            - tags: elasticsearch
+              expr: '{{ and (eq .Port "9200") (glob .Image "elasticsearch:*" "*/elasticsearch:*") }}'
+            - tags: fluentd
+              expr: '{{ and (eq .Port "24220") (glob .Image "fluentd*" "*/fluentd*") }}'
+            - tags: freeradius
+              expr: '{{ and (eq .Port "18121") (glob .Image "*/freeradius*") }}'
+            - tags: hdfs
+              expr: '{{ and (eq .Port "50070") (glob .Image "*/hdfs*") }}'
+            - tags: lighttpd
+              expr: '{{ and (eq .Port "80" "8080") (glob .Image "*/lighttpd*") }}'
+            - tags: logstash
+              expr: '{{ and (eq .Port "9600") (glob .Image "logstash*" "*/logstash*") }}'
+            - tags: mysql
+              expr: '{{ and (eq .Port "3306") (glob .Image "mysql*" "*/mysql*" "mariadb*" "*/mariadb*") }}'
+            - tags: nginx
+              expr: '{{ and (eq .Port "80" "8080") (glob .Image "nginx*" "*/nginx*") }}'
+            - tags: openvpn
+              expr: '{{ and (eq .Port "7505") (glob .Image "*/openvpn") }}'
+            - tags: phpfpm
+              expr: '{{ and (eq .Port "80" "8080") (glob .Image "*/phpfpm*" "*/php-fpm*") }}'
+            - tags: rabbitmq
+              expr: '{{ and (eq .Port "15672") (glob .Image "rabbitmq*" "*/rabbitmq*") }}'
+            - tags: solr
+              expr: '{{ and (eq .Port "8983") (glob .Image "solr*" "*/solr*") }}'
+            - tags: tengine
+              expr: '{{ and (eq .Port "80" "8080") (glob .Image "*/tengine*") }}'
+            - tags: unbound
+              expr: '{{ and (eq .Port "8953") (glob .Image "*/unbound*") }}'
+            - tags: vernemq
+              expr: '{{ and (eq .Port "8888") (glob .Image "*/vernemq*") }}'
+            - tags: zookeeper
+              expr: '{{ and (eq .Port "2181") (glob .Image "zookeeper*" "*/zookeeper*") }}'
+            - tags: consul_envoy
+              expr: |
+                {{ $imageOK := glob .Image "*/consul-dataplane*" -}}
+                {{ $scrapeOK := eq (get .Annotations "prometheus.io/scrape") "true" -}}
+                {{ $promPort := get .Annotations "prometheus.io/port" -}}
+                {{ $portOK1 := and (eq .Port $promPort) (not (empty .Port)) -}}
+                {{ $portOK2 := and (empty .Port) (not (empty $promPort)) -}}
+                {{ and $imageOK $scrapeOK (or $portOK1 $portOK2) }}
+        - name: "Prometheus Generic Applications"
+          selector: unknown
+          tags: -unknown prometheus_generic
+          match:
+            - tags: prometheus_generic
+              expr: |
+                {{ $scrapeOK := eq (get .Annotations "prometheus.io/scrape") "true" -}}
+                {{ $portOK := eq (default .Port (get .Annotations "prometheus.io/port")) .Port -}}
+                {{ $imageOK := not (glob .Image "netdata/netdata*" "*pulsar*" "*telegraf*") -}}
+                {{ and $scrapeOK $portOK $imageOK }}
+      compose:
+        - name: "Control-Plane"
+          selector: '!unknown control_plane'
+          config:
+            - selector: kube_scheduler
+              template: |
+                - module: prometheus
+                  name: prometheus-{{.TUID}}
+                  url: http://{{.PodIP}}:{{default "10251" .Port}}/metrics
+                  app: '{{.ContName}}'
+                  update_every: 10
+                  max_time_series: 1000
+            - selector: kube_controller_manager
+              template: |
+                - module: prometheus
+                  name: prometheus-{{.TUID}}
+                  url: http://{{.PodIP}}:{{default "10252" .Port}}/metrics
+                  app: '{{.ContName}}'
+                  update_every: 10
+                  max_time_series: 2000
+        - name: "Prometheus Generic Applications"
+          selector: '!unknown prometheus_generic'
+          config:
+            - selector: prometheus_generic
+              template: |
+                {{ $path := default "/metrics" (get .Annotations "prometheus.io/path") -}}
+                - module: prometheus
+                  name: prometheus-{{.TUID}}
+                  url: http://{{.Address}}{{$path}}
+                  app: '{{.ContName}}'
+                  update_every: 10
+                  max_time_series: 4000
+        - name: "Applications"
+          selector: '!unknown applications'
+          tags: file
+          config:
+            - selector: activemq
+              template: |
+                - module: activemq
+                  name: activemq-{{.TUID}}
+                  url: http://{{.Address}}
+            - selector: apache
+              template: |
+                - module: apache
+                  name: apache-{{.TUID}}
+                  url: http://{{.Address}}/server-status?auto
+            - selector: bind
+              template: |
+                - module: bind
+                  name: bind-{{.TUID}}
+                  url: http://{{.Address}}/json/v1
+            - selector: cockroachdb
+              template: |
+                - module: cockroachdb
+                  name: cockroachdb-{{.TUID}}
+                  url: http://{{.Address}}/_status/vars
+            - selector: consul
+              template: |
+                - module: consul
+                  name: consul-{{.TUID}}
+                  url: http://{{.Address}}
+            - selector: coredns
+              template: |
+                - module: coredns
+                  name: coredns-{{.TUID}}
+                  url: http://{{.Address}}/metrics
+            - selector: elasticsearch
+              template: |
+                - module: elasticsearch
+                  name: elasticsearch-{{.TUID}}
+                  url: http://{{.Address}}
+            - selector: consul_envoy
+              template: |
+                {{ $path := default "/metrics" (get .Annotations "prometheus.io/path") -}}
+                {{ $promPort := get .Annotations "prometheus.io/port" -}}
+                {{ $port := ternary .Port $promPort (not (empty .Port)) -}}
+                - module: envoy
+                  name: {{.TUID}}
+                  url: http://{{ .PodIP }}:{{ $port }}{{ $path }}
+            - selector: fluentd
+              template: |
+                - module: fluentd
+                  name: fluentd-{{.TUID}}
+                  url: http://{{.Address}}
+            - selector: freeradius
+              template: |
+                - module: freeradius
+                  name: freeradius-{{.TUID}}
+                  address: {{.PodIP}}
+                  port: {{.Port}}
+            - selector: hdfs
+              template: |
+                - module: hdfs
+                  name: hdfs-{{.TUID}}
+                  url: http://{{.Address}}/jmx
+            - selector: lighttpd
+              template: |
+                - module: lighttpd
+                  name: lighttpd-{{.TUID}}
+                  url: http://{{.Address}}/server-status?auto
+            - selector: logstash
+              template: |
+                - module: logstash
+                  name: logstash-{{.TUID}}
+                  url: http://{{.Address}}
+            - selector: mysql
+              template: |
+                - module: mysql
+                  name: mysql-{{.TUID}}
+                  dsn: 'netdata@tcp({{.Address}})/'
+            - selector: nginx
+              template: |
+                - module: nginx
+                  name: nginx-{{.TUID}}
+                  url: http://{{.Address}}/stub_status
+            - selector: openvpn
+              template: |
+                - module: openvpn
+                  name: openvpn-{{.TUID}}
+                  address: {{.Address}}
+            - selector: phpfpm
+              template: |
+                - module: phpfpm
+                  name: phpfpm-{{.TUID}}
+                  url: http://{{.Address}}/status?full&json
+            - selector: rabbitmq
+              template: |
+                - module: rabbitmq
+                  name: rabbitmq-{{.TUID}}
+                  url: http://{{.Address}}
+            - selector: solr
+              template: |
+                - module: solr
+                  name: solr-{{.TUID}}
+                  url: http://{{.Address}}
+            - selector: tengine
+              template: |
+                - module: tengine
+                  name: tengine-{{.TUID}}
+                  url: http://{{.Address}}/us
+            - selector: unbound
+              template: |
+                - module: unbound
+                  name: unbound-{{.TUID}}
+                  address: {{.Address}}
+                  use_tls: false
+            - selector: vernemq
+              template: |
+                - module: vernemq
+                  name: vernemq-{{.TUID}}
+                  url: http://{{.Address}}/metrics
+            - selector: zookeeper
+              template: |
+                - module: zookeeper
+                  name: zookeeper-{{.TUID}}
+                  address: {{.Address}}
+  kind: ConfigMap
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: netdata
+      meta.helm.sh/release-namespace: netdata
+    creationTimestamp: "2025-08-27T16:11:22Z"
+    labels:
+      app: netdata
+      app.kubernetes.io/managed-by: Helm
+      chart: netdata-3.7.145
+      heritage: Helm
+      release: netdata
+    name: netdata-child-sd-config-map
+    namespace: netdata
+    resourceVersion: "803050"
+    uid: 750b6ece-2ee1-4309-8a3c-70c6cdac842e
+- apiVersion: v1
+  data:
+    coredns.conf: |
+      update_every: 0
+      autodetection_retry: 0
+    go.d: |
+      modules:
+        pulsar: no
+        prometheus: yes
+    health_alarm_notify.conf: |
+      SEND_EMAIL="NO"
+      SEND_SLACK="NO"
+      SEND_DISCORD="NO"
+      SEND_TELEGRAM="NO"
+    kubelet: |
+      update_every: 1
+      autodetection_retry: 0
+      jobs:
+        - name: local
+          url: http://127.0.0.1:10255/metrics
+        - name: local
+          url: https://localhost:10250/metrics
+          tls_skip_verify: yes
+    kubelet.conf: |
+      update_every: 0
+      autodetection_retry: 0
+    kubeproxy: |
+      update_every: 1
+      autodetection_retry: 0
+      jobs:
+        - name: local
+          url: http://127.0.0.1:10249/metrics
+    kubeproxy.conf: |
+      update_every: 0
+      autodetection_retry: 0
+    netdata: |-
+      [db]
+        mode = ram
+      [web]
+        bind to = 0.0.0.0:19999
+        allow connections from = *
+        allow dashboard from = *
+        allow badges from = *
+        allow streaming from = *
+        allow netdata.conf from = *
+        allow management from = *
+      [health]
+        enabled = no
+      [ml]
+        enabled = no
+    netdata.conf: "[global]\n  update every = 1\n  memory mode = ram\n  history =
+      3600\n  \n[plugins]\n  proc = yes\n  apps = no\n  cgroups = no\n  tc = no\n
+      \ diskspace = no\n  go.d = no\n  python.d = no\n  charts.d = no\n  node.d =
+      no\n  ebpf = no\n  fping = no\n  idlejitter = no\n  ioping = no\n  nfacct =
+      no\n  perf = no\n  slabinfo = no\n  statsd = no\n  timex = no\n  \n[plugin:proc]\n
+      \ /proc/stat = yes\n  /proc/meminfo = yes\n  /proc/loadavg = yes\n  /proc/uptime
+      = yes\n  /proc/vmstat = no\n  /proc/net/dev = no\n  /proc/diskstats = no\n  /proc/net/netstat
+      = no\n  /proc/net/snmp = no\n  /proc/net/snmp6 = no\n  /proc/net/sockstat =
+      no\n  /proc/net/sockstat6 = no\n  /proc/net/softnet_stat = no\n  /proc/net/ip_vs/stats
+      = no\n  /proc/interrupts = no\n  /proc/softirqs = no\n  /proc/pressure = no\n
+      \ /proc/mdstat = no\n  /proc/sys/kernel/random/entropy_avail = no\n  /sys/devices/system/cpu/cpufreq
+      = no\n  /sys/devices/system/cpu/cpuidle = no\n  /sys/class/power_supply = no\n
+      \ /sys/class/infiniband = no\n  \n"
+    stream: |-
+      [stream]
+        enabled = yes
+        destination = netdata-parent.netdata.svc.cluster.local:19999
+        api key = d4f1e9b8-9a2c-4c22-8c6e-12c76c70e3e5
+        timeout seconds = 60
+        buffer size bytes = 1048576
+        reconnect delay seconds = 5
+        initial clock resync iterations = 60
+    stream.conf: |
+      [stream]
+        enabled = yes
+        destination = netdata:19999
+        api key = d4f1e9b8-9a2c-4c22-8c6e-12c76c70e3e5
+        timeout seconds = 60
+        buffer size bytes = 1048576
+        reconnect delay seconds = 5
+        initial clock resync iterations = 60
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"coredns.conf":"update_every: 0\nautodetection_retry: 0\n","health_alarm_notify.conf":"SEND_EMAIL=\"NO\"\nSEND_SLACK=\"NO\"\nSEND_DISCORD=\"NO\"\nSEND_TELEGRAM=\"NO\"\n","kubelet.conf":"update_every: 0\nautodetection_retry: 0\n","kubeproxy.conf":"update_every: 0\nautodetection_retry: 0\n","netdata.conf":"[global]\n  update every = 1\n  memory mode = ram\n  history = 3600\n  \n[plugins]\n  proc = yes\n  apps = no\n  cgroups = no\n  tc = no\n  diskspace = no\n  go.d = no\n  python.d = no\n  charts.d = no\n  node.d = no\n  ebpf = no\n  fping = no\n  idlejitter = no\n  ioping = no\n  nfacct = no\n  perf = no\n  slabinfo = no\n  statsd = no\n  timex = no\n  \n[plugin:proc]\n  /proc/stat = yes\n  /proc/meminfo = yes\n  /proc/loadavg = yes\n  /proc/uptime = yes\n  /proc/vmstat = no\n  /proc/net/dev = no\n  /proc/diskstats = no\n  /proc/net/netstat = no\n  /proc/net/snmp = no\n  /proc/net/snmp6 = no\n  /proc/net/sockstat = no\n  /proc/net/sockstat6 = no\n  /proc/net/softnet_stat = no\n  /proc/net/ip_vs/stats = no\n  /proc/interrupts = no\n  /proc/softirqs = no\n  /proc/pressure = no\n  /proc/mdstat = no\n  /proc/sys/kernel/random/entropy_avail = no\n  /sys/devices/system/cpu/cpufreq = no\n  /sys/devices/system/cpu/cpuidle = no\n  /sys/class/power_supply = no\n  /sys/class/infiniband = no\n  \n","stream.conf":"[stream]\n  enabled = yes\n  destination = netdata:19999\n  api key = 11111111-2222-3333-4444-555555555555\n  \n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"netdata-conf-child","namespace":"netdata"}}
+      meta.helm.sh/release-name: netdata
+      meta.helm.sh/release-namespace: netdata
+    creationTimestamp: "2025-08-27T16:11:22Z"
+    labels:
+      app: netdata
+      app.kubernetes.io/managed-by: Helm
+      chart: netdata-3.7.145
+      heritage: Helm
+      release: netdata
+    name: netdata-conf-child
+    namespace: netdata
+    resourceVersion: "1641089"
+    uid: b48935f0-9ef4-4b41-8dc6-58fc7a7cbc46
+- apiVersion: v1
+  data:
+    go.d: |
+      default_run: no
+      modules:
+        k8s_state: yes
+    go.d-k8s_state: |
+      jobs:
+        - name: k8s_state
+          update_every: 1
+    netdata: |
+      [global]
+        hostname = netdata-k8s-state
+      [db]
+        mode = ram
+      [web]
+        bind to = localhost:19999
+      [health]
+        enabled = no
+      [ml]
+        enabled = no
+      [plugins]
+        timex = no
+        checks = no
+        idlejitter = no
+        tc = no
+        diskspace = no
+        proc = no
+        cgroups = no
+        enable running new plugins = no
+        slabinfo = no
+        perf = no
+        go.d = yes
+        ioping = no
+        ebpf = no
+        charts.d = no
+        apps = no
+        python.d = no
+        fping = no
+    stream: |
+      [stream]
+        enabled = yes
+        destination = netdata:19999
+        api key = 11111111-2222-3333-4444-555555555555
+        timeout seconds = 60
+        buffer size bytes = 1048576
+        reconnect delay seconds = 5
+        initial clock resync iterations = 60
+  kind: ConfigMap
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: netdata
+      meta.helm.sh/release-namespace: netdata
+    creationTimestamp: "2025-08-27T16:11:22Z"
+    labels:
+      app: netdata
+      app.kubernetes.io/managed-by: Helm
+      chart: netdata-3.7.145
+      heritage: Helm
+      release: netdata
+    name: netdata-conf-k8s-state
+    namespace: netdata
+    resourceVersion: "803047"
+    uid: 6558a6fd-5379-473c-8c9f-b6c84185e27d
+- apiVersion: v1
+  data:
+    netdata.conf: |
+      [global]
+          mode = parent
+          memory mode = map
+          history = 7200
+          debug log level = info
+
+      [web]
+          bind to = 0.0.0.0:19999
+          allow connections from = *
+          allow management from = *
+
+      [registry]
+          enabled = yes
+
+      [streaming]
+          enabled = yes
+          allow from = *
+          api key = d4f1e9b8-9a2c-4c22-8c6e-12c76c70e3e5
+
+      [plugins]
+          apps = no
+          proc = no
+          diskspace = no
+          cgroups = no
+
+      [cloud]
+          enabled = yes
+    stream.conf: |
+      # Configuration for receiving child streams
+      [d4f1e9b8-9a2c-4c22-8c6e-12c76c70e3e5]
+          # Enable this API key for streaming
+          enabled = yes
+          # Accept connections from any IP (adjust for security)
+          allow from = *
+          # Default history in hours
+          default history = 3600
+          # Default memory mode
+          default memory mode = map
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"netdata.conf":"[global]\n    # Parent mode - receives metrics from children\n    mode = parent\n    memory mode = map\n    history = 7200\n    debug log level = info\n    \n[web]\n    bind to = 0.0.0.0:19999\n    allow connections from = *\n    allow management from = *\n    \n[registry]\n    # Enable registry for parent-child communication\n    enabled = yes\n    \n[streaming]\n    # Accept connections from children\n    enabled = yes\n    # Allow all child nodes to stream\n    allow from = *\n    # Optional: set API key (or leave empty for no auth)\n    api key = d4f1e9b8-9a2c-4c22-8c6e-12c76c70e3e5\n    \n[plugins]\n    # Parent doesn't need to collect local metrics, just aggregate\n    apps = no\n    proc = no\n    diskspace = no\n    cgroups = no\n    \n# Enable cloud features if you want Netdata Cloud integration\n[cloud]\n    enabled = yes\n","stream.conf":"# Configuration for receiving child streams\n[d4f1e9b8-9a2c-4c22-8c6e-12c76c70e3e5]\n    # Enable this API key for streaming\n    enabled = yes\n    # Accept connections from any IP (adjust for security)\n    allow from = *\n    # Default history in hours\n    default history = 3600\n    # Default memory mode\n    default memory mode = map\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"netdata-parent-config","namespace":"netdata"}}
+    creationTimestamp: "2025-08-31T17:28:45Z"
+    name: netdata-parent-config
+    namespace: netdata
+    resourceVersion: "1489879"
+    uid: 99dc4e88-6802-4d6d-a3f4-eb2c69ed7ca7
+kind: List
+metadata:
+  resourceVersion: ""
