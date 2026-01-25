@@ -470,7 +470,7 @@ data:
                                      '└── node03 (Worker)\n' +
                                      '\n' +
                                      '🌐 Networking:\n' +
-                                     '├── MetalLB (LoadBalancer: 192.168.4.200-205)\n' +
+                                     '├── MetalLB (LoadBalancer: 192.x.x.x)\n' +
                                      '├── Nginx Ingress Controller\n' +
                                      '├── Cloudflare Tunnel (External Access)\n' +
                                      '└── Flannel CNI (Pod Network)\n' +
