@@ -276,7 +276,7 @@ data:
             <div class="modal-content" style="max-width: 1200px;">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-3xl font-bold text-white">
-                        <i class="fas fa-rocket mr-3 text-cyan-400"></i>Live Applications
+                        <i class="fas fa-rocket mr-3 text-orange-400"></i>Live Applications
                     </h2>
                     <button onclick="closeApplicationsModal()" class="text-gray-400 hover:text-white text-2xl">
                         <i class="fas fa-times"></i>
