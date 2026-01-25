@@ -136,7 +136,7 @@ data:
                         <p class="text-gray-300 text-sm">Engineered a complete Kubernetes infrastructure from scratch, handling networking, storage, and high availability.</p>
                     </div>
                     <div class="text-center">
-                        <div class="text-4xl text-orange-400 mb-4">
+                        <div class="text-4xl text-red-400 mb-4">
                             <i class="fas fa-network-wired"></i>
                         </div>
                         <h3 class="text-xl font-semibold text-orange-300 mb-2">Networking Stack</h3>
@@ -206,10 +206,10 @@ data:
                     <div class="font-semibold">Live Metrics</div>
                     <div class="text-xs text-blue-200 mt-1">Netdata Dashboard</div>
                 </a>
-                <button onclick="showApplications()" class="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 p-6 rounded-lg text-center transition-all transform hover:scale-105">
+                <button onclick="showApplications()" class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 p-6 rounded-lg text-center transition-all transform hover:scale-105">
     <i class="fas fa-rocket text-3xl mb-3"></i>
     <div class="font-semibold">Live Applications</div>
-    <div class="text-xs text-orange-200 mt-1">Running Apps</div>
+    <div class="text-xs text-red-200 mt-1">Running Apps</div>
                 </button>
                 <button onclick="showCommands()" class="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 p-6 rounded-lg text-center transition-all transform hover:scale-105">
                     <i class="fas fa-terminal text-3xl mb-3"></i>
@@ -276,7 +276,7 @@ data:
             <div class="modal-content" style="max-width: 1200px;">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-3xl font-bold text-white">
-                        <i class="fas fa-rocket mr-3 text-orange-400"></i>Live Applications
+                        <i class="fas fa-rocket mr-3 text-red-400"></i>Live Applications
                     </h2>
                     <button onclick="closeApplicationsModal()" class="text-gray-400 hover:text-white text-2xl">
                         <i class="fas fa-times"></i>
@@ -335,7 +335,7 @@ data:
                         </div>
                         <p class="text-gray-300 mb-4 text-sm">This website! Static content served via nginx showcasing the Kubernetes cluster architecture, metrics, and deployed applications.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-orange-900 text-orange-200 px-2 py-1 rounded text-xs">HTML/CSS/JS</span>
+                            <span class="bg-orange-900 text-red-200 px-2 py-1 rounded text-xs">HTML/CSS/JS</span>
                             <span class="bg-red-900 text-red-200 px-2 py-1 rounded text-xs">nginx</span>
                             <span class="bg-blue-900 text-blue-200 px-2 py-1 rounded text-xs">Tailwind CSS</span>
                             <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs">default namespace</span>
