@@ -466,13 +466,26 @@ data:
                                      '└── node03 (Worker)\n' +
                                      '\n' +
                                      '🌐 Networking:\n' +
-                                     '├── MetalLB (LoadBalancer)\n' +
+                                     '├── MetalLB (LoadBalancer: 192.168.4.200-205)\n' +
                                      '├── Nginx Ingress Controller\n' +
-                                     '└── Cloudflare Tunnel (External Access)\n' +
+                                     '├── Cloudflare Tunnel (External Access)\n' +
+                                     '└── Flannel CNI (Pod Network)\n' +
                                      '\n' +
-                                     '📊 Monitoring: Netdata DaemonSet\n' +
-                                     '🔒 SSL: cert-manager + Let\'s Encrypt\n' +
-                                     '🚀 GitOps: ArgoCD';
+                                     '💾 Storage:\n' +
+                                     '└── Longhorn (Distributed Block Storage)\n' +
+                                     '\n' +
+                                     '📊 Monitoring & Observability:\n' +
+                                     '├── Netdata (Real-time Metrics)\n' +
+                                     '└── Custom Metrics API (metrics.catdevops.net)\n' +
+                                     '\n' +
+                                     '🔒 Security & TLS:\n' +
+                                     '└── cert-manager + Let\'s Encrypt\n' +
+                                     '\n' +
+                                     '🚀 GitOps & Deployment:\n' +
+                                     '└── ArgoCD (Continuous Deployment)\n' +
+                                     '\n' +
+                                     '📦 Container Runtime:\n' +
+                                     '└── containerd';
                 showModal('Kubernetes Cluster Architecture', architecture);
             }
 
