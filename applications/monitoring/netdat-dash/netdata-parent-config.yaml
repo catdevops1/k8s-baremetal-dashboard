@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: netdata-parent-config
+  namespace: netdata
+data:
+  netdata.conf: |
+    [global]
+        # Parent mode - receives metrics from children
+        mode = parent
+        memory mode = dbengine
+        page cache size = 64
+        dbengine multihost disk space = 1024
+        history = 7200
+        debug log level = info
+
+    [web]
+        bind to = 0.0.0.0:19999
+        allow connections from = *
+        allow management from = *
+
+    [registry]
+        # Enable registry for parent-child communication
+        enabled = yes
+
+    [streaming]
+        # Accept connections from children
+        enabled = yes
+        # Allow all child nodes to stream
+        allow from = *
+        # Optional: set API key (or leave empty for no auth)
+        api key = d4f1e9b8-9a2c-4c22-8c6e-12c76c70e3e5
+
+    [plugins]
+        # Parent doesn't need to collect local metrics, just aggregate
+        apps = no
+        proc = no
+        diskspace = no
+        cgroups = no
+
+    # Enable cloud features if you want Netdata Cloud integration
+    [cloud]
+        enabled = yes
+  stream.conf: |
+    # Configuration for receiving child streams
+    [d4f1e9b8-9a2c-4c22-8c6e-12c76c70e3e5]
+        # Enable this API key for streaming
+        enabled = yes
+        # Accept connections from any IP (adjust for security)
+        allow from = *
+        # Default history in hours
+        default history = 3600
+        # Default memory mode
+        default memory mode = dbengine
