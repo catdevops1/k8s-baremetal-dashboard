@@ -1,0 +1,133 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netdata-parent-fixed
+  namespace: netdata
+  labels:
+    app: netdata
+    component: parent
+    release: netdata
+    role: parent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netdata
+      component: parent
+      release: netdata
+      role: parent
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: netdata
+        component: parent
+        release: netdata
+        role: parent
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+          operator: Exists
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
+          operator: Exists
+      containers:
+        - name: netdata
+          image: netdata/netdata:v1.44.3
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NETDATA_MODE
+              value: parent
+            - name: NETDATA_STREAM_ENABLED
+              value: "true"
+            - name: NETDATA_CLAIM_TOKEN
+              value: ""
+            - name: NETDATA_CLAIM_ROOMS
+              value: ""
+            - name: NETDATA_CLAIM_URL
+              value: ""
+          ports:
+            - containerPort: 19999
+              name: http
+              protocol: TCP
+            - containerPort: 8125
+              name: statsd
+              protocol: UDP
+          livenessProbe:
+            httpGet:
+              path: /api/v1/info
+              port: 19999
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/v1/info
+              port: 19999
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          securityContext:
+            capabilities:
+              add:
+                - SYS_PTRACE
+              drop:
+                - ALL
+            runAsNonRoot: false
+            runAsUser: 201
+          volumeMounts:
+            - mountPath: /etc/netdata/netdata.conf
+              name: netdata-config
+              subPath: netdata.conf
+            - mountPath: /etc/netdata/stream.conf
+              name: netdata-config
+              subPath: stream.conf
+            - mountPath: /var/lib/netdata
+              name: netdata-lib
+            - mountPath: /var/cache/netdata
+              name: netdata-cache
+            - mountPath: /host/proc
+              name: proc
+              readOnly: true
+            - mountPath: /host/sys
+              name: sys
+              readOnly: true
+            - mountPath: /host/run
+              name: run
+              readOnly: true
+            - mountPath: /var/run/docker.sock
+              name: docker-sock
+      volumes:
+        - name: netdata-config
+          configMap:
+            name: netdata-parent-config
+        - name: netdata-lib
+          emptyDir: {}
+        - name: netdata-cache
+          emptyDir: {}
+        - name: proc
+          hostPath:
+            path: /proc
+        - name: sys
+          hostPath:
+            path: /sys
+        - name: run
+          hostPath:
+            path: /run
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
