@@ -430,7 +430,40 @@ data:
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    <!-- Vault -->
+                   <!-- Cluster AI -->
+                    <div class="app-card bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-cyan-500" onclick="window.open('https://github.com/catdevops1/cluster-ai')">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center">
+                                <div class="bg-cyan-700 p-3 rounded-lg mr-4">
+                                    <i class="fas fa-robot text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Cluster AI</h3>
+                                    <p class="text-sm text-gray-400">FastAPI · Claude + Ollama · Telegram</p>
+                                </div>
+                            </div>
+                            <span class="status-badge">
+                                <span class="status-dot bg-white"></span>
+                                Live
+                            </span>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm">Natural-language Kubernetes assistant plus an autonomous agent that watches the cluster 24/7 across compute, storage, certs, Vault, and GitOps. On failure it has Claude write a fix runbook and pushes a Telegram alert — then a read-only bot lets you query live state from your phone (<code>/get nodes</code>, <code>/get events</code>, <code>/logs</code>, <code>/status</code>).</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-cyan-900 text-cyan-200 px-2 py-1 rounded text-xs">FastAPI</span>
+                            <span class="bg-purple-900 text-purple-200 px-2 py-1 rounded text-xs">Claude</span>
+                            <span class="bg-green-900 text-green-200 px-2 py-1 rounded text-xs">Ollama</span>
+                            <span class="bg-blue-900 text-blue-200 px-2 py-1 rounded text-xs">Telegram Bot</span>
+                            <span class="bg-indigo-900 text-indigo-200 px-2 py-1 rounded text-xs">ArgoCD</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-400"><i class="fas fa-bell mr-2"></i>Alerts + Telegram control</span>
+                            <span class="text-cyan-400 hover:text-cyan-300">
+                                cluster-ai <i class="fas fa-external-link-alt ml-1"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                <!-- Vault -->
                     <div class="app-card bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-yellow-500" onclick="window.open('https://github.com/catdevops1/vault-config-pub')">
                         <div class="flex items-start justify-between mb-4">
                             <div class="flex items-center">
