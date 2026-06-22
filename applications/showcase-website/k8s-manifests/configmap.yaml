@@ -133,7 +133,7 @@ data:
                             <i class="fas fa-laptop"></i>
                         </div>
                         <h3 class="text-xl font-semibold text-blue-300 mb-2">Core Infrastructure</h3>
-                        <p class="text-gray-300 text-sm">Built a 5-node bare-metal cluster on repurposed hardware using kubeadm. Migrated storage from hostPath to Longhorn with 3-way replication, and upgraded Kubernetes v1.33→v1.35 across 90+ pods with zero downtime.</p>
+                        <p class="text-gray-300 text-sm">Built a 4-node bare-metal cluster on repurposed hardware using kubeadm. Migrated storage from hostPath to Longhorn with 3-way replication, and upgraded Kubernetes v1.33→v1.35 across 90+ pods with zero downtime.</p>
                     </div>
                     <div class="text-center">
                         <div class="text-4xl text-red-400 mb-4">
