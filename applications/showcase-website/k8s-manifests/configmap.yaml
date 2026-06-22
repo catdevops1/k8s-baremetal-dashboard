@@ -133,21 +133,21 @@ data:
                             <i class="fas fa-laptop"></i>
                         </div>
                         <h3 class="text-xl font-semibold text-blue-300 mb-2">Core Infrastructure</h3>
-                        <p class="text-gray-300 text-sm">Engineered a complete Kubernetes infrastructure from scratch, handling networking, storage, and high availability.</p>
+                        <p class="text-gray-300 text-sm">Built a 5-node bare-metal cluster on repurposed hardware using kubeadm. Migrated storage from hostPath to Longhorn with 3-way replication, and upgraded Kubernetes v1.33→v1.35 across 90+ pods with zero downtime.</p>
                     </div>
                     <div class="text-center">
                         <div class="text-4xl text-red-400 mb-4">
                             <i class="fas fa-network-wired"></i>
                         </div>
                         <h3 class="text-xl font-semibold text-orange-300 mb-2">Networking Stack</h3>
-                        <p class="text-gray-300 text-sm">Implemented external access via Cloudflare Tunnel and bare-metal load balancing with MetalLB for production-grade networking.</p>
+                        <p class="text-gray-300 text-sm">Zero open ports — all traffic routed via Cloudflare Tunnel through Envoy Gateway (Kubernetes Gateway API). MetalLB for bare-metal load balancing, cert-manager + Let's Encrypt for automated TLS across all apps.</p>
                     </div>
                     <div class="text-center">
                         <div class="text-4xl text-green-400 mb-4">
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <h3 class="text-xl font-semibold text-green-300 mb-2">Real Results</h3>
-                        <p class="text-gray-300 text-sm">Achieved 99.9% uptime with real-time monitoring, serving 12+ API requests per second with sub-second response times.</p>
+                        <p class="text-gray-300 text-sm">4 production applications deployed and running. Autonomous AI agent monitors the cluster 24/7 and sends Telegram alerts with fix runbooks. 155 pods across 4 nodes on repurposed hardware — no cloud provider.</p>
                     </div>
                 </div>
                 <div class="text-center mt-8">
@@ -270,13 +270,13 @@ data:
                     <div>
                         <h3 class="text-lg font-semibold text-white mb-3">The Story</h3>
                         <div class="text-gray-300 text-sm">
-                            <p class="mb-2">What started as a challenge to build Kubernetes on repurposed hardware became a production-ready monitoring platform.</p>
+                            <p class="mb-2">Started with repurposed hardware and kubeadm. Now running 4 nodes, 155 pods, 4 production apps, HashiCorp Vault with AWS KMS, GitOps via ArgoCD, and an AI agent that monitors the cluster and texts me when something breaks.</p>
                             <p class="text-xs text-gray-400">Practical DevOps engineering in action</p>
                         </div>
                     </div>
                 </div>
                 <div class="border-t border-gray-700 mt-8 pt-4 text-center text-gray-400 text-sm">
-                    <p>&copy; 2025 Catalin B. | Building production infrastructure from the ground up</p>
+                    <p>&copy; 2026 Catalin B. | Building production infrastructure from the ground up</p>
                 </div>
             </div>
         </footer>
@@ -582,7 +582,7 @@ data:
                         <div class="flex flex-wrap gap-2 mb-4">
                             <span class="bg-blue-900 text-blue-200 px-2 py-1 rounded text-xs">kubeadm</span>
                             <span class="bg-teal-900 text-teal-200 px-2 py-1 rounded text-xs">etcd</span>
-                            <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs">90+ pods</span>
+            <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs">90+ pods</span>
                             <span class="bg-yellow-900 text-yellow-200 px-2 py-1 rounded text-xs">⭐ 2 stars</span>
                         </div>
                         <div class="flex items-center justify-between text-sm">
