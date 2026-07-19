@@ -1,202 +1,109 @@
-# 🚀 Kubernetes Bare-Metal Dashboard
+# Production Kubernetes on Bare Metal
 
-> **Live demonstration of a production-ready bare-metal Kubernetes cluster with real-time monitoring and professional web interface**
+Production-grade 5-node bare-metal Kubernetes cluster with real-time monitoring, GitOps deployments, and Vault-managed secrets.
 
-[![Cluster Status](https://img.shields.io/badge/Cluster-Operational-green?style=for-the-badge&logo=kubernetes)](https://catdevops.net)
-[![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.33.3-blue?style=for-the-badge&logo=kubernetes)](https://kubernetes.io)
-[![SSL](https://img.shields.io/badge/SSL-Let's_Encrypt-green?style=for-the-badge&logo=letsencrypt)](https://catdevops.net)
+**Live:** [catdevops.net](https://catdevops.net)
+**Live Metrics:** [metrics.catdevops.net](https://metrics.catdevops.net)
 
-## 🌐 Live Website
-**Main Dashboard**: [catdevops.net](https://catdevops.net)  
-**Monitoring**: [app.catdevops.net](https://app.catdevops.net) (Netdata)
+## Cluster Overview
 
-## 📊 Current Status
+| Component | Details |
+|---|---|
+| Kubernetes | v1.35.0 |
+| Nodes | 5 (1 control-plane + 4 workers) |
+| Runtime | containerd |
+| OS | Ubuntu 24.04 LTS |
+| Uptime | 343+ days |
+
+## Architecture
+
 ```
-🖥️  Nodes:     3/3 Ready
-🚀 Pods:      25+ Running  
-🌐 Services:  12 Active
-🔒 SSL:       Valid (Let's Encrypt)
-☁️  Tunnel:    Connected (Cloudflare)
-⏰ Uptime:    18+ days
-```
-
-## 🏗️ Architecture
-
-### Infrastructure Stack
-- **Platform**: Bare-metal servers (home lab)
-- **Container Runtime**: containerd  
-- **CNI**: Flannel networking
-- **Load Balancer**: MetalLB (Layer 2)
-- **Ingress Controller**: Nginx
-- **External Access**: Cloudflare Tunnel (bypasses ISP port blocking)
-- **SSL/TLS**: cert-manager + Let's Encrypt
-- **Storage**: Local persistent volumes
-- **Monitoring**: Netdata DaemonSet + custom dashboard
-
-### Network Flow
-```
-Internet → Cloudflare Edge → Tunnel → Kubernetes Ingress → Services → Pods
+Internet → Cloudflare Edge → Tunnel → Envoy Gateway → Services → Pods
 ```
 
-## 🚀 Quick Start
+### Networking
+- **CNI:** Flannel
+- **Load Balancer:** MetalLB (Layer 2)
+- **Gateway:** Envoy Gateway (Gateway API)
+- **External Access:** Cloudflare Tunnel
+- **TLS:** cert-manager + Let's Encrypt
 
-### One-Command Setup
-```bash
-# Download and run setup script
-curl -sSL https://raw.githubusercontent.com/catdevops1/k8s-baremetal-dashboard/main/setup.sh | bash
+### Storage & Secrets
+- **Storage:** Longhorn (distributed block storage)
+- **Secrets:** HashiCorp Vault with AWS KMS auto-unseal
+- **Secret Sync:** External Secrets Operator → Vault KV
+
+### GitOps & Observability
+- **CD:** ArgoCD (auto-sync enabled)
+- **Monitoring:** Netdata (parent-child streaming architecture)
+- **Metrics:** metrics-server (hostNetwork, port 4443)
+
+## What's In This Repo
+
+| Component | Stack | Description |
+|---|---|---|
+| [Showcase Website](https://catdevops.net) | HTML/JS · Nginx | Live cluster metrics dashboard with real-time node stats |
+| Netdata Metrics API | Nginx · Python · kubectl | Reverse proxy + sidecar that serves per-node metrics and cluster info |
+| Netdata Parent | Netdata · Vault/ESO | Streaming aggregator with Vault-managed API key via init container |
+
+## Secrets Management
+
+Application secrets are managed through Vault with zero secrets in git:
+
+```
+Vault (in-cluster, KMS auto-unseal)
+    ↓
+External Secrets Operator (watches ExternalSecret CRDs)
+    ↓
+Kubernetes Secrets (auto-refreshed hourly)
+    ↓
+Application pods
 ```
 
-### Manual Setup
-```bash
-# Clone repository
-git clone git@github.com:catdevops1/k8s-baremetal-dashboard.git
-cd k8s-baremetal-dashboard
+The Netdata streaming key uses an init container pattern — the ConfigMap holds a placeholder, and a busybox init container injects the real key from the Vault-synced Secret before the main container starts.
 
-# Run setup
-./setup.sh
+## Repository Structure
 
-# Or deploy manually
-./scripts/deploy.sh
-```
-
-## 📁 Project Structure
 ```
 k8s-baremetal-dashboard/
-├── 📁 applications/
-│   └── showcase-website/
-│       ├── frontend/src/          # Website source code
-│       └── k8s-manifests/         # Kubernetes configurations
-├── 📁 scripts/                    # Management scripts
-│   ├── deploy.sh                  # Deploy/update website
-│   ├── health-check.sh            # Cluster health monitoring
-│   ├── update-website.sh          # Update website content
-│   └── view-logs.sh               # View application logs
-├── 📁 infrastructure/             # Infrastructure as Code
-├── 📁 docs/                       # Documentation
-└── README.md                      # This file
+├── applications/
+│   ├── monitoring/netdat-dash/     # Netdata parent + metrics API
+│   │   ├── netdata-parent-config.yaml
+│   │   ├── netdata-parent-deployment.yaml
+│   │   ├── cluster-info-script-configmap.yaml
+│   │   ├── minimal-api-*.yaml      # Nginx reverse proxy for metrics
+│   │   └── rbac.yaml
+│   └── showcase-website/           # catdevops.net
+│       ├── frontend/src/
+│       └── k8s-manifests/
+├── argocd/applications/            # ArgoCD app definitions
+├── values.yaml                     # Helm values (Netdata chart)
+└── README.md
 ```
 
-## 🛠️ Management Commands
+## Related Repositories
 
-```bash
-# Deploy or update website
-./scripts/deploy.sh
+| Repository | Purpose |
+|---|---|
+| [homelab-k8s-config](https://github.com/catdevops1/homelab-k8s-config) | Vault, ESO, Cloudflare Tunnel, Envoy Gateway, ExternalSecrets |
+| [cluster-ai](https://github.com/catdevops1/cluster-ai) | Autonomous cluster monitoring agent |
+| [vault-config-pub](https://github.com/catdevops1/vault-config-pub) | Vault configuration reference |
 
-# Check cluster and application health
-./scripts/health-check.sh
+## How It Works
 
-# Update website content
-./scripts/update-website.sh
+The showcase website at [catdevops.net](https://catdevops.net) displays live cluster metrics by running a sidecar architecture:
 
-# View application logs
-./scripts/view-logs.sh
+1. **Netdata child agents** (DaemonSet) collect host metrics on each node
+2. **Nginx reverse proxy** (minimal-api) forwards per-node metric requests to each child's Netdata API
+3. **Python sidecar** (cluster-info-script) runs kubectl to provide cluster-level data (pod counts, node info)
+4. **Frontend JS** polls both endpoints every 5 seconds and renders the dashboard
 
-# View live logs (follow mode)
-./scripts/view-logs.sh follow
-```
+All infrastructure changes deploy through ArgoCD — push to main, ArgoCD syncs, pods roll out.
 
-## 🔧 Features Demonstrated
+## Contact
 
-### Kubernetes Concepts
-- [x] **Multi-node bare-metal cluster** deployment and management
-- [x] **MetalLB LoadBalancer** services on bare metal
-- [x] **Nginx Ingress Controller** with SSL termination
-- [x] **Persistent storage** with local volumes
-- [x] **ConfigMaps and Secrets** management
-- [x] **Resource limits** and health checks
-- [x] **Rolling deployments** and scaling
+- **GitHub:** [@catdevops1](https://github.com/catdevops1/k8s-baremetal-dashboard)
+- **LinkedIn:** [Catalin Bot](https://www.linkedin.com/in/catalin-bot/)
 
-### DevOps Best Practices
-- [x] **Infrastructure as Code** (YAML manifests)
-- [x] **GitOps workflow** (Git-based deployment)
-- [x] **Automated SSL certificates** (cert-manager)
-- [x] **Real-time monitoring** (Netdata + custom dashboard)
-- [x] **Professional documentation**
-- [x] **Automation scripts** for management
-
-### Networking Solutions
-- [x] **Cloudflare Tunnel** (bypassing ISP restrictions)
-- [x] **Load balancing** on bare metal infrastructure
-- [x] **Multi-domain routing** through ingress
-- [x] **SSL/TLS automation** and certificate management
-
-## 🌍 Why This Project Matters
-
-This project demonstrates real-world skills:
-
-1. **Production Kubernetes** deployment on bare-metal infrastructure
-2. **Cost-effective alternative** to expensive cloud solutions
-3. **Network engineering** solutions (bypassing ISP limitations)
-4. **Security implementation** (SSL automation, secure tunneling)
-5. **Monitoring and observability** (real-time metrics and dashboards)
-6. **Professional presentation** (polished web interface)
-
-## 📊 Performance Metrics
-
-Current cluster performance (live data):
-- **Average Response Time**: < 100ms
-- **Uptime**: 99.9%+
-- **SSL Rating**: A+ (SSL Labs)
-- **Load Time**: < 2s (fully loaded)
-- **Resource Utilization**: CPU ~25%, Memory ~65%
-
-## 🚨 Troubleshooting
-
-### Common Issues
-
-**Website not accessible?**
-```bash
-# Check DNS and ingress
-./scripts/health-check.sh
-nslookup catdevops.net
-kubectl get ingress showcase-website
-```
-
-**Pods not starting?**
-```bash
-# Check pod status and events
-kubectl get pods -l app=showcase-website
-kubectl describe pods -l app=showcase-website
-kubectl get events --sort-by=.metadata.creationTimestamp
-```
-
-**SSL certificate issues?**
-```bash
-# Check certificate status
-kubectl get certificate -A
-kubectl describe certificate catdevops-net-tls
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Kubernetes Community** - Amazing container orchestration platform
-- **MetalLB** - Making LoadBalancer services possible on bare metal
-- **Cloudflare** - Tunnel technology and global CDN
-- **Let's Encrypt** - Free SSL certificates for everyone
-- **Netdata** - Incredible real-time monitoring solution
-
-## 📞 Contact & Support
-
-- **Live Website**: [catdevops.net](https://catdevops.net)
-- **GitHub**: [@catdevops1](https://github.com/catdevops1)
-- **Issues**: [Report a bug](https://github.com/catdevops1/k8s-baremetal-dashboard/issues)
-
----
-
-**⭐ If this project helped you learn Kubernetes or inspired your homelab setup, please give it a star!**
-
-> *"The best way to learn Kubernetes is to run it in production. The second best way is to run it at home."*
 
 **Built with ❤️ using bare-metal infrastructure, open-source tools, and a passion for technology.**
