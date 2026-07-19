@@ -29,7 +29,7 @@ data:
         # Allow all child nodes to stream
         allow from = *
         # Optional: set API key (or leave empty for no auth)
-        api key = d4f1e9b8-9a2c-4c22-8c6e-12c76c70e3e5
+        api key = __STREAMING_API_KEY__
 
     [plugins]
         # Parent doesn't need to collect local metrics, just aggregate
@@ -43,7 +43,7 @@ data:
         enabled = yes
   stream.conf: |
     # Configuration for receiving child streams
-    [d4f1e9b8-9a2c-4c22-8c6e-12c76c70e3e5]
+    [__STREAMING_API_KEY__]
         # Enable this API key for streaming
         enabled = yes
         # Accept connections from any IP (adjust for security)

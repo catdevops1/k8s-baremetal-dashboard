@@ -38,6 +38,26 @@ spec:
         - effect: NoSchedule
           key: node-role.kubernetes.io/control-plane
           operator: Exists
+      initContainers:
+        - name: inject-streaming-key
+          image: busybox:1.36
+          command: ['sh', '-c']
+          args:
+            - |
+              KEY=$(cat /secret/API_KEY)
+              cp /config-template/netdata.conf /config/netdata.conf
+              cp /config-template/stream.conf /config/stream.conf
+              sed -i "s/__STREAMING_API_KEY__/$KEY/g" /config/netdata.conf
+              sed -i "s/__STREAMING_API_KEY__/$KEY/g" /config/stream.conf
+              echo "Streaming key injected successfully"
+          volumeMounts:
+            - name: config-template
+              mountPath: /config-template
+            - name: config-rendered
+              mountPath: /config
+            - name: streaming-key
+              mountPath: /secret
+              readOnly: true
       containers:
         - name: netdata
           image: netdata/netdata:v1.44.3
@@ -91,10 +111,10 @@ spec:
             runAsUser: 201
           volumeMounts:
             - mountPath: /etc/netdata/netdata.conf
-              name: netdata-config
+              name: config-rendered
               subPath: netdata.conf
             - mountPath: /etc/netdata/stream.conf
-              name: netdata-config
+              name: config-rendered
               subPath: stream.conf
             - mountPath: /var/lib/netdata
               name: netdata-lib
@@ -112,9 +132,14 @@ spec:
             - mountPath: /var/run/docker.sock
               name: docker-sock
       volumes:
-        - name: netdata-config
+        - name: config-template
           configMap:
             name: netdata-parent-config
+        - name: config-rendered
+          emptyDir: {}
+        - name: streaming-key
+          secret:
+            secretName: netdata-streaming-key
         - name: netdata-lib
           emptyDir: {}
         - name: netdata-cache
