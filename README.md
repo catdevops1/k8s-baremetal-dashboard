@@ -5,6 +5,11 @@ Production-grade 5-node bare-metal Kubernetes cluster with real-time monitoring,
 **Live:** [catdevops.net](https://catdevops.net)
 **Live Metrics:** [metrics.catdevops.net](https://metrics.catdevops.net)
 
+## Screenshots
+
+### Live Cluster Metrics
+![Live Metrics Dashboard](docs/screenshots/metrics-dashboard.png)
+
 ## Cluster Overview
 
 | Component | Details |
