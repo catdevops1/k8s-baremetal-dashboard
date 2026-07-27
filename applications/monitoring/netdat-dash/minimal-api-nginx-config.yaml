@@ -12,6 +12,10 @@ data:
         add_header "Access-Control-Allow-Origin" "*" always;
         add_header "Access-Control-Allow-Methods" "GET, OPTIONS" always;
         add_header "Access-Control-Allow-Headers" "Content-Type" always;
+        proxy_hide_header Access-Control-Allow-Origin;
+        proxy_hide_header Access-Control-Allow-Methods;
+        proxy_hide_header Access-Control-Allow-Headers;
+        proxy_hide_header Access-Control-Allow-Credentials;
 
         if ($request_method = "OPTIONS") {
             return 204;
