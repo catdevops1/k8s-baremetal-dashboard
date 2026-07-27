@@ -164,6 +164,7 @@ data:
                             <span class="bg-pink-600 text-white px-2 py-1 rounded text-xs">cert-manager</span>
                             <span class="bg-teal-600 text-white px-2 py-1 rounded text-xs">Longhorn</span>
                             <span class="bg-cyan-600 text-white px-2 py-1 rounded text-xs">Flannel</span>
+                            <span class="bg-gray-600 text-white px-2 py-1 rounded text-xs">GitHub Actions</span>
                         </div>
                     </div>
                 </div>
@@ -697,11 +698,20 @@ data:
                                      '└── cert-manager + Let\'s Encrypt\n' +
                                      '\n' +
                                      '🚀 GitOps & Deployment:\n' +
-                                     '└── ArgoCD (Continuous Deployment)\n' +
+                                     '├── ArgoCD (Continuous Deployment)\n' +
+                                     '└── GitHub Actions (CI Pipeline)\n' +
                                      '\n' +
                                      '📦 Container Runtime:\n' +
                                      '└── containerd';
-                showModal('Kubernetes Cluster Architecture', architecture);
+                document.getElementById('modal-title').textContent = 'Kubernetes Cluster Architecture';
+                document.getElementById('modal-message').innerHTML = '<pre>' + architecture + '</pre>' +
+                    '<div style="text-align: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #4a5568;">' +
+                    '<a href="https://raw.githubusercontent.com/catdevops1/k8s-baremetal-dashboard/main/docs/screenshots/k8s-illustration3.webp" ' +
+                    'target="_blank" rel="noopener" ' +
+                    'style="color: #63b3ed; text-decoration: none; font-size: 0.95rem;">' +
+                    '<i class="fas fa-image" style="margin-right: 8px;"></i>' +
+                    'View Full Visual Architecture →</a></div>';
+                document.getElementById('modal-overlay').style.display = 'flex';
             }
 
             window.onload = function() {
