@@ -177,7 +177,7 @@ data:
                     </div>
                     <div class="text-xl font-bold text-gray-300 mb-2">CPU Usage</div>
                     <div id="cpu-usage" class="text-4xl font-extrabold text-purple-300">N/A</div>
-                    <div class="text-gray-400">Total</div>
+                    <div class="text-gray-400">Avg</div>
                 </div>
                 <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center">
                     <div class="text-4xl text-blue-400 mb-4">
@@ -185,7 +185,7 @@ data:
                     </div>
                     <div class="text-xl font-bold text-gray-300 mb-2">Memory Usage</div>
                     <div id="memory-usage" class="text-4xl font-extrabold text-blue-300">N/A</div>
-                    <div class="text-gray-400">Total</div>
+                    <div class="text-gray-400">Avg</div>
                 </div>
                 <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center">
                     <div class="text-4xl text-yellow-400 mb-4">
@@ -197,11 +197,11 @@ data:
                 </div>
                 <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center">
                     <div class="text-4xl text-green-400 mb-4">
-                        <i class="fas fa-network-wired"></i>
+                        <i class="fas fa-calendar-alt"></i>
                     </div>
-                    <div class="text-xl font-bold text-gray-300 mb-2">Ingresses</div>
+                    <div class="text-xl font-bold text-gray-300 mb-2">Cluster Age</div>
                     <div id="ingresses" class="text-4xl font-extrabold text-green-300">N/A</div>
-                    <div class="text-gray-400">Total</div>
+                    <div class="text-gray-400">Days</div>
                 </div>
             </div>
 
@@ -624,6 +624,9 @@ data:
         </div>
 
         <script>
+            const METRICS_API = 'https://metrics.catdevops.net';
+            const NODES = ['master', 'worker1', 'worker2', 'worker3'];
+
             function showModal(title, message) {
                 document.getElementById('modal-title').textContent = title;
                 document.getElementById('modal-message').innerHTML = '<pre>' + message + '</pre>';
@@ -642,20 +645,74 @@ data:
                 document.getElementById('applications-modal').style.display = 'none';
             }
 
-            function updateMetrics() {
-                const cpuUsage = (Math.random() * 50 + 20).toFixed(2);
-                const memoryUsage = (Math.random() * 60 + 10).toFixed(2);
-                const podsRunning = Math.floor(Math.random() * 200) + 50;
-                const ingresses = Math.floor(Math.random() * 10) + 1;
+            function showProjects() {
+                document.getElementById('projects-modal').style.display = 'flex';
+            }
 
-                document.getElementById('cpu-usage').textContent = cpuUsage + '%';
-                document.getElementById('memory-usage').textContent = memoryUsage + 'GB';
-                document.getElementById('pods-running').textContent = podsRunning;
-                document.getElementById('ingresses').textContent = ingresses;
+            function closeProjectsModal() {
+                document.getElementById('projects-modal').style.display = 'none';
+            }
 
-                const now = new Date();
-                const timeString = now.toLocaleTimeString();
-                document.getElementById('current-time').textContent = 'Last updated: ' + timeString;
+            async function fetchNode(nodeKey) {
+                try {
+                    const [cpuRes, memRes] = await Promise.all([
+                        fetch(METRICS_API + '/node/' + nodeKey + '/cpu', { cache: 'no-store' }),
+                        fetch(METRICS_API + '/node/' + nodeKey + '/memory', { cache: 'no-store' })
+                    ]);
+                    if (!cpuRes.ok || !memRes.ok) return null;
+
+                    const cpuData = await cpuRes.json();
+                    const memData = await memRes.json();
+                    if (!cpuData.data || !cpuData.data[0]) return null;
+                    if (!memData.data || !memData.data[0]) return null;
+
+                    const c = cpuData.data[0];
+                    const cpu = (c[6] || 0) + (c[7] || 0) + (c[8] || 0) + (c[9] || 0);
+
+                    const m = memData.data[0];
+                    const free = m[1] || 0;
+                    const used = m[2] || 0;
+                    const cached = m[3] || 0;
+                    const buffers = m[4] || 0;
+                    const total = free + used + cached + buffers;
+                    const memPct = total ? (used / total) * 100 : 0;
+
+                    return { cpu: cpu, memPct: memPct };
+                } catch (err) {
+                    console.error('Error fetching ' + nodeKey + ':', err);
+                    return null;
+                }
+            }
+
+            async function updateMetrics() {
+                const results = (await Promise.all(NODES.map(fetchNode))).filter(function(r) { return r !== null; });
+
+                if (results.length) {
+                    const avgCpu = results.reduce(function(s, n) { return s + n.cpu; }, 0) / results.length;
+                    const avgMem = results.reduce(function(s, n) { return s + n.memPct; }, 0) / results.length;
+                    document.getElementById('cpu-usage').textContent = avgCpu.toFixed(1) + '%';
+                    document.getElementById('memory-usage').textContent = avgMem.toFixed(1) + '%';
+                } else {
+                    document.getElementById('cpu-usage').textContent = 'N/A';
+                    document.getElementById('memory-usage').textContent = 'N/A';
+                }
+
+                try {
+                    const res = await fetch(METRICS_API + '/cluster/info', { cache: 'no-store' });
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    const data = await res.json();
+                    const pods = (data.cluster && data.cluster.pods) ? data.cluster.pods.running : null;
+                    const age = (data.cluster && data.cluster.ageDays !== undefined) ? data.cluster.ageDays : null;
+                    document.getElementById('pods-running').textContent = pods !== null ? pods : 'N/A';
+                    document.getElementById('ingresses').textContent = age !== null ? age : 'N/A';
+                } catch (err) {
+                    console.error('Error fetching cluster info:', err);
+                    document.getElementById('pods-running').textContent = 'N/A';
+                    document.getElementById('ingresses').textContent = 'N/A';
+                }
+
+                document.getElementById('current-time').textContent =
+                    'Last updated: ' + new Date().toLocaleTimeString();
             }
 
             function showCommands() {
@@ -716,15 +773,8 @@ data:
 
             window.onload = function() {
                 updateMetrics();
-                setInterval(updateMetrics, 5000);
+                setInterval(updateMetrics, 30000);
             };
-            function showProjects() {
-                document.getElementById('projects-modal').style.display = 'flex';
-            }
-
-            function closeProjectsModal() {
-                document.getElementById('projects-modal').style.display = 'none';
-            }
         </script>
     </body>
     </html>
