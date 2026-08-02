@@ -90,7 +90,7 @@ k8s-baremetal-dashboard/
 
 | Repository | Purpose |
 |---|---|
-| [homelab-k8s-config-pub](https://github.com/catdevops1/homelab-k8s-config-pub) | Vault, ESO, Cloudflare Tunnel, Envoy Gateway, ExternalSecrets |
+| [k8s-config-pub](https://github.com/catdevops1/k8s-config-pub) | Vault, ESO, Cloudflare Tunnel, Envoy Gateway, ExternalSecrets |
 | [cluster-ai](https://github.com/catdevops1/cluster-ai) | Autonomous cluster monitoring agent |
 | [vault-config-pub](https://github.com/catdevops1/vault-config-pub) | Vault configuration reference |
 

@@ -498,7 +498,7 @@ data:
                     </div>
 
                     <!-- Gateway API -->
-                    <div class="app-card bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-red-500" onclick="window.open('https://github.com/catdevops1/homelab-k8s-config-pub')">
+                    <div class="app-card bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-red-500" onclick="window.open('https://github.com/catdevops1/k8s-config-pub')">
                         <div class="flex items-start justify-between mb-4">
                             <div class="flex items-center">
                                 <div class="bg-red-700 p-3 rounded-lg mr-4">
@@ -525,13 +525,13 @@ data:
                         <div class="flex items-center justify-between text-sm">
                             <span class="text-gray-400"><i class="fas fa-network-wired mr-2"></i>Zero open ports</span>
                             <span class="text-red-400 hover:text-red-300">
-                                homelab-k8s-config-pub <i class="fas fa-external-link-alt ml-1"></i>
+                                k8s-config-pub <i class="fas fa-external-link-alt ml-1"></i>
                             </span>
                         </div>
                     </div>
 
                     <!-- Longhorn -->
-                    <div class="app-card bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-teal-500" onclick="window.open('https://github.com/catdevops1/homelab-k8s-config-pub')">
+                    <div class="app-card bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-teal-500" onclick="window.open('https://github.com/catdevops1/k8s-config-pub')">
                         <div class="flex items-start justify-between mb-4">
                             <div class="flex items-center">
                                 <div class="bg-teal-700 p-3 rounded-lg mr-4">
@@ -557,7 +557,7 @@ data:
                         <div class="flex items-center justify-between text-sm">
                             <span class="text-gray-400"><i class="fas fa-hdd mr-2"></i>3-way replication</span>
                             <span class="text-teal-400 hover:text-teal-300">
-                                homelab-k8s-config-pub <i class="fas fa-external-link-alt ml-1"></i>
+                                k8s-config-pub <i class="fas fa-external-link-alt ml-1"></i>
                             </span>
                         </div>
                     </div>
