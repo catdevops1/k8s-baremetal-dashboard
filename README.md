@@ -67,6 +67,10 @@ Application pods
 
 The Netdata streaming key uses an init container pattern — the ConfigMap holds a placeholder, and a busybox init container injects the real key from the Vault-synced Secret before the main container starts.
 
+## Netdata Parent Architecture
+
+The Netdata Helm chart's built-in parent (`parent.enabled`) is deliberately disabled. Instead, a custom parent Deployment (`netdata-parent-fixed`) and Service (`netdata-parent`) handle all child streaming. This avoids the chart's own parent being silently recreated on every upgrade with default resource limits and no real streaming key — child agents stream to `netdata-parent:19999`, a Service scoped to the custom parent's pods via a dedicated selector, so it's unaffected by anything the chart itself renders.
+
 ## Repository Structure
 
 ```
@@ -75,6 +79,9 @@ k8s-baremetal-dashboard/
 │   ├── monitoring/netdat-dash/     # Netdata parent + metrics API
 │   │   ├── netdata-parent-config.yaml
 │   │   ├── netdata-parent-deployment.yaml
+│   │   ├── netdata-parent-svc.yaml      # Custom parent Service (bypasses Helm chart's native parent)
+│   │   ├── netdata-parent-disable.yaml  # Disables Helm chart's native parent + ingress
+│   │   ├── httproute.yaml               # Gateway API route for metrics.catdevops.net
 │   │   ├── cluster-info-script-configmap.yaml
 │   │   ├── minimal-api-*.yaml      # Nginx reverse proxy for metrics
 │   │   └── rbac.yaml
@@ -110,5 +117,3 @@ All infrastructure changes deploy through ArgoCD — push to main, ArgoCD syncs,
 - **GitHub:** [@catdevops1](https://github.com/catdevops1/k8s-baremetal-dashboard)
 - **LinkedIn:** [Catalin Bot](https://www.linkedin.com/in/catalin-bot/)
 
-
-**Built with ❤️ using bare-metal infrastructure, open-source tools, and a passion for technology.**
