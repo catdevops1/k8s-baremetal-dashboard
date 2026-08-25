@@ -67,6 +67,8 @@ Application pods
 
 The Netdata streaming key uses an init container pattern — the ConfigMap holds a placeholder, and a busybox init container injects the real key from the Vault-synced Secret before the main container starts.
 
+The netdata child DaemonSet's secrets (streaming key and Netdata Cloud claiming token) are handled differently: `values.yaml` only ever contains placeholders, and `upgrade-netdata.sh` pulls the real values fresh from Vault at deploy time, injecting them via `helm upgrade --set-file`/`--set-string` rather than writing them to any tracked or persisted file.
+
 ## Netdata Parent Architecture
 
 The Netdata Helm chart's built-in parent (`parent.enabled`) is deliberately disabled. Instead, a custom parent Deployment (`netdata-parent-fixed`) and Service (`netdata-parent`) handle all child streaming. This avoids the chart's own parent being silently recreated on every upgrade with default resource limits and no real streaming key — child agents stream to `netdata-parent:19999`, a Service scoped to the custom parent's pods via a dedicated selector, so it's unaffected by anything the chart itself renders.
@@ -89,7 +91,8 @@ k8s-baremetal-dashboard/
 │       ├── frontend/src/
 │       └── k8s-manifests/
 ├── argocd/applications/            # ArgoCD app definitions
-├── values.yaml                     # Helm values (Netdata chart)
+├── values.yaml                     # Helm values (Netdata chart) — placeholders only, no real secrets
+├── upgrade-netdata.sh              # Deploys netdata with real secrets pulled fresh from Vault
 └── README.md
 ```
 
