@@ -496,7 +496,37 @@ data:
                             </span>
                         </div>
                     </div>
-
+                    <!-- Crossplane DNS -->
+                    <div class="app-card bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-orange-500" onclick="window.open('https://github.com/catdevops1/crossplane')">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center">
+                                <div class="bg-orange-700 p-3 rounded-lg mr-4">
+                                    <i class="fas fa-globe text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Cloudflare DNS as Code</h3>
+                                    <p class="text-sm text-gray-400">Crossplane · Cloudflare Provider · Vault</p>
+                                </div>
+                            </div>
+                            <span class="status-badge">
+                                <span class="status-dot bg-white"></span>
+                                Live
+                            </span>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm">DNS records for catdevops.net managed as Kubernetes CRDs and reconciled continuously by Crossplane. Existing records adopted in place via <code>external-name</code> — zero re-creation, zero downtime. Email records (MX, DKIM, SPF, DMARC) run <code>Observe</code>-only. API token pulled from Vault via ESO, never in Git.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-orange-900 text-orange-200 px-2 py-1 rounded text-xs">Crossplane</span>
+                            <span class="bg-amber-900 text-amber-200 px-2 py-1 rounded text-xs">Cloudflare</span>
+                            <span class="bg-yellow-900 text-yellow-200 px-2 py-1 rounded text-xs">Vault + ESO</span>
+                            <span class="bg-indigo-900 text-indigo-200 px-2 py-1 rounded text-xs">ArgoCD</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-400"><i class="fas fa-check-circle mr-2"></i>13 records · drift corrected</span>
+                            <span class="text-orange-400 hover:text-orange-300">
+                                crossplane <i class="fas fa-external-link-alt ml-1"></i>
+                            </span>
+                        </div>
+                    </div>
                     <!-- Gateway API -->
                     <div class="app-card bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-red-500" onclick="window.open('https://github.com/catdevops1/k8s-config-pub')">
                         <div class="flex items-start justify-between mb-4">
