@@ -34,7 +34,8 @@ child:
       memory: 300Mi
 image:
   repository: netdata/netdata
-  tag: edge
+  tag: v2.6.3
+  pullPolicy: IfNotPresent  
 ingress:
   enabled: false
 parent:
@@ -50,7 +51,7 @@ parent:
     storageClass: ""
 podSecurityContext: {}
 restarter:
-  enabled: true
+  enabled: false
   image:
     repository: alpine/k8s
     tag: "1.35.6"
