@@ -18,7 +18,7 @@ Production-grade 5-node bare-metal Kubernetes cluster with real-time monitoring,
 | Nodes | 5 (1 control-plane + 4 workers) |
 | Runtime | containerd |
 | OS | Ubuntu 24.04 LTS |
-| Uptime | 343+ days |
+| In production since | August 2025 |
 
 ## Architecture
 
@@ -73,6 +73,13 @@ The netdata child DaemonSet's secrets (streaming key and Netdata Cloud claiming 
 
 The Netdata Helm chart's built-in parent (`parent.enabled`) is deliberately disabled. Instead, a custom parent Deployment (`netdata-parent-fixed`) and Service (`netdata-parent`) handle all child streaming. This avoids the chart's own parent being silently recreated on every upgrade with default resource limits and no real streaming key — child agents stream to `netdata-parent:19999`, a Service scoped to the custom parent's pods via a dedicated selector, so it's unaffected by anything the chart itself renders.
 
+### Version pinning
+
+Parent and child images are both pinned to `v2.6.3` and must be upgraded together. The chart's `restarter` CronJob is disabled: its purpose is to auto-update nightly (`edge`) builds by restarting pods, which is incompatible with pinned versions and is off by default upstream.
+
+This pairing matters. An inherited `image.tag: edge` plus an enabled restarter meant the children re-pulled a nightly build every morning while the hand-rolled parent stayed at `v1.44.3`. The children reached v2.11-nightly — a full major version ahead — and the parent eventually hit a refcount fatal (`METRIC: refcount is 0 during release`) while handling v2 cgroup charts during the restarter's mass reconnect, aborting with exit 137.
+
+
 ## Repository Structure
 
 ```
@@ -113,7 +120,16 @@ The showcase website at [catdevops.net](https://catdevops.net) displays live clu
 3. **Python sidecar** (cluster-info-script) runs kubectl to provide cluster-level data (pod counts, node info)
 4. **Frontend JS** polls both endpoints every 5 seconds and renders the dashboard
 
-All infrastructure changes deploy through ArgoCD — push to main, ArgoCD syncs, pods roll out.
+## Deployment
+
+Two systems own different parts of the netdata stack:
+
+| Resource | Managed by | How to change it |
+|---|---|---|
+| Parent Deployment, Service, ConfigMap, minimal-api, website | ArgoCD | Edit manifest → commit → push (auto-syncs) |
+| Child DaemonSet, k8s-state | Helm | Edit `values.yaml` → commit → run `./upgrade-netdata.sh` |
+
+Pushing a `values.yaml` change alone does nothing — it sits outside the ArgoCD sync path and only takes effect when the script runs.
 
 ## Contact
 
