@@ -29,15 +29,29 @@ spec:
         release: netdata
         role: parent
     spec:
-      nodeSelector:
-        node-role.kubernetes.io/control-plane: ""
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values: [node03]
       tolerations:
-        - effect: NoSchedule
-          key: node-role.kubernetes.io/master
+        - key: node.kubernetes.io/not-ready
           operator: Exists
-        - effect: NoSchedule
-          key: node-role.kubernetes.io/control-plane
+          effect: NoExecute
+          tolerationSeconds: 60
+        - key: node.kubernetes.io/unreachable
           operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 60
       initContainers:
         - name: inject-streaming-key
           image: busybox:1.36
