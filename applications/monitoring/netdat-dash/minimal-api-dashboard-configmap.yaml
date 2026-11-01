@@ -75,7 +75,7 @@ data:
                     <div class="flex items-center space-x-4">
                         <span id="current-time" class="text-sm md:text-base font-medium text-gray-200"></span>
                         <span class="text-lg md:text-xl font-bold text-gray-200">
-                            <span id="total-nodes-header">0</span>/4 Nodes Online
+                            <span id="total-nodes-header">0</span>/5 Nodes Online
                         </span>
                         <a href="https://catdevops.net" class="text-gray-200 hover:text-white transition-colors">
                             <i class="fas fa-home text-xl"></i>
@@ -105,7 +105,7 @@ data:
                             <i class="fas fa-server"></i>
                         </div>
                         <div class="text-xl font-bold text-gray-300 mb-2">Nodes Online</div>
-                        <div id="total-nodes" class="text-4xl font-extrabold text-green-300">0/4</div>
+                        <div id="total-nodes" class="text-4xl font-extrabold text-green-300">0/5</div>
                         <div class="text-gray-400">Active</div>
                     </div>
                     <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl flex flex-col items-center text-center">
@@ -314,6 +314,47 @@ data:
                     </div>
                 </div>
             </div>
+            <!-- Worker Node 4 -->
+            <div class="bg-gradient-to-r from-indigo-800 to-indigo-900 rounded-lg p-8 mb-8 shadow-xl">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 text-center">
+                    <span class="status-indicator" id="worker4-status"></span>
+                    Worker Node 4 (node04) - 32GB
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-microchip text-2xl text-green-400 mr-3"></i>
+                            <div class="text-lg font-bold text-gray-300">CPU Usage</div>
+                        </div>
+                        <div id="worker4-cpu-value" class="text-3xl font-extrabold text-green-300 mb-2">--</div>
+                        <div id="worker4-cpu-detail" class="text-sm text-gray-400">Loading...</div>
+                    </div>
+                    <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-memory text-2xl text-blue-400 mr-3"></i>
+                            <div class="text-lg font-bold text-gray-300">Memory</div>
+                        </div>
+                        <div id="worker4-memory-value" class="text-3xl font-extrabold text-blue-300 mb-2">--</div>
+                        <div id="worker4-memory-detail" class="text-sm text-gray-400">Loading...</div>
+                    </div>
+                    <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-tachometer-alt text-2xl text-orange-400 mr-3"></i>
+                            <div class="text-lg font-bold text-gray-300">Load Avg</div>
+                        </div>
+                        <div id="worker4-load-value" class="text-3xl font-extrabold text-orange-300 mb-2">--</div>
+                        <div id="worker4-load-detail" class="text-sm text-gray-400">1m, 5m, 15m</div>
+                    </div>
+                    <div class="metric-card bg-gray-800 rounded-lg p-6 shadow-xl">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-clock text-2xl text-purple-400 mr-3"></i>
+                            <div class="text-lg font-bold text-gray-300">Uptime</div>
+                        </div>
+                        <div id="worker4-uptime-value" class="text-3xl font-extrabold text-purple-300 mb-2">--</div>
+                        <div id="worker4-uptime-detail" class="text-sm text-gray-400">Loading...</div>
+                    </div>
+                </div>
+            </div>
             <!-- Status Section -->
             <div class="text-center space-y-4">
                 <div class="bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg p-6 shadow-xl">
@@ -358,7 +399,8 @@ data:
                 master: { cpu: 0, memory: 0, load: 0, online: false },
                 worker1: { cpu: 0, memory: 0, load: 0, online: false },
                 worker2: { cpu: 0, memory: 0, load: 0, online: false },
-                worker3: { cpu: 0, memory: 0, load: 0, online: false }
+                worker3: { cpu: 0, memory: 0, load: 0, online: false },
+                worker4: { cpu: 0, memory: 0, load: 0, online: false }
             };
             
             function debugLog(message) {
@@ -556,7 +598,7 @@ data:
                     document.getElementById('cluster-load').textContent = avgLoad.toFixed(2);
                 }
                 
-                document.getElementById('total-nodes').textContent = `${nodeCount}/4`;
+                document.getElementById('total-nodes').textContent = `${nodeCount}/5`;
                 document.getElementById('total-nodes-header').textContent = nodeCount;
             }
             
@@ -569,6 +611,7 @@ data:
                     fetchNodeMetrics('worker1', 'worker1'), 
                     fetchNodeMetrics('worker2', 'worker2'),
                     fetchNodeMetrics('worker3', 'worker3'),
+                    fetchNodeMetrics('worker4', 'worker4'),
                     fetchClusterInfo()
                 ]);
                 
