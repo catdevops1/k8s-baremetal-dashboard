@@ -104,7 +104,7 @@ data:
                     </div>
                     <div class="flex items-center space-x-4">
                         <span id="current-time" class="text-sm md:text-base font-medium text-gray-200"></span>
-                        <span class="text-lg md:text-xl font-bold text-gray-200">4-Node Cluster</span>
+                        <span class="text-lg md:text-xl font-bold text-gray-200">5-Node Cluster</span>
                         <a href="https://linkedin.com/in/catalin-bot" target="_blank" class="text-gray-200 hover:text-white transition-colors">
                             <i class="fab fa-linkedin text-xl"></i>
                         </a>
@@ -133,7 +133,7 @@ data:
                             <i class="fas fa-laptop"></i>
                         </div>
                         <h3 class="text-xl font-semibold text-blue-300 mb-2">Core Infrastructure</h3>
-                        <p class="text-gray-300 text-sm">Built a 4-node bare-metal cluster on repurposed hardware using kubeadm. Migrated storage from hostPath to Longhorn with 3-way replication, and upgraded Kubernetes v1.33→v1.36.5 across 90+ pods with zero downtime.</p>
+                        <p class="text-gray-300 text-sm">Built a 5-node bare-metal cluster on repurposed hardware using kubeadm. Migrated storage from hostPath to Longhorn with 3-way replication, and upgraded Kubernetes v1.33→v1.36.5 across 90+ pods with zero downtime.</p>
                     </div>
                     <div class="text-center">
                         <div class="text-4xl text-red-400 mb-4">
@@ -147,7 +147,7 @@ data:
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <h3 class="text-xl font-semibold text-green-300 mb-2">Real Results</h3>
-                        <p class="text-gray-300 text-sm">4 production applications deployed and running. Autonomous AI agent monitors the cluster 24/7 and sends Telegram alerts with fix runbooks. 155 pods across 4 nodes on repurposed hardware — no cloud provider.</p>
+                        <p class="text-gray-300 text-sm">4 production applications deployed and running. Autonomous AI agent monitors the cluster 24/7 and sends Telegram alerts with fix runbooks. 155 pods across 5 nodes on repurposed hardware — no cloud provider.</p>
                     </div>
                 </div>
                 <div class="text-center mt-8">
@@ -259,7 +259,7 @@ data:
                     <div>
                         <h3 class="text-lg font-semibold text-white mb-3">Project Details</h3>
                         <div class="space-y-2 text-gray-300 text-sm">
-                            <p><strong>Cluster:</strong> 4-node bare metal</p>
+                            <p><strong>Cluster:</strong> 5-node bare metal</p>
                             <p><strong>Runtime:</strong> containerd</p>
                             <p><strong>CNI:</strong> Flannel</p>
                             <p><strong>LoadBalancer:</strong> MetalLB</p>
@@ -271,7 +271,7 @@ data:
                     <div>
                         <h3 class="text-lg font-semibold text-white mb-3">The Story</h3>
                         <div class="text-gray-300 text-sm">
-                            <p class="mb-2">Started with repurposed hardware and kubeadm. Now running 4 nodes, 155 pods, 4 production apps, HashiCorp Vault with AWS KMS, GitOps via ArgoCD, and an AI agent that monitors the cluster and texts me when something breaks.</p>
+                            <p class="mb-2">Started with repurposed hardware and kubeadm. Now running 5 nodes, 155 pods, 4 production apps, HashiCorp Vault with AWS KMS, GitOps via ArgoCD, and an AI agent that monitors the cluster and texts me when something breaks.</p>
                             <p class="text-xs text-gray-400">Practical DevOps engineering in action</p>
                         </div>
                     </div>
@@ -374,7 +374,7 @@ data:
                                 Healthy
                             </span>
                         </div>
-                        <p class="text-gray-300 mb-4 text-sm">Live cluster metrics with CPU, memory, load average, and uptime for all 4 nodes. Auto-refreshes every 5 seconds with granular per-node statistics.</p>
+                        <p class="text-gray-300 mb-4 text-sm">Live cluster metrics with CPU, memory, load average, and uptime for all 5 nodes. Auto-refreshes every 5 seconds with granular per-node statistics.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
                             <span class="bg-green-900 text-green-200 px-2 py-1 rounded text-xs">Netdata</span>
                             <span class="bg-blue-900 text-blue-200 px-2 py-1 rounded text-xs">DaemonSet</span>
@@ -707,7 +707,7 @@ data:
 
         <script>
             const METRICS_API = 'https://metrics.catdevops.net';
-            const NODES = ['master', 'worker1', 'worker2', 'worker3'];
+            const NODES = ['master', 'worker1', 'worker2', 'worker3', 'worker4'];
 
             function showModal(title, message) {
                 document.getElementById('modal-title').textContent = title;
@@ -814,11 +814,12 @@ data:
 
             function showArchitecture() {
                 const architecture = 'Kubernetes Cluster Architecture:\n' +
-                                     '🗄️ 4-Node Bare Metal Setup\n' +
+                                     '🗄️ 5-Node Bare Metal Setup\n' +
                                      '├── master-node (Control Plane)\n' +
                                      '├── node01.local (Worker)\n' +
                                      '├── node02 (Worker)\n' +
-                                     '└── node03 (Worker)\n' +
+                                     '├── node03 (Worker)\n' +
+                                     '└── node04 (Worker)\n' +
                                      '\n' +
                                      '🌐 Networking:\n' +
                                      '├── MetalLB (LoadBalancer)\n' +
