@@ -147,7 +147,7 @@ data:
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <h3 class="text-xl font-semibold text-green-300 mb-2">Real Results</h3>
-                        <p class="text-gray-300 text-sm">4 production applications deployed and running. Autonomous AI agent monitors the cluster 24/7 and sends Telegram alerts with fix runbooks. 155 pods across 5 nodes on repurposed hardware — no cloud provider.</p>
+                        <p class="text-gray-300 text-sm">4 production applications deployed and running. Autonomous AI agent monitors the cluster 24/7 and sends Telegram alerts with fix runbooks. 110+ pods across 5 nodes on repurposed hardware — no cloud provider.</p>
                     </div>
                 </div>
                 <div class="text-center mt-8">
@@ -271,7 +271,7 @@ data:
                     <div>
                         <h3 class="text-lg font-semibold text-white mb-3">The Story</h3>
                         <div class="text-gray-300 text-sm">
-                            <p class="mb-2">Started with repurposed hardware and kubeadm. Now running 5 nodes, 155 pods, 4 production apps, HashiCorp Vault with AWS KMS, GitOps via ArgoCD, and an AI agent that monitors the cluster and texts me when something breaks.</p>
+                            <p class="mb-2">Started with repurposed hardware and kubeadm. Now running 5 nodes, 110+ pods, 4 production apps, HashiCorp Vault with AWS KMS, GitOps via ArgoCD, and an AI agent that monitors the cluster and texts me when something breaks.</p>
                             <p class="text-xs text-gray-400">Practical DevOps engineering in action</p>
                         </div>
                     </div>
